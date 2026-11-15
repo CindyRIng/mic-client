@@ -1,0 +1,48 @@
+{
+  "name": "mic-client",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Made-in-China local client: REST / CLI / MCP + SQLite cache (JSON-first, with captcha autosolve fallback)",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "bin": {
+    "mic": "dist/cli.js"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "data",
+    "docs"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "dev": "tsx src/cli.ts",
+    "start": "node dist/cli.js",
+    "serve": "node dist/cli.js serve",
+    "mcp": "node dist/cli.js mcp",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "rm -rf dist coverage"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "better-sqlite3": "^13.2.0",
+    "cloakbrowser": "0.6.5",
+    "commander": "^14.0.0",
+    "fastify": "^5.2.0",
+    "playwright-core": "1.65.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  }
+}
