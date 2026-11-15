@@ -1,0 +1,21 @@
+{
+ "UCJfyzwThnqK": [
+  {
+   "name": "cindy",
+   "id": "UCJfyzwThnqK_00"
+  },
+  {
+   "name": "Jenny",
+   "id": "UCJfyzwThnqK_1014225982"
+  },
+  {
+   "name": "Luna",
+   "id": "UCJfyzwThnqK_1014333342"
+  },
+  {
+   "name": "Amanda",
+   "id": "UCJfyzwThnqK_1014567182"
+  }
+ ],
+ "_note": "recon 样例为 salienceglass (bSrtEKgyYcUf)；此处按 xingchenglass 的 encodeComId 复刻同一结构（docs/03 §8.5 示例 cindy / UCJfyzwThnqK_00）"
+}

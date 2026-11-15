@@ -92,6 +92,17 @@ function intIn(v: unknown, dflt: number, min: number, max: number, param: string
   return n;
 }
 
+/** ISO8601 with +08:00 offset (contract requires Asia/Shanghai formatting). */
+export function formatIsoCst(epochSeconds: number | null): string | null {
+  if (epochSeconds === null) return null;
+  const d = new Date(epochSeconds * 1000 + 8 * 3600 * 1000);
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return (
+    `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}` +
+    `T${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())}+08:00`
+  );
+}
+
 function sha256(s: string): string {
   return crypto.createHash('sha256').update(s).digest('hex');
 }
@@ -110,6 +121,7 @@ interface NormalizedSearch {
   localCity: CityMatch | null;
   auditedFilter: boolean;
   includeAds: boolean;
+  warnings: Warning[];
 }
 
 export class SearchService {
@@ -157,7 +169,20 @@ export class SearchService {
 
     let city: CityMatch | null = null;
     if (cityInput) {
-      const m = matchCity(cityInput, province ?? undefined);
+      let m = matchCity(cityInput, province ?? undefined);
+      if (!m) {
+        // province-scoped lookup failed: try global lookup to detect province/city mismatch
+        const global = matchCity(cityInput);
+        if (global && province) {
+          warnings.push({
+            code: 'CITY_PROVINCE_MISMATCH',
+            message: 'city does not belong to the given province; province inferred from city',
+            details: { city: global.name, given_province: province.name, inferred_province: global.province.name },
+          });
+          m = global;
+          province = global.province;
+        }
+      }
       if (m) {
         city = m;
         if (province && m.province.name !== province.name) {
@@ -292,13 +317,13 @@ export class SearchService {
       annualRevenue,
       rdCapacity,
     };
-    return { query, upstream, localCity: city, auditedFilter, includeAds };
+    return { query, upstream, localCity: city, auditedFilter, includeAds, warnings };
   }
 
   async search(input: SearchInput): Promise<SearchResponse> {
     const norm = this.normalize(input);
     const { query, upstream, localCity, auditedFilter, includeAds } = norm;
-    const warnings: Warning[] = [];
+    const warnings: Warning[] = [...norm.warnings];
     const requestId = input.request_id ?? 'req_' + Date.now().toString(36);
     const localFilter = Boolean(localCity || auditedFilter);
 
@@ -336,7 +361,7 @@ export class SearchService {
       request_id: requestId,
       cached: pageInfo.cached,
       stale: pageInfo.stale,
-      fetched_at: pageInfo.fetchedAt ? new Date(pageInfo.fetchedAt * 1000).toISOString() : null,
+      fetched_at: formatIsoCst(pageInfo.fetchedAt || null),
       source: pageInfo.source,
       warnings,
     };
@@ -358,7 +383,8 @@ export class SearchService {
     source: 'json' | 'cache';
   }> {
     const params = stable({ ...upstream, page });
-    const paramsHash = sha256(JSON.stringify(params));
+    const hashParams = stable({ ...upstream, word: upstream.word.toLowerCase(), page });
+    const paramsHash = sha256(JSON.stringify(hashParams));
     const cacheKey = 'search:' + paramsHash;
     if (this.cfg.cache.enabled && !refresh) {
       const hit = this.cache.getSearchPage(cacheKey);
