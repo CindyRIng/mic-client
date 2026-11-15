@@ -72,7 +72,7 @@ describe('CLI: version (TC-42)', () => {
     const out = parseJson(r.stdout);
     expect(out['ok']).toBe(true);
     const data = out['data'] as Record<string, unknown>;
-    expect(data['version']).toBe('0.1.0');
+    expect(data['version']).toMatch(/^\d+\.\d+\.\d+$/);
     expect(data['schema_version']).toBe(1);
     expect(String(data['node'])).toBe(process.version);
     expect(data['upstream_contract']).toBeTruthy();
@@ -81,7 +81,7 @@ describe('CLI: version (TC-42)', () => {
   it('--version prints only the version number on stdout', async () => {
     const r = await runCli(['--version']);
     expect(r.code).toBe(0);
-    expect(r.stdout.trim()).toBe('0.1.0');
+    expect(r.stdout.trim()).toMatch(/^\d+\.\d+\.\d+$/);
   });
 });
 

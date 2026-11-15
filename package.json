@@ -1,8 +1,8 @@
 {
   "name": "mic-client",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": false,
-  "description": "Made-in-China local client: REST / CLI / MCP + SQLite cache (JSON-first, with captcha autosolve fallback)",
+  "description": "Made-in-China.com local client: REST API / CLI / MCP for supplier search & company profiles, with SQLite cache, region modes and Focus Captcha autosolve",
   "type": "module",
   "license": "MIT",
   "engines": {
@@ -27,7 +27,10 @@
     "mcp": "node dist/cli.js mcp",
     "test": "vitest run",
     "test:watch": "vitest",
-    "clean": "rm -rf dist coverage"
+    "clean": "rm -rf dist coverage",
+    "smoke:live": "node scripts/e2e/live-smoke.mjs",
+    "smoke:mcp": "node scripts/e2e/mcp-smoke.mjs",
+    "verify": "npm run typecheck && npm run build && npm test"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
@@ -44,5 +47,28 @@
     "tsx": "^4.19.0",
     "typescript": "^5.7.0",
     "vitest": "^3.0.0"
-  }
+  },
+  "homepage": "https://github.com/CindyRIng/mic-client#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CindyRIng/mic-client.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CindyRIng/mic-client/issues"
+  },
+  "author": "CindyRIng and MIC Client contributors",
+  "keywords": [
+    "made-in-china",
+    "b2b",
+    "supplier-search",
+    "factory-search",
+    "cli",
+    "rest-api",
+    "mcp",
+    "model-context-protocol",
+    "sqlite",
+    "captcha",
+    "scraping",
+    "china"
+  ]
 }
