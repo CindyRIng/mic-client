@@ -1,0 +1,19 @@
+{
+ "status": 1,
+ "code": null,
+ "msg": null,
+ "data": [
+  {
+   "calNumber": "20261113",
+   "comId": "1752301672",
+   "operatorNo": "all",
+   "l30BusiIntimeReplyRatio": 1,
+   "l30BusiReplyDurAvg": 1.74,
+   "l30TopIntimeReplyRatio": 1,
+   "l30TopReplyDurAvg": 0.39,
+   "l30BusiReplyDurAvgRange": "≤1.74h"
+  }
+ ],
+ "token": null,
+ "success": true
+}

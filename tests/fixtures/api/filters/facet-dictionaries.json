@@ -1,0 +1,1236 @@
+{
+ "source": "POST https://m.made-in-china.com/search/supplier  +  GET /search/supplier/refine?word=glass&page=1 (anonymous, X-Requested-With header)",
+ "supplier_refine_glass": {
+  "catCode": {
+   "subject": "Categories",
+   "options": [
+    {
+     "name": "Manufacturing & Processing Machinery",
+     "value": "1900000000",
+     "count": 4960
+    },
+    {
+     "name": "Industrial Equipment & Components",
+     "value": "3400000000",
+     "count": 4521
+    },
+    {
+     "name": "Construction & Decoration",
+     "value": "1500000000",
+     "count": 3537
+    },
+    {
+     "name": "Tools & Hardware",
+     "value": "3200000000",
+     "count": 3149
+    },
+    {
+     "name": "Light Industry & Daily Use",
+     "value": "1800000000",
+     "count": 2619
+    },
+    {
+     "name": "Electrical & Electronics",
+     "value": "1600000000",
+     "count": 2549
+    },
+    {
+     "name": "Packaging & Printing",
+     "value": "3600000000",
+     "count": 2209
+    },
+    {
+     "name": "Auto, Motorcycle Parts & Accessories",
+     "value": "2900000000",
+     "count": 1772
+    },
+    {
+     "name": "Chemicals",
+     "value": "1300000000",
+     "count": 1527
+    },
+    {
+     "name": "Consumer Electronics",
+     "value": "1400000000",
+     "count": 1073
+    }
+   ]
+  },
+  "comBusinessType": {
+   "subject": "Company Type",
+   "options": [
+    {
+     "name": "Trading Company",
+     "value": "2",
+     "count": 11575
+    },
+    {
+     "name": "Manufacturer/Factory",
+     "value": "1",
+     "count": 6922
+    },
+    {
+     "name": "Group Corporation",
+     "value": "4",
+     "count": 66
+    },
+    {
+     "name": "Other",
+     "value": "8",
+     "count": 0
+    }
+   ]
+  },
+  "managementCertification": {
+   "subject": "Management Certification",
+   "options": [
+    {
+     "name": "ISO9001:2015",
+     "value": "-5",
+     "count": 1671
+    },
+    {
+     "name": "ISO 14001",
+     "value": "6",
+     "count": 1086
+    },
+    {
+     "name": "ISO 9001",
+     "value": "10",
+     "count": 722
+    },
+    {
+     "name": "Others",
+     "value": "-4",
+     "count": 592
+    },
+    {
+     "name": "ISO 9000",
+     "value": "9",
+     "count": 221
+    },
+    {
+     "name": "BSCI",
+     "value": "20",
+     "count": 163
+    },
+    {
+     "name": "ISO 14000",
+     "value": "5",
+     "count": 144
+    },
+    {
+     "name": "ISO 20000",
+     "value": "8",
+     "count": 117
+    },
+    {
+     "name": "GMP",
+     "value": "26",
+     "count": 108
+    },
+    {
+     "name": "OHSAS/ OHSMS 18001",
+     "value": "11",
+     "count": 91
+    },
+    {
+     "name": "IATF16949",
+     "value": "31",
+     "count": 86
+    },
+    {
+     "name": "QC 080000",
+     "value": "12",
+     "count": 85
+    },
+    {
+     "name": "ISO 14064",
+     "value": "7",
+     "count": 72
+    },
+    {
+     "name": "FSC",
+     "value": "40",
+     "count": 68
+    },
+    {
+     "name": "HSE",
+     "value": "4",
+     "count": 64
+    },
+    {
+     "name": "ISO 50001",
+     "value": "37",
+     "count": 62
+    },
+    {
+     "name": "ISO 13485",
+     "value": "28",
+     "count": 55
+    },
+    {
+     "name": "SEDEX",
+     "value": "21",
+     "count": 37
+    },
+    {
+     "name": "ISO 22000",
+     "value": "35",
+     "count": 34
+    },
+    {
+     "name": "HACCP",
+     "value": "27",
+     "count": 34
+    },
+    {
+     "name": "BRC",
+     "value": "19",
+     "count": 33
+    },
+    {
+     "name": "ISO 17025",
+     "value": "42",
+     "count": 28
+    },
+    {
+     "name": "IFS",
+     "value": "34",
+     "count": 27
+    },
+    {
+     "name": "ISO 10012",
+     "value": "41",
+     "count": 27
+    },
+    {
+     "name": "ANSI/ESD",
+     "value": "1",
+     "count": 26
+    },
+    {
+     "name": "ASME",
+     "value": "23",
+     "count": 24
+    },
+    {
+     "name": "SA 8000",
+     "value": "13",
+     "count": 24
+    },
+    {
+     "name": "EICC",
+     "value": "3",
+     "count": 23
+    },
+    {
+     "name": "QHSE",
+     "value": "17",
+     "count": 21
+    },
+    {
+     "name": "WRAP",
+     "value": "22",
+     "count": 20
+    },
+    {
+     "name": "QSR",
+     "value": "29",
+     "count": 20
+    },
+    {
+     "name": "ISO 29001",
+     "value": "36",
+     "count": 20
+    },
+    {
+     "name": "BS 25999-2",
+     "value": "2",
+     "count": 20
+    },
+    {
+     "name": "SHE Audits",
+     "value": "18",
+     "count": 19
+    },
+    {
+     "name": "GAP",
+     "value": "33",
+     "count": 18
+    },
+    {
+     "name": "AIB",
+     "value": "32",
+     "count": 16
+    },
+    {
+     "name": "LEED",
+     "value": "16",
+     "count": 16
+    },
+    {
+     "name": "PAS 28000",
+     "value": "30",
+     "count": 15
+    },
+    {
+     "name": "BREEAM",
+     "value": "14",
+     "count": 15
+    },
+    {
+     "name": "HQE",
+     "value": "15",
+     "count": 14
+    },
+    {
+     "name": "ISO9001:2008",
+     "value": "-1",
+     "count": 5
+    },
+    {
+     "name": "ISO45001:2016",
+     "value": "-7",
+     "count": 2
+    },
+    {
+     "name": "ISO14001:2004",
+     "value": "-2",
+     "count": 1
+    },
+    {
+     "name": "ISO14001:2015",
+     "value": "-6",
+     "count": 1
+    }
+   ]
+  },
+  "memberLevel": {
+   "subject": "Member Type",
+   "options": [
+    {
+     "name": "Diamond Member",
+     "value": "50",
+     "count": 0
+    },
+    {
+     "name": "Gold Member",
+     "value": "30",
+     "count": 0
+    },
+    {
+     "name": "Audited Supplier",
+     "value": "0,1,3",
+     "count": 0
+    }
+   ]
+  },
+  "province": {
+   "subject": "Company Location",
+   "options": [
+    {
+     "name": "Guangdong",
+     "value": "Guangdong",
+     "count": 3373
+    },
+    {
+     "name": "Shandong",
+     "value": "Shandong",
+     "count": 1917
+    },
+    {
+     "name": "Zhejiang",
+     "value": "Zhejiang",
+     "count": 1867
+    },
+    {
+     "name": "Jiangsu",
+     "value": "Jiangsu",
+     "count": 1410
+    },
+    {
+     "name": "Hebei",
+     "value": "Hebei",
+     "count": 668
+    },
+    {
+     "name": "Fujian",
+     "value": "Fujian",
+     "count": 560
+    },
+    {
+     "name": "Henan",
+     "value": "Henan",
+     "count": 560
+    },
+    {
+     "name": "Shanghai",
+     "value": "Shanghai",
+     "count": 543
+    },
+    {
+     "name": "Anhui",
+     "value": "Anhui",
+     "count": 320
+    },
+    {
+     "name": "Tianjin",
+     "value": "Tianjin",
+     "count": 169
+    },
+    {
+     "name": "Hunan",
+     "value": "Hunan",
+     "count": 160
+    },
+    {
+     "name": "Jiangxi",
+     "value": "Jiangxi",
+     "count": 146
+    },
+    {
+     "name": "Hubei",
+     "value": "Hubei",
+     "count": 140
+    },
+    {
+     "name": "Beijing",
+     "value": "Beijing",
+     "count": 127
+    },
+    {
+     "name": "Liaoning",
+     "value": "Liaoning",
+     "count": 104
+    },
+    {
+     "name": "Sichuan",
+     "value": "Sichuan",
+     "count": 98
+    },
+    {
+     "name": "Chongqing",
+     "value": "Chongqing",
+     "count": 84
+    },
+    {
+     "name": "Shaanxi",
+     "value": "Shaanxi",
+     "count": 61
+    },
+    {
+     "name": "Guangxi",
+     "value": "Guangxi",
+     "count": 31
+    },
+    {
+     "name": "Shanxi",
+     "value": "Shanxi",
+     "count": 29
+    },
+    {
+     "name": "Hainan",
+     "value": "Hainan",
+     "count": 18
+    },
+    {
+     "name": "Yunnan",
+     "value": "Yunnan",
+     "count": 11
+    },
+    {
+     "name": "Gansu",
+     "value": "Gansu",
+     "count": 9
+    },
+    {
+     "name": "Hongkong S.A.R.",
+     "value": "Hongkong",
+     "count": 9
+    },
+    {
+     "name": "Inner Mongolia",
+     "value": "InnerMongolia",
+     "count": 7
+    },
+    {
+     "name": "Jilin",
+     "value": "Jilin",
+     "count": 6
+    },
+    {
+     "name": "Guizhou",
+     "value": "Guizhou",
+     "count": 5
+    },
+    {
+     "name": "Heilongjiang",
+     "value": "Heilongjiang",
+     "count": 4
+    },
+    {
+     "name": "Xinjiang",
+     "value": "Xinjiang",
+     "count": 2
+    },
+    {
+     "name": "Ningxia",
+     "value": "Ningxia",
+     "count": 2
+    },
+    {
+     "name": "Taiwan, China",
+     "value": "Taiwan",
+     "count": 2
+    }
+   ]
+  },
+  "rdCapacity": {
+   "subject": "Trade Capacity",
+   "options": [
+    {
+     "name": "ODM",
+     "value": "5",
+     "count": 9955
+    },
+    {
+     "name": "OEM",
+     "value": "4",
+     "count": 9335
+    },
+    {
+     "name": "Quick Response",
+     "value": "01",
+     "count": 4801
+    },
+    {
+     "name": "Fast Delivery",
+     "value": "02",
+     "count": 7728
+    },
+    {
+     "name": "Small-amount payment",
+     "value": "03",
+     "count": 6628
+    }
+   ]
+  },
+  "annualRevenue": {
+   "subject": "Annual Revenue",
+   "options": [
+    {
+     "name": "<1 Million USD ",
+     "value": "1",
+     "count": 8158
+    },
+    {
+     "name": "2.5 ~ 5 Million USD ",
+     "value": "3",
+     "count": 125
+    },
+    {
+     "name": "10 ~ 50 Million USD ",
+     "value": "5",
+     "count": 116
+    },
+    {
+     "name": "5 ~ 10 Million USD ",
+     "value": "4",
+     "count": 112
+    },
+    {
+     "name": "1 ~ 2.5 Million USD ",
+     "value": "2",
+     "count": 106
+    },
+    {
+     "name": ">100 Million USD ",
+     "value": "7",
+     "count": 26
+    },
+    {
+     "name": "50 ~ 100 Million USD ",
+     "value": "6",
+     "count": 20
+    }
+   ]
+  }
+ },
+ "supplier_refine_glass_province_hebei": {
+  "catCode": {
+   "subject": "Categories",
+   "options": [
+    {
+     "name": "Construction & Decoration",
+     "value": "1500000000",
+     "count": 303
+    },
+    {
+     "name": "Industrial Equipment & Components",
+     "value": "3400000000",
+     "count": 270
+    },
+    {
+     "name": "Manufacturing & Processing Machinery",
+     "value": "1900000000",
+     "count": 268
+    },
+    {
+     "name": "Tools & Hardware",
+     "value": "3200000000",
+     "count": 235
+    },
+    {
+     "name": "Metallurgy, Mineral & Energy",
+     "value": "2000000000",
+     "count": 164
+    },
+    {
+     "name": "Chemicals",
+     "value": "1300000000",
+     "count": 151
+    },
+    {
+     "name": "Security & Protection",
+     "value": "2500000000",
+     "count": 113
+    },
+    {
+     "name": "Auto, Motorcycle Parts & Accessories",
+     "value": "2900000000",
+     "count": 110
+    },
+    {
+     "name": "Light Industry & Daily Use",
+     "value": "1800000000",
+     "count": 107
+    },
+    {
+     "name": "Electrical & Electronics",
+     "value": "1600000000",
+     "count": 53
+    }
+   ]
+  },
+  "comBusinessType": {
+   "subject": "Company Type",
+   "options": [
+    {
+     "name": "Trading Company",
+     "value": "2",
+     "count": 616
+    },
+    {
+     "name": "Manufacturer/Factory",
+     "value": "1",
+     "count": 401
+    },
+    {
+     "name": "Group Corporation",
+     "value": "4",
+     "count": 4
+    }
+   ]
+  },
+  "managementCertification": {
+   "subject": "Management Certification",
+   "options": [
+    {
+     "name": "ISO9001:2015",
+     "value": "-5",
+     "count": 108
+    },
+    {
+     "name": "ISO 14001",
+     "value": "6",
+     "count": 87
+    },
+    {
+     "name": "ISO 9001",
+     "value": "10",
+     "count": 31
+    },
+    {
+     "name": "Others",
+     "value": "-4",
+     "count": 27
+    },
+    {
+     "name": "ISO 9000",
+     "value": "9",
+     "count": 12
+    },
+    {
+     "name": "ISO 14000",
+     "value": "5",
+     "count": 9
+    },
+    {
+     "name": "BSCI",
+     "value": "20",
+     "count": 8
+    },
+    {
+     "name": "QC 080000",
+     "value": "12",
+     "count": 6
+    },
+    {
+     "name": "HSE",
+     "value": "4",
+     "count": 6
+    },
+    {
+     "name": "ISO 20000",
+     "value": "8",
+     "count": 6
+    },
+    {
+     "name": "OHSAS/ OHSMS 18001",
+     "value": "11",
+     "count": 6
+    },
+    {
+     "name": "IATF16949",
+     "value": "31",
+     "count": 5
+    },
+    {
+     "name": "ISO 50001",
+     "value": "37",
+     "count": 5
+    },
+    {
+     "name": "GMP",
+     "value": "26",
+     "count": 4
+    },
+    {
+     "name": "ISO 14064",
+     "value": "7",
+     "count": 4
+    },
+    {
+     "name": "ANSI/ESD",
+     "value": "1",
+     "count": 2
+    },
+    {
+     "name": "ISO 22000",
+     "value": "35",
+     "count": 2
+    },
+    {
+     "name": "BRC",
+     "value": "19",
+     "count": 2
+    },
+    {
+     "name": "ASME",
+     "value": "23",
+     "count": 1
+    },
+    {
+     "name": "SA 8000",
+     "value": "13",
+     "count": 1
+    },
+    {
+     "name": "HACCP",
+     "value": "27",
+     "count": 1
+    },
+    {
+     "name": "ISO45001:2016",
+     "value": "-7",
+     "count": 1
+    },
+    {
+     "name": "FSC",
+     "value": "40",
+     "count": 1
+    },
+    {
+     "name": "SEDEX",
+     "value": "21",
+     "count": 1
+    }
+   ]
+  },
+  "memberLevel": {
+   "subject": "Member Type",
+   "options": [
+    {
+     "name": "Diamond Member",
+     "value": "50",
+     "count": 0
+    },
+    {
+     "name": "Gold Member",
+     "value": "30",
+     "count": 0
+    },
+    {
+     "name": "Audited Supplier",
+     "value": "0,1,3",
+     "count": 0
+    }
+   ]
+  },
+  "province": {
+   "subject": "Company Location",
+   "options": [
+    {
+     "name": "Hebei",
+     "value": "Hebei",
+     "count": 668
+    }
+   ]
+  },
+  "rdCapacity": {
+   "subject": "Trade Capacity",
+   "options": [
+    {
+     "name": "OEM",
+     "value": "4",
+     "count": 535
+    },
+    {
+     "name": "ODM",
+     "value": "5",
+     "count": 518
+    },
+    {
+     "name": "Quick Response",
+     "value": "01",
+     "count": 319
+    },
+    {
+     "name": "Fast Delivery",
+     "value": "02",
+     "count": 464
+    },
+    {
+     "name": "Small-amount payment",
+     "value": "03",
+     "count": 404
+    }
+   ]
+  },
+  "annualRevenue": {
+   "subject": "Annual Revenue",
+   "options": [
+    {
+     "name": "<1 Million USD ",
+     "value": "1",
+     "count": 495
+    },
+    {
+     "name": "2.5 ~ 5 Million USD ",
+     "value": "3",
+     "count": 12
+    },
+    {
+     "name": "10 ~ 50 Million USD ",
+     "value": "5",
+     "count": 10
+    },
+    {
+     "name": "1 ~ 2.5 Million USD ",
+     "value": "2",
+     "count": 4
+    },
+    {
+     "name": "5 ~ 10 Million USD ",
+     "value": "4",
+     "count": 3
+    },
+    {
+     "name": "50 ~ 100 Million USD ",
+     "value": "6",
+     "count": 2
+    },
+    {
+     "name": ">100 Million USD ",
+     "value": "7",
+     "count": 1
+    }
+   ]
+  }
+ },
+ "product_refine_glass": [
+  {
+   "key": "catCode",
+   "subject": "Categories",
+   "options": [
+    {
+     "name": "Tempered Glass",
+     "value": "1502080000",
+     "count": 18893
+    },
+    {
+     "name": "Laminated Glass",
+     "value": "1502040000",
+     "count": 7642
+    },
+    {
+     "name": "Insulated Glass",
+     "value": "1502030000",
+     "count": 5274
+    },
+    {
+     "name": "Clear Glass",
+     "value": "1502010000",
+     "count": 4921
+    },
+    {
+     "name": "Tinted Glass",
+     "value": "1502090000",
+     "count": 4079
+    },
+    {
+     "name": "Patterned Glass",
+     "value": "1502050000",
+     "count": 3974
+    },
+    {
+     "name": "Car Glass & Window",
+     "value": "2903020000",
+     "count": 3411
+    },
+    {
+     "name": "Frosted Glass",
+     "value": "1502020000",
+     "count": 2546
+    },
+    {
+     "name": "Special Glass",
+     "value": "1502060000",
+     "count": 1839
+    },
+    {
+     "name": "Other Building Glass",
+     "value": "1502110000",
+     "count": 1283
+    }
+   ]
+  },
+  {
+   "key": "industryProperty",
+   "subject": "Appearance",
+   "options": [
+    {
+     "name": "Flat Tempered",
+     "value": "1502080000_37326714_13491703",
+     "count": 1688
+    },
+    {
+     "name": "Bent Tempered",
+     "value": "1502080000_37326715_13491703",
+     "count": 402
+    }
+   ]
+  },
+  {
+   "key": "industryProperty",
+   "subject": "Shape",
+   "options": [
+    {
+     "name": "Flat",
+     "value": "1502080000_681124_244964",
+     "count": 1694
+    },
+    {
+     "name": "Curve",
+     "value": "1502080000_681114_244964",
+     "count": 377
+    }
+   ]
+  },
+  {
+   "key": "industryProperty",
+   "subject": "Steel Degree",
+   "options": [
+    {
+     "name": "Tempered Glass",
+     "value": "1502080000_37326238_13491247",
+     "count": 1920
+    },
+    {
+     "name": "Super-Tempered Glass",
+     "value": "1502080000_37326240_13491247",
+     "count": 188
+    },
+    {
+     "name": "Half-Tempered Glass",
+     "value": "1502080000_37326239_13491247",
+     "count": 48
+    }
+   ]
+  },
+  {
+   "key": "industryProperty",
+   "subject": "Technics",
+   "options": [
+    {
+     "name": "Chemical Tempered",
+     "value": "1502080000_37326242_13491248",
+     "count": 1444
+    },
+    {
+     "name": "Physically Tempered",
+     "value": "1502080000_37326241_13491248",
+     "count": 676
+    }
+   ]
+  },
+  {
+   "key": "industryProperty",
+   "subject": "Usage",
+   "options": [
+    {
+     "name": "Home Appliance",
+     "value": "1502080000_681154_244974",
+     "count": 1920
+    },
+    {
+     "name": "Furniture",
+     "value": "1502080000_681144_244974",
+     "count": 1457
+    },
+    {
+     "name": "Electronics & Instruments",
+     "value": "1502080000_681164_244974",
+     "count": 1426
+    },
+    {
+     "name": "Building",
+     "value": "1502080000_681134_244974",
+     "count": 1280
+    },
+    {
+     "name": "Daily Products",
+     "value": "1502080000_681184_244974",
+     "count": 1164
+    },
+    {
+     "name": "Auto Manufacturing",
+     "value": "1502080000_681174_244974",
+     "count": 432
+    },
+    {
+     "name": "Military",
+     "value": "1502080000_681194_244974",
+     "count": 12
+    }
+   ]
+  },
+  {
+   "key": "comBusinessType",
+   "subject": "Company Type",
+   "options": [
+    {
+     "name": "Trading Company",
+     "value": "2",
+     "count": 851122
+    },
+    {
+     "name": "Manufacturer/Factory",
+     "value": "1",
+     "count": 471283
+    },
+    {
+     "name": "Group Corporation",
+     "value": "4",
+     "count": 1745
+    },
+    {
+     "name": "Other",
+     "value": "8",
+     "count": 0
+    }
+   ]
+  },
+  {
+   "key": "province",
+   "subject": "Company Location",
+   "options": [
+    {
+     "name": "Guangdong",
+     "value": "Guangdong",
+     "count": 250409
+    },
+    {
+     "name": "Shandong",
+     "value": "Shandong",
+     "count": 230408
+    },
+    {
+     "name": "Jiangsu",
+     "value": "Jiangsu",
+     "count": 104507
+    },
+    {
+     "name": "Zhejiang",
+     "value": "Zhejiang",
+     "count": 74347
+    },
+    {
+     "name": "Anhui",
+     "value": "Anhui",
+     "count": 39491
+    },
+    {
+     "name": "Hebei",
+     "value": "Hebei",
+     "count": 33889
+    },
+    {
+     "name": "Henan",
+     "value": "Henan",
+     "count": 32821
+    },
+    {
+     "name": "Shanghai",
+     "value": "Shanghai",
+     "count": 25362
+    },
+    {
+     "name": "Fujian",
+     "value": "Fujian",
+     "count": 24509
+    },
+    {
+     "name": "Jiangxi",
+     "value": "Jiangxi",
+     "count": 14665
+    },
+    {
+     "name": "Tianjin",
+     "value": "Tianjin",
+     "count": 12955
+    },
+    {
+     "name": "Hubei",
+     "value": "Hubei",
+     "count": 12457
+    },
+    {
+     "name": "Sichuan",
+     "value": "Sichuan",
+     "count": 10558
+    },
+    {
+     "name": "Beijing",
+     "value": "Beijing",
+     "count": 9763
+    },
+    {
+     "name": "Chongqing",
+     "value": "Chongqing",
+     "count": 7137
+    },
+    {
+     "name": "Liaoning",
+     "value": "Liaoning",
+     "count": 4040
+    },
+    {
+     "name": "Hunan",
+     "value": "Hunan",
+     "count": 3626
+    },
+    {
+     "name": "Shanxi",
+     "value": "Shanxi",
+     "count": 1254
+    },
+    {
+     "name": "Jilin",
+     "value": "Jilin",
+     "count": 1132
+    },
+    {
+     "name": "Guangxi",
+     "value": "Guangxi",
+     "count": 1003
+    },
+    {
+     "name": "Guizhou",
+     "value": "Guizhou",
+     "count": 762
+    },
+    {
+     "name": "Yunnan",
+     "value": "Yunnan",
+     "count": 758
+    },
+    {
+     "name": "Shaanxi",
+     "value": "Shaanxi",
+     "count": 661
+    },
+    {
+     "name": "Hongkong S.A.R.",
+     "value": "Hongkong",
+     "count": 268
+    },
+    {
+     "name": "Taiwan, China",
+     "value": "Taiwan",
+     "count": 268
+    },
+    {
+     "name": "Inner Mongolia",
+     "value": "InnerMongolia",
+     "count": 227
+    },
+    {
+     "name": "Hainan",
+     "value": "Hainan",
+     "count": 215
+    },
+    {
+     "name": "Gansu",
+     "value": "Gansu",
+     "count": 169
+    },
+    {
+     "name": "Ningxia",
+     "value": "Ningxia",
+     "count": 23
+    },
+    {
+     "name": "Heilongjiang",
+     "value": "Heilongjiang",
+     "count": 6
+    }
+   ]
+  },
+  {
+   "key": "tradeFacet",
+   "subject": "Product Types",
+   "options": [
+    {
+     "name": "SecuredTrading",
+     "value": "securedTrading",
+     "count": 291204
+    },
+    {
+     "name": "Buy Sample",
+     "value": "buySample",
+     "count": 0
+    }
+   ]
+  }
+ ],
+ "notes": [
+  "supplier refine models: catCode, comBusinessType, managementCertification, memberLevel, province, annualRevenue, rdCapacity",
+  "no employee-count facet on mobile supplier API (SEO page NE_ only)",
+  "memberLevel: 50=Diamond, 30=Gold, \"0,1,3\"=Audited Supplier",
+  "comBusinessType: 1=Manufacturer/Factory, 2=Trading Company, 4=Group Corporation, 8=Other",
+  "rdCapacity: 4=OEM, 5=ODM, 01=Quick Response, 02=Fast Delivery, 03=Small-amount payment",
+  "product industryProperty values are composite ids (catCode_propId_parentId)"
+ ]
+}

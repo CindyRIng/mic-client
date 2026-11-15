@@ -1,0 +1,571 @@
+[
+ {
+  "value": "catCode",
+  "subject": "Categories",
+  "childs": [
+   {
+    "name": "Manufacturing & Processing Machinery",
+    "value": "1900000000",
+    "count": 4960
+   },
+   {
+    "name": "Industrial Equipment & Components",
+    "value": "3400000000",
+    "count": 4521
+   },
+   {
+    "name": "Construction & Decoration",
+    "value": "1500000000",
+    "count": 3537
+   },
+   {
+    "name": "Tools & Hardware",
+    "value": "3200000000",
+    "count": 3149
+   },
+   {
+    "name": "Light Industry & Daily Use",
+    "value": "1800000000",
+    "count": 2619
+   },
+   {
+    "name": "Electrical & Electronics",
+    "value": "1600000000",
+    "count": 2549
+   },
+   {
+    "name": "Packaging & Printing",
+    "value": "3600000000",
+    "count": 2209
+   },
+   {
+    "name": "Auto, Motorcycle Parts & Accessories",
+    "value": "2900000000",
+    "count": 1772
+   },
+   {
+    "name": "Chemicals",
+    "value": "1300000000",
+    "count": 1527
+   },
+   {
+    "name": "Consumer Electronics",
+    "value": "1400000000",
+    "count": 1073
+   }
+  ],
+  "categoriesRefine": true
+ },
+ {
+  "value": "comBusinessType",
+  "subject": "Company Type",
+  "childs": [
+   {
+    "name": "Trading Company",
+    "value": "2",
+    "count": 11575
+   },
+   {
+    "name": "Manufacturer/Factory",
+    "value": "1",
+    "count": 6922
+   },
+   {
+    "name": "Group Corporation",
+    "value": "4",
+    "count": 66
+   },
+   {
+    "name": "Other",
+    "value": "8",
+    "count": 0
+   }
+  ],
+  "categoriesRefine": false
+ },
+ {
+  "value": "managementCertification",
+  "subject": "Management Certification",
+  "childs": [
+   {
+    "name": "ISO9001:2015",
+    "value": "-5",
+    "count": 1671
+   },
+   {
+    "name": "ISO 14001",
+    "value": "6",
+    "count": 1086
+   },
+   {
+    "name": "ISO 9001",
+    "value": "10",
+    "count": 722
+   },
+   {
+    "name": "Others",
+    "value": "-4",
+    "count": 592
+   },
+   {
+    "name": "ISO 9000",
+    "value": "9",
+    "count": 221
+   },
+   {
+    "name": "BSCI",
+    "value": "20",
+    "count": 163
+   },
+   {
+    "name": "ISO 14000",
+    "value": "5",
+    "count": 144
+   },
+   {
+    "name": "ISO 20000",
+    "value": "8",
+    "count": 117
+   },
+   {
+    "name": "GMP",
+    "value": "26",
+    "count": 108
+   },
+   {
+    "name": "OHSAS/ OHSMS 18001",
+    "value": "11",
+    "count": 91
+   },
+   {
+    "name": "IATF16949",
+    "value": "31",
+    "count": 86
+   },
+   {
+    "name": "QC 080000",
+    "value": "12",
+    "count": 85
+   },
+   {
+    "name": "ISO 14064",
+    "value": "7",
+    "count": 72
+   },
+   {
+    "name": "FSC",
+    "value": "40",
+    "count": 68
+   },
+   {
+    "name": "HSE",
+    "value": "4",
+    "count": 64
+   },
+   {
+    "name": "ISO 50001",
+    "value": "37",
+    "count": 62
+   },
+   {
+    "name": "ISO 13485",
+    "value": "28",
+    "count": 55
+   },
+   {
+    "name": "SEDEX",
+    "value": "21",
+    "count": 37
+   },
+   {
+    "name": "ISO 22000",
+    "value": "35",
+    "count": 34
+   },
+   {
+    "name": "HACCP",
+    "value": "27",
+    "count": 34
+   },
+   {
+    "name": "BRC",
+    "value": "19",
+    "count": 33
+   },
+   {
+    "name": "ISO 17025",
+    "value": "42",
+    "count": 28
+   },
+   {
+    "name": "IFS",
+    "value": "34",
+    "count": 27
+   },
+   {
+    "name": "ISO 10012",
+    "value": "41",
+    "count": 27
+   },
+   {
+    "name": "ANSI/ESD",
+    "value": "1",
+    "count": 26
+   },
+   {
+    "name": "ASME",
+    "value": "23",
+    "count": 24
+   },
+   {
+    "name": "SA 8000",
+    "value": "13",
+    "count": 24
+   },
+   {
+    "name": "EICC",
+    "value": "3",
+    "count": 23
+   },
+   {
+    "name": "QHSE",
+    "value": "17",
+    "count": 21
+   },
+   {
+    "name": "WRAP",
+    "value": "22",
+    "count": 20
+   },
+   {
+    "name": "QSR",
+    "value": "29",
+    "count": 20
+   },
+   {
+    "name": "ISO 29001",
+    "value": "36",
+    "count": 20
+   },
+   {
+    "name": "BS 25999-2",
+    "value": "2",
+    "count": 20
+   },
+   {
+    "name": "SHE Audits",
+    "value": "18",
+    "count": 19
+   },
+   {
+    "name": "GAP",
+    "value": "33",
+    "count": 18
+   },
+   {
+    "name": "AIB",
+    "value": "32",
+    "count": 16
+   },
+   {
+    "name": "LEED",
+    "value": "16",
+    "count": 16
+   },
+   {
+    "name": "PAS 28000",
+    "value": "30",
+    "count": 15
+   },
+   {
+    "name": "BREEAM",
+    "value": "14",
+    "count": 15
+   },
+   {
+    "name": "HQE",
+    "value": "15",
+    "count": 14
+   },
+   {
+    "name": "ISO9001:2008",
+    "value": "-1",
+    "count": 5
+   },
+   {
+    "name": "ISO45001:2016",
+    "value": "-7",
+    "count": 2
+   },
+   {
+    "name": "ISO14001:2004",
+    "value": "-2",
+    "count": 1
+   },
+   {
+    "name": "ISO14001:2015",
+    "value": "-6",
+    "count": 1
+   }
+  ],
+  "categoriesRefine": false
+ },
+ {
+  "value": "memberLevel",
+  "subject": "Member Type",
+  "childs": [
+   {
+    "name": "Diamond Member",
+    "value": "50",
+    "count": 0
+   },
+   {
+    "name": "Gold Member",
+    "value": "30",
+    "count": 0
+   },
+   {
+    "name": "Audited Supplier",
+    "value": "0,1,3",
+    "count": 0
+   }
+  ],
+  "categoriesRefine": false
+ },
+ {
+  "value": "province",
+  "subject": "Company Location",
+  "childs": [
+   {
+    "name": "Guangdong",
+    "value": "Guangdong",
+    "count": 3373
+   },
+   {
+    "name": "Shandong",
+    "value": "Shandong",
+    "count": 1917
+   },
+   {
+    "name": "Zhejiang",
+    "value": "Zhejiang",
+    "count": 1867
+   },
+   {
+    "name": "Jiangsu",
+    "value": "Jiangsu",
+    "count": 1410
+   },
+   {
+    "name": "Hebei",
+    "value": "Hebei",
+    "count": 668
+   },
+   {
+    "name": "Fujian",
+    "value": "Fujian",
+    "count": 560
+   },
+   {
+    "name": "Henan",
+    "value": "Henan",
+    "count": 560
+   },
+   {
+    "name": "Shanghai",
+    "value": "Shanghai",
+    "count": 543
+   },
+   {
+    "name": "Anhui",
+    "value": "Anhui",
+    "count": 320
+   },
+   {
+    "name": "Tianjin",
+    "value": "Tianjin",
+    "count": 169
+   },
+   {
+    "name": "Hunan",
+    "value": "Hunan",
+    "count": 160
+   },
+   {
+    "name": "Jiangxi",
+    "value": "Jiangxi",
+    "count": 146
+   },
+   {
+    "name": "Hubei",
+    "value": "Hubei",
+    "count": 140
+   },
+   {
+    "name": "Beijing",
+    "value": "Beijing",
+    "count": 127
+   },
+   {
+    "name": "Liaoning",
+    "value": "Liaoning",
+    "count": 104
+   },
+   {
+    "name": "Sichuan",
+    "value": "Sichuan",
+    "count": 98
+   },
+   {
+    "name": "Chongqing",
+    "value": "Chongqing",
+    "count": 84
+   },
+   {
+    "name": "Shaanxi",
+    "value": "Shaanxi",
+    "count": 61
+   },
+   {
+    "name": "Guangxi",
+    "value": "Guangxi",
+    "count": 31
+   },
+   {
+    "name": "Shanxi",
+    "value": "Shanxi",
+    "count": 29
+   },
+   {
+    "name": "Hainan",
+    "value": "Hainan",
+    "count": 18
+   },
+   {
+    "name": "Yunnan",
+    "value": "Yunnan",
+    "count": 11
+   },
+   {
+    "name": "Gansu",
+    "value": "Gansu",
+    "count": 9
+   },
+   {
+    "name": "Hongkong S.A.R.",
+    "value": "Hongkong",
+    "count": 9
+   },
+   {
+    "name": "Inner Mongolia",
+    "value": "InnerMongolia",
+    "count": 7
+   },
+   {
+    "name": "Jilin",
+    "value": "Jilin",
+    "count": 6
+   },
+   {
+    "name": "Guizhou",
+    "value": "Guizhou",
+    "count": 5
+   },
+   {
+    "name": "Heilongjiang",
+    "value": "Heilongjiang",
+    "count": 4
+   },
+   {
+    "name": "Xinjiang",
+    "value": "Xinjiang",
+    "count": 2
+   },
+   {
+    "name": "Ningxia",
+    "value": "Ningxia",
+    "count": 2
+   },
+   {
+    "name": "Taiwan, China",
+    "value": "Taiwan",
+    "count": 2
+   }
+  ],
+  "categoriesRefine": false
+ },
+ {
+  "value": "rdCapacity",
+  "subject": "Trade Capacity",
+  "childs": [
+   {
+    "name": "ODM",
+    "value": "5",
+    "count": 9955
+   },
+   {
+    "name": "OEM",
+    "value": "4",
+    "count": 9335
+   },
+   {
+    "name": "Quick Response",
+    "value": "01",
+    "count": 4801
+   },
+   {
+    "name": "Fast Delivery",
+    "value": "02",
+    "count": 7728
+   },
+   {
+    "name": "Small-amount payment",
+    "value": "03",
+    "count": 6628
+   }
+  ],
+  "categoriesRefine": false
+ },
+ {
+  "value": "annualRevenue",
+  "subject": "Annual Revenue",
+  "childs": [
+   {
+    "name": "<1 Million USD ",
+    "value": "1",
+    "count": 8158
+   },
+   {
+    "name": "2.5 ~ 5 Million USD ",
+    "value": "3",
+    "count": 125
+   },
+   {
+    "name": "10 ~ 50 Million USD ",
+    "value": "5",
+    "count": 116
+   },
+   {
+    "name": "5 ~ 10 Million USD ",
+    "value": "4",
+    "count": 112
+   },
+   {
+    "name": "1 ~ 2.5 Million USD ",
+    "value": "2",
+    "count": 106
+   },
+   {
+    "name": ">100 Million USD ",
+    "value": "7",
+    "count": 26
+   },
+   {
+    "name": "50 ~ 100 Million USD ",
+    "value": "6",
+    "count": 20
+   }
+  ],
+  "categoriesRefine": false
+ }
+]

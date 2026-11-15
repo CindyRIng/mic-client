@@ -1,0 +1,41 @@
+{
+ "purpose": "end-to-end validation: list JSON item -> mobile company info ssrData",
+ "list_item": {
+  "name": "HF GLASS PRODUCTS CO., LIMITED",
+  "mainUserAccount": "hfartglass",
+  "city": "Cangzhou",
+  "province": "Hebei",
+  "csLevel": 50,
+  "auditType": 1,
+  "companySymbolStars": 5
+ },
+ "detail_ssrData": {
+  "comId": "WBvJfcSOAgao",
+  "comName": "HF GLASS PRODUCTS CO., LIMITED",
+  "memberLevel": "diamond",
+  "memberSince": "2016",
+  "sgsMember": true,
+  "establishment": "",
+  "businessTypes": [],
+  "mainProducts": [
+   "Glass Smoking Pipes",
+   " Glass Pipes",
+   " Glass Water Pipes",
+   " Glass Ash Catchers",
+   " Hand Pipes",
+   " Smoking Glass Pipes"
+  ],
+  "reviewStatistics": {
+   "rating": "4.6/5",
+   "reviewListUrl": "https://m.made-in-china.com/user/review/company-hfartglass/list/"
+  },
+  "companySymbol": {
+   "comId": 737716551,
+   "stars": "5",
+   "intStars": 5
+  },
+  "rd": []
+ },
+ "conclusion": "csLevel=50 <-> memberLevel=diamond 一致；auditType=1 <-> sgsMember=true 一致；memberSince 只在详情有",
+ "captcha_note": "同一批 e2e 验证中 company-biyoute/info.html 返回 Focus Captcha（约 13% 公司页请求触发验证页）"
+}

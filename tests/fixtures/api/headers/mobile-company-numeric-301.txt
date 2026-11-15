@@ -1,0 +1,11 @@
+HTTP/2 301 
+origin-agent-cluster: ?0
+set-cookie: JSESSIONID=79CF354A1AD5272E69814EE71A9404FB; Path=/; HttpOnly
+location: /company-xingchenglass/
+server-timing: app;dur=5
+timing-allow-origin: *
+server: TencentEdgeOne
+date: Sun, 15 Nov 2026 14:45:26 GMT
+eo-log-uuid: 4199079464615912942
+eo-cache-status: MISS
+

@@ -10,9 +10,9 @@
 | 阶段 | 目标 | 状态 | 验收 |
 |---|---|---|---|
 | **M0 侦察 + 文档** | 摸清上游链路/风控/会员/匿名字段；产出完整文档基线 | ✅ 完成（2026-11-15，评审通过） | [docs/review-report.md](review-report.md) 通过（docs/README §4 清单） |
-| **M1 搜索主链路** | JSON 搜索 + 列表 + 地区模式 + 城市过滤 + SQLite 缓存 + CLI `search` | ⬜ 未开始 | 三种搜索模式可用；缓存命中；golden 测试通过 |
-| **M2 详情与会员** | 公司详情（ssrData+正文+增强 JSON）+ 会员识别 + 缓存 + CLI `company` | ⬜ 未开始 | 详情字段齐全；tier/audited/evidence 正确；unknown 不乱填 |
-| **M3 三入口** | REST + MCP + `mic auth`/`doctor` | ⬜ 未开始 | REST 端点 + 4 个 MCP tools + 人工兜底可用 |
+| **M1 搜索主链路** | JSON 搜索 + 列表 + 地区模式 + 城市过滤 + SQLite 缓存 + CLI `search` | ✅ 完成（2026-11-15） | 三种搜索模式可用；缓存命中；live smoke 通过 |
+| **M2 详情与会员** | 公司详情（ssrData+正文+增强 JSON）+ 会员识别 + 缓存 + CLI `company` | 🟡 进行中 | 详情字段齐全；tier/audited/evidence 正确；unknown 不乱填 |
+| **M3 三入口** | REST + MCP + `mic auth`/`doctor` | 🟡 进行中 | REST 端点 + 4 个 MCP tools + 人工兜底可用 |
 | **M4 收尾** | 测试补齐、文档同步、发布（README/示例/回归） | ⬜ 未开始 | DoD 全绿；文档与实现一致 |
 
 > 规则（ADR-0006）：**每个阶段先更新对应文档/接口契约，再改代码**；行为变更需补 ADR。
