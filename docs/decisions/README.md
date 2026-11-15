@@ -14,6 +14,7 @@
 | [0005](0005-membership-tier-enum.md) | 会员等级枚举与 KA/SKA 边界 | Accepted | 2026-11-15 |
 | [0006](0006-docs-first-workflow.md) | 文档先行（docs-first）工作流 | Accepted | 2026-11-15 |
 | [0007](0007-local-runtime-and-secrets.md) | 本地单进程运行时、数据/profile 目录与密钥边界 | Accepted | 2026-11-15 |
+| [0008](0008-rest-self-describing-docs.md) | REST 自描述文档端点（`/openapi.json` + `/docs`） | Accepted | 2026-11-16 |
 
 ## 模板
 

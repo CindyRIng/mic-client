@@ -14,6 +14,8 @@ import { AppError, isAppError, toAppError, type ErrorCode, type Meta } from '../
 import { newRequestId } from '../../core/logger.js';
 import { sessionState } from '../../core/session/browser.js';
 import { VERSION } from '../../version.js';
+import { buildOpenApiDocument } from './openapi.js';
+import { renderDocsHtml } from './docs.js';
 import {
   API_VERSION,
   ALL_INCLUDES,
@@ -352,6 +354,23 @@ export function buildRestServer(ctx: AppContext, options: RestServerOptions = {}
       void reply.header('Retry-After', String(Number.isFinite(retryAfter) && retryAfter >= 1 ? Math.ceil(retryAfter) : 2));
     }
     void reply.code(error.httpStatus).send(makeErrorEnvelope(error, requestId));
+  });
+
+  // -------------------------------------------------------------------------
+  // Auxiliary: self-describing docs (docs/03 §2.3, ADR-0008) — not business API
+  // -------------------------------------------------------------------------
+  app.get('/openapi.json', async (request: FastifyRequest, reply: FastifyReply) => {
+    void reply.header('X-Request-Id', requestIdOf(request));
+    void reply.header('Cache-Control', 'no-store');
+    void reply.type('application/json; charset=utf-8');
+    return buildOpenApiDocument();
+  });
+
+  app.get('/docs', async (request: FastifyRequest, reply: FastifyReply) => {
+    void reply.header('X-Request-Id', requestIdOf(request));
+    void reply.header('Cache-Control', 'no-store');
+    void reply.type('text/html; charset=utf-8');
+    return renderDocsHtml('/openapi.json');
   });
 
   // -------------------------------------------------------------------------

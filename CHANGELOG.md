@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
+## [1.0.2] - 2026-11-16
+
+### Added
+- **Self-describing REST docs** (ADR-0008, docs/03 §2.3):
+  - `GET /openapi.json` — OpenAPI 3.1 document for the 8 business endpoints (envelopes, schemas,
+    parameter enums, error responses), generated in-process from the adapter definitions;
+  - `GET /docs` — self-contained HTML documentation page (no CDN/fonts/external scripts, offline-friendly):
+    endpoint list, parameter/response tables, generated request examples, filter box, and browser **Try it**
+    (relative fetch against the running loopback server);
+  - auxiliary endpoints only: no envelope, read-only, no upstream calls, loopback + Host guard applies.
+- Docs screenshot in README (`assets/rest-docs.png`), ADR index entry, operations manual notes.
+
+### Changed
+- Test suite 244 → 248 (`tests/adapters/openapi.test.ts`: 8-path contract, `$ref` resolution,
+  self-contained HTML, Host guard).
+
 ## [1.0.1] - 2026-11-16
 
 ### Added

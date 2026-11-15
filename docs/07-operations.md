@@ -72,6 +72,9 @@ mic search --keyword glass --province Hebei --json
 mic serve --host 127.0.0.1 --port 8787
 mic mcp
 
+# 启动 serve 后，浏览器打开自描述 API 文档：
+# http://127.0.0.1:8787/docs   （OpenAPI: http://127.0.0.1:8787/openapi.json）
+
 # 等价的手工启动方式（避免全局安装时）
 ~/cloak-env/bin/cloak-run node dist/cli.js search --keyword glass --province Hebei --json
 

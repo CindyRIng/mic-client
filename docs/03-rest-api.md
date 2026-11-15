@@ -338,6 +338,27 @@ fetch upstream_first..upstream_last（含首尾），拼接后跳过 ((page-1)*p
 
 ---
 
+### 2.3 自描述文档端点（辅助，非业务 API 契约）
+
+> ADR：[0008](decisions/0008-rest-self-describing-docs.md)。这两个端点**不计入** 8 个业务端点，不改变其 envelope/错误码契约；仅用于本机开发调试。
+
+| 方法 | 路径 | Content-Type | 说明 |
+|---|---|---|---|
+| GET | `/openapi.json` | `application/json; charset=utf-8` | OpenAPI 3.1 文档；路径/参数/Schema 与本文 §3–§11 对齐；`info.version` = 包版本 |
+| GET | `/docs` | `text/html; charset=utf-8` | **自包含** HTML 文档页（无外部 CDN/JS/字体），前端 `fetch('/openapi.json')` 渲染；支持参数查看与浏览器内 Try it |
+
+规则：
+
+- 两者均受 §1.2 回环 + Host 校验约束；**无鉴权**、只读、**不访问上游**、不写缓存、不产生副作用；
+- 不返回统一 envelope；`/openapi.json` 为原始标准文档，`/docs` 为原始 HTML；
+- 版本随包版本（不单独版本化）；若未来新增写操作/鉴权，需先更新本文与 ADR-0008（或另立 ADR）；
+- `/docs` 页脚链接到本文（GitHub）与 `/openapi.json`，便于导入 Postman/Insomnia/代码生成器。
+
+```bash
+curl -s http://127.0.0.1:8787/openapi.json | jq '.paths | keys'
+curl -s http://127.0.0.1:8787/docs | head
+```
+
 ## 3. `GET /health`
 
 - 用途：存活检查（默认）/ 深度健康检查（`deep=true`）；供运维、`mic doctor`、MCP 客户端探活使用（FR-14、NFR-03）。

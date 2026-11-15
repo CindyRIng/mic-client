@@ -14,7 +14,7 @@
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
   <img alt="Node" src="https://img.shields.io/badge/node-%3E%3D22-339933">
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5.x-3178c6">
-  <img alt="Tests" src="https://img.shields.io/badge/tests-244%20passed-brightgreen">
+  <img alt="Tests" src="https://img.shields.io/badge/tests-248%20passed-brightgreen">
   <img alt="MCP" src="https://img.shields.io/badge/MCP-stdio-7c3aed">
   <img alt="REST" src="https://img.shields.io/badge/REST-127.0.0.1%3A8787-0ea5e9">
 </p>
@@ -73,7 +73,8 @@ Made-in-China（made-in-china.com，中国制造网）是外贸供应商调研�
 | 🗄️ 本地缓存 | SQLite（WAL）+ TTL + `stale-while-error` 回退 + single-flight |
 | 🖥️ 三入口 | CLI（10 个子命令）、REST（8 个端点）、MCP（4 tools + 2 resources），共用同一 core |
 | 🛡️ 风控处理 | 1.5–2.5s 限速抖动、302 重试、Focus Captcha 自动通过、`mic auth` 人工兜底 |
-| 🧪 可测试 | 244 个自动化测试 + golden fixtures + `live-smoke` / `mcp-smoke` 脚本 |
+| 📚 自描述文档 | `mic serve` 后浏览器打开 `/docs`：端点/参数/Schema + Try it；`/openapi.json` 可导入 Postman/代码生成器（无外部 CDN，[ADR-0008](docs/decisions/0008-rest-self-describing-docs.md)） |
+| 🧪 可测试 | 248 个自动化测试 + golden fixtures + `live-smoke` / `mcp-smoke` 脚本 |
 
 ## 架构
 
@@ -156,7 +157,7 @@ git clone https://github.com/CindyRIng/mic-client.git
 cd mic-client
 npm ci            # 或 npm install
 npm run build     # tsc → dist/（自动给 dist/cli.js 加执行位）
-npm test          # 244 tests
+npm test          # 248 tests
 npm link          # 安装 `mic` 命令（薄启动脚本 bin/mic）
 mic version       # 验证命令可用
 ```
@@ -187,7 +188,7 @@ mic version
 
 ```bash
 mic version
-# mic-client 1.0.1
+# mic-client 1.0.2
 # node v22.23.2
 # sqlite schema v1
 # upstream contract checked 2026-11-15
@@ -281,6 +282,19 @@ mic serve --host 127.0.0.1 --port 8787      # 前台启动，仅回环监听
 
 统一响应：`{ ok, data, meta: { request_id, cached, stale, fetched_at, source, warnings } }`；
 错误：标准 HTTP 码 + `{ ok:false, error:{code,message,details}, meta }`（11 个 canonical 错误码，见 [docs/03](docs/03-rest-api.md)）。
+
+### 浏览器文档（自描述，v1.0.2+）
+
+```bash
+mic serve
+# 打开 http://127.0.0.1:8787/docs      ← 自包含 HTML（无外部 CDN），支持“Try it”直接调用
+# 打开 http://127.0.0.1:8787/openapi.json ← OpenAPI 3.1，可导入 Postman/Insomnia/代码生成器
+```
+
+![REST API Docs](assets/rest-docs.png)
+
+> `/docs` 与 `/openapi.json` 是**辅助端点**（不计入 8 个业务 API、不返回 envelope、只读、无副作用），
+> 契约见 [docs/03 §2.3](docs/03-rest-api.md) 与 [ADR-0008](docs/decisions/0008-rest-self-describing-docs.md)。
 
 ### 示例
 
@@ -446,7 +460,7 @@ mic-client/
 ```bash
 npm run typecheck     # tsc --noEmit
 npm run build         # 编译到 dist/
-npm test              # 244 tests（vitest）
+npm test              # 248 tests（vitest）
 npx vitest run tests/core tests/company tests/adapters
 ```
 
@@ -464,7 +478,7 @@ npx vitest run tests/core tests/company tests/adapters
 
 ## 路线图与已知限制
 
-**状态：M0–M4 已完成，v1.0.1。** 详见 [docs/08-roadmap.md](docs/08-roadmap.md)。
+**状态：M0–M4 已完成，v1.0.2。** 详见 [docs/08-roadmap.md](docs/08-roadmap.md)。
 
 已知限制（有意为之/待验证）：
 
