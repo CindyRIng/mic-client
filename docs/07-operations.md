@@ -63,8 +63,16 @@
 
 > 以下命令为**实现后可用**（M1+）。统一用 cloak-run 启动以保证浏览器兜底可用。
 
+**安装后的 `mic` 命令**（推荐）：`npm run build && npm link` 会安装薄启动脚本 `bin/mic`，
+它自动通过 `~/cloak-env/bin/cloak-run` 执行；cloak-run 缺失时打印 warning 并退化为 `node`。
+若 `mic` 不在 PATH，参考 04 §2.1 或把 `~/.npm-global/bin` 加入 PATH。
+
 ```bash
-# 一次性查询
+mic search --keyword glass --province Hebei --json
+mic serve --host 127.0.0.1 --port 8787
+mic mcp
+
+# 等价的手工启动方式（避免全局安装时）
 ~/cloak-env/bin/cloak-run node dist/cli.js search --keyword glass --province Hebei --json
 
 # REST 服务（前台）

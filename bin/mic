@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Thin launcher for the mic client (docs/04 §2.1):
+# resolve the real script path (following symlinks), then run through cloak-run
+# so the browser fallback (Focus Captcha / mic auth) works on FHS-less systems.
+set -euo pipefail
+
+SOURCE="${BASH_SOURCE[0]}"
+while [ -L "$SOURCE" ]; do
+  DIR="$(cd -P "$(dirname "$SOURCE")" >/dev/null 2>&1 && pwd)"
+  SOURCE="$(readlink "$SOURCE")"
+  case "$SOURCE" in
+    /*) ;;
+    *) SOURCE="$DIR/$SOURCE" ;;
+  esac
+done
+ROOT="$(cd -P "$(dirname "$SOURCE")/.." >/dev/null 2>&1 && pwd)"
+CLI="$ROOT/dist/cli.js"
+
+if [ ! -f "$CLI" ]; then
+  echo "mic: $CLI not found; run 'npm run build' in $ROOT first" >&2
+  exit 1
+fi
+
+CLOAK="${CLOAK_RUN:-$HOME/cloak-env/bin/cloak-run}"
+if [ -x "$CLOAK" ]; then
+  exec "$CLOAK" node "$CLI" "$@"
+fi
+
+echo "warning: cloak-run not found at $CLOAK; running with plain node (captcha/browser fallback unavailable)" >&2
+exec node "$CLI" "$@"

@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 import { VERSION } from '../../version.js';
-import { registerGlobalOptions, setOutputMode, type GlobalOptions } from './output.js';
+import { registerGlobalOptions, setOutputMode, validateGlobalOptions, type GlobalOptions } from './output.js';
 import { registerSearchCommand } from './commands/search.js';
 import { registerRegionsCommand } from './commands/regions.js';
 import { registerCacheCommand } from './commands/cache.js';
@@ -22,6 +22,7 @@ export function buildCli(): Command {
   program.hook('preAction', (_thisCommand, actionCommand) => {
     const opts = (actionCommand.optsWithGlobals?.() ?? program.opts()) as GlobalOptions;
     setOutputMode(opts);
+    validateGlobalOptions(opts, actionCommand.name());
   });
   registerSearchCommand(program);
   registerCompanyCommand(program);

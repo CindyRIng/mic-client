@@ -1,3 +1,5 @@
+import os from 'node:os';
+import path from 'node:path';
 import type { Command } from 'commander';
 import type { AppContext } from '../../core/container.js';
 export type { AppContext } from '../../core/container.js';
@@ -28,6 +30,7 @@ export interface GlobalOptions {
   verbose?: boolean;
   quiet?: boolean;
   profile?: string;
+  no_color?: boolean;
 }
 
 export const EXIT_CODES: Record<ErrorCode | 'OK', number> = {
@@ -55,7 +58,76 @@ export function registerGlobalOptions(program: Command): void {
     .option('--refresh', 'skip reading cache (force upstream fetch)')
     .option('--verbose', 'debug logging')
     .option('--quiet', 'only errors')
-    .option('--profile <dir>', 'browser profile directory');
+    .option('--profile <name|path>', 'browser profile name (under ~/.mic-client/profiles) or directory')
+    .option('--no-color', 'disable ANSI colors (default: auto)');
+}
+
+/** Parse `500ms` / `15s` / `2m` / `1h` (bare number = ms) per docs/04 §2.5.5. */
+export function parseDurationToMs(value: string, param = 'timeout'): number {
+  const m = /^(\d+(?:\.\d+)?)(ms|s|m|h|d)?$/i.exec(String(value).trim());
+  if (!m) {
+    fail(
+      new AppError('INVALID_PARAM', `invalid duration: ${value}`, {
+        param,
+        reason: 'INVALID_DURATION',
+        expected: 'e.g. 500ms, 15s, 2m, 1h, 7d',
+      }),
+    );
+  }
+  const n = Number(m[1]);
+  const unit = (m[2] ?? 'ms').toLowerCase();
+  const factor = unit === 'ms' ? 1 : unit === 's' ? 1_000 : unit === 'm' ? 60_000 : unit === 'h' ? 3_600_000 : 86_400_000;
+  const ms = Math.round(n * factor);
+  if (!Number.isFinite(ms) || ms < 100 || ms > 86_400_000) {
+    fail(
+      new AppError('INVALID_PARAM', `duration out of range: ${value}`, {
+        param,
+        reason: 'OUT_OF_RANGE',
+        min: '100ms',
+        max: '1d',
+      }),
+    );
+  }
+  return ms;
+}
+
+function resolveProfileDir(value: string): string {
+  if (value.startsWith('~')) return path.join(os.homedir(), value.slice(1).replace(/^\//, ''));
+  if (value.includes('/')) return value;
+  return path.join(os.homedir(), '.mic-client', 'profiles', value);
+}
+
+/** Global option rules from docs/04 §2.3. */
+export function validateGlobalOptions(opts: GlobalOptions, commandName: string): void {
+  const fmt = String(opts.format ?? 'table');
+  if (!['table', 'json', 'ndjson'].includes(fmt)) {
+    fail(
+      new AppError('INVALID_PARAM', `invalid --format: ${fmt}`, {
+        param: 'format',
+        reason: 'INVALID_ENUM',
+        allowed: ['table', 'json', 'ndjson'],
+      }),
+    );
+  }
+  if (opts.verbose && opts.quiet) {
+    fail(new AppError('INVALID_PARAM', '--verbose and --quiet cannot be used together', {
+      params: ['verbose', 'quiet'],
+      reason: 'CONFLICTING_OPTIONS',
+    }));
+  }
+  if (opts.cache === false && opts.refresh) {
+    fail(new AppError('INVALID_PARAM', '--no-cache and --refresh cannot be used together', {
+      params: ['cache', 'refresh'],
+      reason: 'CONFLICTING_OPTIONS',
+    }));
+  }
+  if (fmt === 'ndjson' && commandName !== 'search') {
+    fail(new AppError('INVALID_PARAM', '--format ndjson is only supported by `mic search`', {
+      param: 'format',
+      reason: 'UNSUPPORTED_FORMAT_COMBO',
+      command: commandName,
+    }));
+  }
 }
 
 export function contextFromOptions(opts: GlobalOptions): AppContext {
@@ -63,8 +135,8 @@ export function contextFromOptions(opts: GlobalOptions): AppContext {
   if (opts.config) process.env.MIC_CONFIG = opts.config;
   const overrides: Record<string, unknown> = {};
   if (opts.cache === false) overrides.cache = { enabled: false };
-  if (opts.timeout) overrides.upstream = { timeout_ms: Number(opts.timeout) };
-  if (opts.profile) overrides.profile_dir = opts.profile;
+  if (opts.timeout) overrides.upstream = { timeout_ms: parseDurationToMs(opts.timeout) };
+  if (opts.profile) overrides.profile_dir = resolveProfileDir(opts.profile);
   const level = opts.verbose ? 'debug' : opts.quiet ? 'error' : undefined;
   return createContext({ configOverrides: overrides, logLevel: level, jsonLogs: !opts.quiet });
 }

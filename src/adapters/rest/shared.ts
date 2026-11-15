@@ -69,73 +69,13 @@ export function fitMeta(raw: unknown, requestId: string, fallback: Partial<Meta>
 // Regions (docs/03 §5 / §11.13)
 // ---------------------------------------------------------------------------
 
-export interface RegionProvinceData {
-  name: string;
-  name_zh: string;
-  api_value: string;
-  city_count: number | null;
-  cities_complete: boolean;
-  source: 'refine' | 'seo_facet' | 'static';
-  verified_at: string;
-}
-
-export interface RegionCityData {
-  name: string;
-  name_zh: string;
-  province: string;
-  source: 'refine' | 'seo_facet' | 'static';
-  verified: boolean;
-  count_hint: number | null;
-}
-
-export interface ProvincesData {
-  count: number;
-  provinces: RegionProvinceData[];
-}
-
-export interface ProvinceDetailData {
-  province: RegionProvinceData;
-  cities: RegionCityData[];
-}
-
-function provinceToData(p: Province): RegionProvinceData {
-  return {
-    name: p.name,
-    name_zh: p.name_zh,
-    api_value: p.api_value,
-    city_count: p.cities_complete && p.cities ? p.cities.length : null,
-    cities_complete: p.cities_complete,
-    source: p.cities_complete ? 'seo_facet' : 'refine',
-    verified_at: `${UPSTREAM_CONTRACT_VERSION}T00:00:00+08:00`,
-  };
-}
-
-export function buildRegionsData(provinceInput?: string): ProvincesData | ProvinceDetailData {
-  const result: RegionsResult = listRegions(provinceInput);
-  if (provinceInput) {
-    const province = result.provinces[0];
-    if (!province) {
-      throw new AppError('INVALID_PARAM', `unknown province: ${provinceInput}`, {
-        param: 'province',
-        reason: 'UNKNOWN_PROVINCE',
-      });
-    }
-    return {
-      province: provinceToData(province),
-      cities: (province.cities ?? [])
-        .filter((c): c is NonNullable<typeof c> => Boolean(c))
-        .map((c) => ({
-          name: c.name,
-          name_zh: c.name_zh,
-          province: province.name,
-          source: 'seo_facet' as const,
-          verified: province.cities_complete,
-          count_hint: null,
-        })),
-    };
-  }
-  return { count: result.provinces.length, provinces: result.provinces.map(provinceToData) };
-}
+export {
+  buildRegionsData,
+  type ProvinceDetailData,
+  type ProvincesData,
+  type RegionCityData,
+  type RegionProvinceData,
+} from '../../core/services/static.js';
 
 // ---------------------------------------------------------------------------
 // Membership levels (docs/03 §6)

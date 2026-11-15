@@ -515,30 +515,46 @@ export class CompanyDetailApi {
       },
       referer: MOBILE_COMPANY_ORIGIN + '/',
       retries: 1,
-      onCaptcha: opts.onCaptcha,
     };
-    let res = await this.http.request(url, requestOpts);
-    if (isChallengePage(res) && opts.onCaptcha) {
-      this.logger.info('company: challenge page detected, invoking injected captcha solver', { url });
-      await opts.onCaptcha(url);
+    // Do not let HttpClient fire onCaptcha automatically: the browser-rendered HTML
+    // fallback is more reliable than re-using HTTP cookies, and we want to try it first.
+    let res: HttpResponse | null = null;
+    let blockedError: unknown = null;
+    try {
       res = await this.http.request(url, requestOpts);
+    } catch (e) {
+      if (e instanceof AppError && (e.code === 'CAPTCHA_REQUIRED' || e.code === 'CAPTCHA_SOLVE_FAILED')) {
+        blockedError = e;
+      } else {
+        throw e;
+      }
     }
-    if (isChallengePage(res) && opts.browserHtml) {
-      this.logger.info('company: HTTP path still challenged; falling back to browser-rendered HTML', { url });
-      const html = await opts.browserHtml(url);
-      const payload = parseCompanyDetailHtml(html, account, 'browser');
-      this.logger.debug('company: parsed info.html via browser fallback', {
-        account: payload.account,
-        bytes: html.length,
-      });
-      return payload;
+    const blocked = blockedError !== null || (res !== null && isChallengePage(res));
+    if (blocked) {
+      if (opts.browserHtml) {
+        this.logger.info('company: HTTP path challenged; using verified browser-rendered HTML', { url });
+        const html = await opts.browserHtml(url);
+        const payload = parseCompanyDetailHtml(html, account, 'browser');
+        this.logger.debug('company: parsed info.html via browser fallback', {
+          account: payload.account,
+          bytes: html.length,
+        });
+        return payload;
+      }
+      if (opts.onCaptcha) {
+        this.logger.info('company: challenge page detected, invoking injected captcha solver', { url });
+        await opts.onCaptcha(url);
+        res = await this.http.request(url, requestOpts);
+      } else if (blockedError) {
+        throw blockedError;
+      }
     }
-    if (isChallengePage(res)) {
+    if (!res || isChallengePage(res)) {
       throw new AppError('CAPTCHA_REQUIRED', 'company page is behind an EdgeOne/Focus challenge', {
         stage: 'captcha',
         reason: 'COMPANY_PAGE_CHALLENGE',
         src_url: url,
-        bytes: res.body.length,
+        bytes: res?.body.length ?? 0,
       });
     }
     if (res.status === 404) {
@@ -575,12 +591,37 @@ export class CompanyDetailApi {
       headers: { Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' },
       referer: MOBILE_COMPANY_ORIGIN + '/',
       retries: 0,
-      onCaptcha: opts.onCaptcha,
     };
-    let res = await this.http.request(url, requestOpts);
-    if (isChallengePage(res) && opts.onCaptcha) {
+    let res: HttpResponse | null = null;
+    let blockedError: unknown = null;
+    try {
+      res = await this.http.request(url, requestOpts);
+    } catch (e) {
+      if (e instanceof AppError && (e.code === 'CAPTCHA_REQUIRED' || e.code === 'CAPTCHA_SOLVE_FAILED')) {
+        blockedError = e;
+      } else {
+        throw e;
+      }
+    }
+    if (blockedError !== null || (res !== null && isChallengePage(res))) {
+      if (!opts.onCaptcha) {
+        if (blockedError) throw blockedError;
+        throw new AppError('CAPTCHA_REQUIRED', 'comId resolver is behind an EdgeOne/Focus challenge', {
+          stage: 'captcha',
+          reason: 'COM_ID_RESOLVER_CHALLENGE',
+          src_url: url,
+        });
+      }
       await opts.onCaptcha(url);
       res = await this.http.request(url, requestOpts);
+    }
+    if (res === null) {
+      if (blockedError) throw blockedError;
+      throw new AppError('CAPTCHA_REQUIRED', 'comId resolver is behind an EdgeOne/Focus challenge', {
+        stage: 'captcha',
+        reason: 'COM_ID_RESOLVER_CHALLENGE',
+        src_url: url,
+      });
     }
     if (isChallengePage(res)) {
       throw new AppError('CAPTCHA_REQUIRED', 'comId resolver is behind an EdgeOne/Focus challenge', {

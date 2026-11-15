@@ -52,17 +52,19 @@ export function registerSearchCommand(program: Command): void {
           include_ads: cmdOpts.excludeAds ? false : true,
         };
 
-        if (cmdOpts.pages) {
-          if (opts.format !== 'ndjson') {
-            throw new AppError('INVALID_PARAM', '--pages requires --format ndjson', {
-              param: 'pages',
-              reason: 'UNSUPPORTED_FORMAT_COMBO',
-            });
-          }
+        if (opts.format === 'ndjson') {
+          // multi-page requires --pages; single-page NDJSON is also legal (docs/04 §2.5.4)
+          const spec = cmdOpts.pages ? String(cmdOpts.pages) : String(input.page ?? '1');
           await withContext(opts, async (ctx) => {
-            await streamPages(ctx, input, String(cmdOpts.pages), Boolean(cmdOpts.includeAds));
+            await streamPages(ctx, input, spec, Boolean(cmdOpts.includeAds));
           });
           return;
+        }
+        if (cmdOpts.pages) {
+          throw new AppError('INVALID_PARAM', '--pages requires --format ndjson', {
+            param: 'pages',
+            reason: 'UNSUPPORTED_FORMAT_COMBO',
+          });
         }
 
         const payload = await withContext(opts, async (ctx) => {

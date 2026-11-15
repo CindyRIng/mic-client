@@ -155,24 +155,39 @@ sequenceDiagram
 git clone https://github.com/CindyRIng/mic-client.git
 cd mic-client
 npm ci            # 或 npm install
-npm run build     # tsc → dist/
+npm run build     # tsc → dist/（自动给 dist/cli.js 加执行位）
 npm test          # 244 tests
-npm link          # 可选：把 `mic` 链接到 PATH
+npm link          # 安装 `mic` 命令（薄启动脚本 bin/mic）
+mic version       # 验证命令可用
 ```
 
-> 浏览器兜底（验证码自动通过 / `mic auth`）需要在 cloak-env 的 FHS 里运行：
->
-> ```bash
-> ~/cloak-env/bin/cloak-run node dist/cli.js <command>
-> ```
->
-> 只使用 JSON 主链路（搜索/列表/缓存）时直接 `node dist/cli.js` 即可。
+`npm link` 会安装一个**薄启动脚本** `bin/mic`：它自动定位本项目并优先通过
+`~/cloak-env/bin/cloak-run` 执行（因此验证码自动通过 / 浏览器兜底开箱即用）。
+若 cloak-run 不存在，会打印 warning 并退化为普通 `node`（JSON 主链路仍可用）。
+
+### `mic: command not found` 排查
+
+`npm link` 的 bin 目录（默认 `~/.npm-global/bin`）需要在 `PATH` 中：
+
+```bash
+export PATH="$HOME/.npm-global/bin:$PATH"       # 写入 ~/.bashrc / ~/.zshrc
+# 或做一个已在 PATH 里的软链：
+ln -sfn ~/.npm-global/bin/mic ~/.local/bin/mic
+mic version
+```
+
+也可以不用全局命令，直接执行薄启动脚本或 cloak-run：
+
+```bash
+./bin/mic search --keyword glass --province Hebei
+~/cloak-env/bin/cloak-run node dist/cli.js company xingchenglass --json
+```
 
 ## 快速开始：CLI
 
 ```bash
 mic version
-# mic-client 1.0.0
+# mic-client 1.0.1
 # node v22.23.2
 # sqlite schema v1
 # upstream contract checked 2026-11-15
@@ -449,7 +464,7 @@ npx vitest run tests/core tests/company tests/adapters
 
 ## 路线图与已知限制
 
-**状态：M0–M4 已完成，v1.0.0。** 详见 [docs/08-roadmap.md](docs/08-roadmap.md)。
+**状态：M0–M4 已完成，v1.0.1。** 详见 [docs/08-roadmap.md](docs/08-roadmap.md)。
 
 已知限制（有意为之/待验证）：
 

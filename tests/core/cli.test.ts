@@ -94,15 +94,22 @@ describe('CLI: regions (TC-42/AC-33)', () => {
     const provinces = (out['data'] as { provinces: Array<Record<string, unknown>> }).provinces;
     expect(provinces).toHaveLength(32);
     const hebei = provinces.find((p) => p['name'] === 'Hebei')!;
-    expect((hebei['cities'] as unknown[]).length).toBe(10);
+    expect(hebei['city_count']).toBe(10);
+    expect(hebei['cities_complete']).toBe(true);
   });
 
   it('regions --province 河北 --json filters to one province (Chinese input)', async () => {
     const r = await runCli(['regions', '--province', '河北', '--json']);
     expect(r.code).toBe(0);
     const out = parseJson(r.stdout);
-    const provinces = (out['data'] as { provinces: Array<{ name: string }> }).provinces;
-    expect(provinces.map((p) => p.name)).toEqual(['Hebei']);
+    const data = out['data'] as {
+      province: { name: string; city_count: number };
+      cities: Array<{ name: string; province: string }>;
+    };
+    expect(data.province.name).toBe('Hebei');
+    expect(data.province.city_count).toBe(10);
+    expect(data.cities).toHaveLength(10);
+    expect(data.cities.every((c) => c.province === 'Hebei')).toBe(true);
   });
 
   it('unknown province → exit code 2 and INVALID_PARAM on stderr', async () => {
@@ -124,10 +131,12 @@ describe('CLI: cache (TC-39)', () => {
     expect(r.code).toBe(0);
     const out = parseJson(r.stdout);
     const data = out['data'] as Record<string, unknown>;
-    expect(data['schema_version']).toBe(1);
+    const db = data['db'] as Record<string, unknown>;
+    expect(db['schema_version']).toBe(1);
     expect(data['enabled']).toBe(true);
     expect((data['ttl_seconds'] as Record<string, number>)['list']).toBe(21600);
     expect(data['entries']).toBeTruthy();
+    expect((data['entries'] as Record<string, number>)['total']).toBeGreaterThanOrEqual(0);
   });
 
   it('cache stats (table) writes a human report to stdout', async () => {

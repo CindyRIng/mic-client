@@ -493,31 +493,58 @@ export class SearchService {
         details: { upstream_page_size: 20 },
       });
     }
-    const pages: UpstreamSearchPage[] = [];
-    let cached = true;
-    let stale = false;
-    let fetchedAt = 0;
-    let source: 'json' | 'cache' = 'cache';
-    for (let p = firstUpstream; p <= lastUpstream; p++) {
-      const r = await this.fetchPage(upstream, p, refresh, requestId, warnings);
-      pages.push(r.page);
-      cached = cached && r.cached;
-      stale = stale || r.stale;
-      fetchedAt = Math.max(fetchedAt, r.fetchedAt);
-      if (!r.cached) source = 'json';
-      if (r.page.totalPage < p) break;
-    }
-    const total = pages[0]?.total ?? 0;
-    const totalCapped = pages[0]?.totalCapped ?? false;
-    const totalPage = Math.max(1, Math.ceil(total / pageSize));
+    const fetchWindow = async (
+      targetPage: number,
+    ): Promise<{
+      pages: UpstreamSearchPage[];
+      first: number;
+      cached: boolean;
+      stale: boolean;
+      fetchedAt: number;
+      source: 'json' | 'cache';
+    }> => {
+      const first = Math.floor(((targetPage - 1) * pageSize) / 20) + 1;
+      const last = Math.floor((targetPage * pageSize - 1) / 20) + 1;
+      const pages: UpstreamSearchPage[] = [];
+      let cached = true;
+      let stale = false;
+      let fetchedAt = 0;
+      let source: 'json' | 'cache' = 'cache';
+      for (let p = first; p <= last; p++) {
+        const r = await this.fetchPage(upstream, p, refresh, requestId, warnings);
+        pages.push(r.page);
+        cached = cached && r.cached;
+        stale = stale || r.stale;
+        fetchedAt = Math.max(fetchedAt, r.fetchedAt);
+        if (!r.cached) source = 'json';
+        if (r.page.totalPage < p) break;
+      }
+      return { pages, first, cached, stale, fetchedAt, source };
+    };
+
+    let window = await fetchWindow(page);
+    let total = window.pages[0]?.total ?? 0;
+    let totalCapped = window.pages[0]?.totalCapped ?? false;
+    let totalPage = Math.max(1, Math.ceil(total / pageSize));
     const pageClamped = page > totalPage;
     const effectivePage = pageClamped ? totalPage : page;
-    const all = dedupe(pages.flatMap((p) => p.items), warnings);
-    // items fetched start at upstream window offset (firstUpstream-1)*20, not at page 1
+    if (pageClamped) {
+      // page is valid (<=100) but beyond the real last page: refetch the last page content
+      window = await fetchWindow(effectivePage);
+      total = window.pages[0]?.total ?? total;
+      totalCapped = window.pages[0]?.totalCapped ?? totalCapped;
+      totalPage = Math.max(1, Math.ceil(total / pageSize));
+    }
+    const all = dedupe(window.pages.flatMap((p) => p.items), warnings);
+    // items fetched start at the upstream window offset, not at page 1
     const pageStart = (effectivePage - 1) * pageSize;
-    const windowBase = (firstUpstream - 1) * 20;
+    const windowBase = (window.first - 1) * 20;
     const start = Math.max(0, pageStart - windowBase);
     const items = all.slice(start, start + pageSize);
+    const cached = window.cached;
+    const stale = window.stale;
+    const fetchedAt = window.fetchedAt;
+    const source = window.source;
     if (total < all.length) {
       // upstream total lower than fetched items (ads/dup) — keep both truthful
     }
@@ -539,7 +566,7 @@ export class SearchService {
       items,
       total,
       totalPage,
-      hasMore: effectivePage < totalPage,
+      hasMore: !pageClamped && effectivePage < totalPage,
       totalCapped,
       pageClamped,
       totalIsLowerBound: false,

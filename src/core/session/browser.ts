@@ -491,6 +491,8 @@ export async function solveFocusCaptcha(page: Page, cfg: Config, logger?: Logger
       }
       logger?.debug('captcha: attempt failed', { attempt, rep_code: check?.repCode ?? null });
       watcher.resetLastGet();
+      // Reload to force a fresh /captcha/get (the widget does not refetch after a wrong drag).
+      await page.reload({ waitUntil: 'load', timeout: 60000 }).catch(() => undefined);
       await sleep(2000);
     }
     throw new AppError('CAPTCHA_SOLVE_FAILED', 'automatic captcha solving failed', {

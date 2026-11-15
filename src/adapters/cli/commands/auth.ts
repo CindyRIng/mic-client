@@ -79,15 +79,22 @@ export function registerAuthCommand(program: Command): void {
             const state = sessionState(ctx.cfg);
             const cookies = loadSessionCookies(ctx.cfg);
             ctx.http.cookies.load(cookies);
+            // Local session state: a browser-verified profile persists storageState + the
+            // `fbrs` Focus-Captcha cookie. The HTTP fast path may still be edge-challenged even
+            // with a valid browser session, so local state is the primary signal; the probe
+            // only downgrades when there is no local session at all.
+            const hasLocalSession = state.storage_state_present && cookies.some((c) => c.name === 'fbrs');
             let verified = false;
             let challenge = false;
             let reachable = true;
             try {
               const res = await ctx.http.request('https://m.made-in-china.com/', { timeoutMs: 8000, retries: 0 });
-              verified = res.status === 200 && !/Focus Captcha|请验证/i.test(res.body.slice(0, 400));
+              const httpOk = res.status === 200 && !/Focus Captcha|请验证/i.test(res.body.slice(0, 400));
+              verified = httpOk || hasLocalSession;
             } catch (e) {
               if (e instanceof AppError && e.code === 'CAPTCHA_REQUIRED') {
                 challenge = true;
+                verified = hasLocalSession;
               } else if (e instanceof AppError && e.code === 'UPSTREAM_UNAVAILABLE') {
                 reachable = false;
               } else {
@@ -107,16 +114,26 @@ export function registerAuthCommand(program: Command): void {
               last_auth_at: state.last_verified_at,
               duration_ms: Date.now() - started,
             };
+            if (!verified) {
+              if (!reachable) {
+                throw new AppError('UPSTREAM_UNAVAILABLE', 'upstream is unreachable while checking the session', {
+                  ...data,
+                });
+              }
+              throw new AppError('NEED_HUMAN_VERIFICATION', 'session is not verified', {
+                ...data,
+                action: 'mic auth',
+                reason: challenge ? 'challenge_required' : 'not_verified',
+              });
+            }
             if (useJson(opts)) {
               printJson(envelope(data, meta('cache')));
             } else {
               process.stdout.write(
-                `session: ${verified ? 'verified' : challenge ? 'challenge required' : 'not verified'}  ` +
-                  `cookies=${state.cookie_count} login=${state.login === null ? 'unknown' : state.login}\n`,
+                `session: verified  cookies=${state.cookie_count} ` +
+                  `login=${state.login === null ? 'unknown' : state.login}\n`,
               );
-              if (!verified) process.stdout.write('hint: run `mic auth` to complete human verification in a visible browser.\n');
             }
-            if (!verified) process.exitCode = reachable && challenge ? 5 : 4;
             return;
           }
           // verify / login: open the visible browser

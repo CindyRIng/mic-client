@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
+## [1.0.1] - 2026-11-16
+
+### Added
+- Installed `mic` command: `bin/mic` thin launcher (auto-runs through `~/cloak-env/bin/cloak-run`,
+  falls back to plain node with a warning); `npm run build` now sets the executable bit; README/docs
+  troubleshooting for `mic: command not found`.
+
+### Fixed
+- **Pagination clamp**: `page > total_page` now actually refetches and returns the last-page items
+  (`page_clamped=true`), while `pagination.page` keeps echoing the requested page (docs/03 §1.7).
+- **Regions JSON**: `mic regions --province X --json` now returns `ProvinceDetailResult`
+  (`{province, cities[]}`) like REST/MCP; region data builders are shared by all three entry points.
+- **Cache command** now follows docs/04 §2.7.4: `stats --scope`, `clear --scope <list|detail|regions|raw|all>`
+  with `--older-than/--key/--dry-run`, and a real `refresh --scope list|detail|regions` (identity args,
+  browsers fallback for detail) returning `RefreshResult` data; stats data is byte-compatible with
+  `GET /api/cache/stats`.
+- **Global option validation**: invalid `--format`, `--verbose + --quiet`, `--no-cache + --refresh`,
+  and `--format ndjson` on non-search commands now return `INVALID_PARAM` (exit 2).
+- `--timeout` accepts durations (`500ms`/`15s`/`2m`/`1h`/`7d`); `--profile name` resolves under
+  `~/.config`-style profiles root; `--no-color` accepted.
+- Single-page `mic search --format ndjson` (start/page/summary) implemented per docs/04 §2.5.4.
+- **Captcha reliability**: after a wrong puzzle answer the solver reloads to fetch a fresh image and
+  retries (live-verified: attempt1 6114 -> reload -> attempt2 0000); company detail now prefers the
+  verified browser-rendered HTML fallback when the HTTP path is challenged (no double-solve path).
+- CLI no longer crashes with an EPIPE stack trace when piped into `head`/`jq`.
+- Tests updated for the corrected contracts (244 still green); live-smoke 7/7 and MCP smoke (15 checks) pass.
+
 ## [1.0.0] - 2026-11-16
 
 ### Added

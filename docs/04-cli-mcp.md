@@ -1226,7 +1226,7 @@ sequenceDiagram
 **规则**
 
 - **A1 固化内容**（与 02 §6 一致）：`<profile_dir>/storage-state.json`（Playwright storageState，含 cookie/localStorage → **敏感，权限 0600**）+ `<profile_dir>/auth.json`（`last_auth_at`、`last_check_at`、`login`、`cookie_names[]`，**不含 cookie 值**）+ `<data_dir>/session/cookies.json`（HTTP cookie jar 派生快速通道，0600）。三者由 `session.lock` 保护读-改-写（02 §6.5）。
-- **A2 会话判定**：探测请求返回 200、未 302 到 `captcha.made-in-china.com`、不含挑战页特征（`__tst_status`/`AccessDeny`/「请验证」）→ verified；否则提示重试或 `mic doctor`。
+- **A2 会话判定**：探测请求返回 200、未 302 到 `captcha.made-in-china.com`、不含挑战页特征（`__tst_status`/`AccessDeny`/「请验证」）→ verified。`--mode check` 不打开浏览器；若本地会话文件存在（storageState + `fbrs` cookie）但 HTTP 探测被 challenge，视为**浏览器通道可用**（verified=true；`mic auth --mode verify` 仍可重建会话），避免 HTTP 指纹差异造成误报；无本地会话且探测被 challenge → `NEED_HUMAN_VERIFICATION`（5）。
 - **A3 登录可选**：主链路匿名即可；`--mode login` 仅用于 OQ-01 差分验证，**不把登录态当作获取电话/邮箱等平台不公开字段的手段**。
 - **A4 并发**：同一 profile 同时只允许一个浏览器会话（`session.lock` + 进程内单例）；拿不到锁时等待 ≤ `--timeout`，仍失败 → `CONFIG_ERROR`（`details.reason=profile_locked`）。
 - **A5 敏感数据**：stdout/stderr/日志**永不打印 cookie 值**；只报告数量与 cookie 名；错误 details 不含 storageState 内容。
