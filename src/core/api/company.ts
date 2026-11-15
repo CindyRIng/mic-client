@@ -187,17 +187,26 @@ export function parseEmployeeCount(text: string | null): { employees: number | n
   return { employees: Math.trunc(n), text: text.trim() };
 }
 
+const CERT_HINT_RE = /(ISO|IATF|BSCI|CE|FDA|LFGB|HACCP|BRC|GMP|OHSAS|SEDEX|SA\s?8000|ASME|RoHS|REACH|FSC|ANSI|ASTM|EN\s?\d|DIN|JIS|SGS|TUV|TÜV|EICC|WRAP|AIB|LEED|BREEAM|PAS|QSR|QQS|IFS)/i;
+
 export function splitCertifications(text: string | null): string[] {
   if (!text) return [];
   const out: string[] = [];
   const seen = new Set<string>();
-  for (const part of text.split(/[,，;；、|]/)) {
-    const s = part.replace(/\s+/g, ' ').trim();
-    if (!s) continue;
-    const key = s.toLowerCase();
-    if (seen.has(key)) continue;
-    seen.add(key);
-    out.push(s);
+  for (const rawPart of text.split(/[,，;；、|]/)) {
+    for (const andPart of rawPart.split(/\s+and\s+/i)) {
+      const s = andPart.replace(/\s+/g, ' ').trim().replace(/[.。]+$/, '');
+      if (!s) continue;
+      // drop sentence-like fragments (the mobile page sometimes flattens a long paragraph)
+      if (s.length > 40 || /\.\s/.test(s)) continue;
+      if (/\.(?:\s|$)/.test(s) && !CERT_HINT_RE.test(s)) continue;
+      if (!CERT_HINT_RE.test(s) && s.length > 20 && !/^others?$/i.test(s)) continue;
+      const key = s.toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push(s);
+      if (out.length >= 15) return out;
+    }
   }
   return out;
 }
@@ -217,7 +226,7 @@ export function extractBodyFields(html: string): CompanyBodyFields {
   const { employees, text: employeeText } = parseEmployeeCount(employeesRaw ? cutAtNextLabel(employeesRaw) : null);
   const addressRaw = findLabeledValue(text, ['Address']);
   const address = addressRaw ? cutAtNextLabel(addressRaw) || null : null;
-  const certRaw = findLabeledValue(text, ['Management System Certification', 'Certification']);
+  const certRaw = findLabeledValue(text, ['Management System Certification', 'Mgmt. Certification', 'Certifications']);
   const establishmentRaw = findLabeledValue(text, ['Year of Establishment']);
   return {
     address,
