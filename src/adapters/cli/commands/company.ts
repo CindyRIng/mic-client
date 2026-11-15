@@ -45,6 +45,12 @@ export function registerCompanyCommand(program: Command): void {
               await session.ensureVerifiedSession(srcUrl, ctx.cfg, ctx.logger);
               ctx.http.cookies.load(session.loadSessionCookies(ctx.cfg));
             },
+            onBrowserFetch: async (url: string) => {
+              const session = await import('../../../core/session/browser.js');
+              const html = await session.fetchHtmlViaBrowser(url, ctx.cfg, ctx.logger);
+              ctx.http.cookies.load(session.loadSessionCookies(ctx.cfg));
+              return html;
+            },
           };
           return service.get(input);
         });

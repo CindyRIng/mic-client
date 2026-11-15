@@ -236,6 +236,7 @@ class CaptchaWatcher {
   private readonly handler: (res: unknown) => void;
   getCount = 0;
   checkCount = 0;
+  parseFailures = 0;
 
   constructor(
     private readonly page: Page,
@@ -253,7 +254,18 @@ class CaptchaWatcher {
           if (res.request().method() !== 'POST') return;
           if (/\/captcha\/get$/.test(url)) {
             this.getCount++;
-            this.lastGet = JSON.parse(await res.text()) as CaptchaGetPayload;
+            const rawPayload = JSON.parse(await res.text()) as {
+              repCode?: string;
+              repData?: CaptchaGetPayload;
+            } & CaptchaGetPayload;
+            // FCaptcha returns {repCode, repData:{originalImageUrl,jigsawImageUrl,token,secretKey}}
+            const data = rawPayload.repData ?? rawPayload;
+            this.lastGet = {
+              originalImageUrl: data.originalImageUrl,
+              jigsawImageUrl: data.jigsawImageUrl,
+              token: data.token,
+              secretKey: data.secretKey,
+            };
             const waiters = this.getWaiters;
             this.getWaiters = [];
             for (const w of waiters) w(this.lastGet);
@@ -265,11 +277,16 @@ class CaptchaWatcher {
             for (const w of waiters) w(this.checkResults[this.checkResults.length - 1] ?? null);
           }
         } catch (e) {
+          this.parseFailures++;
           this.logger?.debug('captcha watcher: response parse failed', { error: String(e) });
         }
       })();
     };
     page.on('response', this.handler);
+    page.on('request', (req) => {
+      const u = req.url();
+      if (/\/captcha\//.test(u)) this.logger?.debug('captcha watcher: seen request', { method: req.method(), url: u.slice(0, 120) });
+    });
   }
 
   takeLastGet(): CaptchaGetPayload | null {
@@ -426,13 +443,19 @@ export async function solveFocusCaptcha(page: Page, cfg: Config, logger?: Logger
   const watcher = new CaptchaWatcher(page, logger);
   const attempts: CaptchaAttemptRecord[] = [];
   try {
+    // Start from a clean captcha load: the widget fetches /captcha/get on load.
+    // (Reloading inside an attempt can navigate away while the response body is
+    // being read, which previously produced "no /captcha/get payload".)
+    await page.reload({ waitUntil: 'load', timeout: 60000 }).catch(() => undefined);
+    await sleep(1500);
     for (let attempt = 1; attempt <= cfg.captcha.max_attempts; attempt++) {
       let payload = watcher.takeLastGet();
       if (!payload) {
-        if (attempt === 1 && watcher.getCount === 0) {
+        if (attempt === 1 && (watcher.parseFailures > 0 || watcher.getCount === 0)) {
           await page.reload({ waitUntil: 'load', timeout: 60000 }).catch(() => undefined);
+          await sleep(1500);
         }
-        payload = await watcher.waitForGet(8000);
+        payload = await watcher.waitForGet(12000);
       }
       if (!payload?.originalImageUrl || !payload.jigsawImageUrl) {
         attempts.push({ attempt, offset_x: null, dom_delta: null, rep_code: null, error: 'no /captcha/get payload' });
@@ -585,6 +608,22 @@ export async function getBrowserContext(
   }
 }
 
+/** Wait until the page leaves the Focus Captcha widget (it redirects to srcUrl after verifyCaptcha). */
+async function waitForCaptchaRedirect(page: Page, timeoutMs: number): Promise<boolean> {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    await sleep(500);
+    try {
+      const url = page.url();
+      if (!/captcha\.made-in-china\.com|verification\.html/.test(url)) return true;
+      if (!(await isCaptchaPage(page))) return true;
+    } catch {
+      /* navigation in progress */
+    }
+  }
+  return false;
+}
+
 export interface VerifiedSessionResult {
   verified: true;
   url: string;
@@ -608,31 +647,97 @@ export async function ensureVerifiedSession(
     const page = await ctx.newPage();
     page.setDefaultTimeout(60000);
     try {
+      // If we were redirected to the Focus Captcha page, the destination lives in `srcUrl`.
+      let targetUrl = url;
+      try {
+        const u = new URL(url);
+        if (u.hostname === CAPTCHA_HOST || u.pathname.endsWith('/verification.html')) {
+          const src = u.searchParams.get('srcUrl');
+          if (src) targetUrl = src;
+        }
+      } catch {
+        /* keep url */
+      }
       await page.goto(url, { waitUntil: 'load', timeout: 90000 }).catch((e: unknown) => {
         logger.warn('browser: goto failed, continuing with current page', { error: String((e as Error).message ?? e) });
       });
       let captcha = await isCaptchaPage(page);
       let attempts: CaptchaAttemptRecord[] = [];
       let script: 'captcha-solved' | 'already-verified' = 'already-verified';
-      if (captcha) {
+      // solve at most twice: a fresh captcha may appear when navigating to the destination
+      for (let round = 0; round < 2; round++) {
+        captcha = await isCaptchaPage(page);
+        if (!captcha) break;
         await solveFocusCaptcha(page, cfg, logger).then((r) => {
-          attempts = r.attempts;
+          attempts = attempts.concat(r.attempts);
         });
         script = 'captcha-solved';
-        await page.goto(url, { waitUntil: 'load', timeout: 90000 }).catch(() => undefined);
-        captcha = await isCaptchaPage(page);
+        // the widget calls /fbrs/captcha/verifyCaptcha and then redirects to srcUrl (~4-6s)
+        const redirected = await waitForCaptchaRedirect(page, 20000);
+        logger?.debug('session: post-solve state', {
+          round,
+          redirected,
+          url: page.url().slice(0, 140),
+          captcha: await isCaptchaPage(page),
+        });
+        if (!redirected || (await isCaptchaPage(page))) {
+          await page.goto(targetUrl, { waitUntil: 'load', timeout: 90000 }).catch(() => undefined);
+          await sleep(2500);
+        }
       }
+      captcha = await isCaptchaPage(page);
       if (captcha) {
         throw new AppError('NEED_HUMAN_VERIFICATION', 'still blocked by captcha/challenge after auto-solve', {
           stage: 'captcha',
           action: 'mic auth',
           reason: 'auto_solve_exhausted',
-          url: url.slice(0, 200),
+          url: targetUrl.slice(0, 200),
         });
       }
       const session = await exportSession(ctx, cfg);
       logger.info('browser: verified session exported', { cookie_count: session.cookie_count, script });
       return { verified: true as const, url: page.url(), script, session, captcha_attempts: attempts };
+    } finally {
+      await page.close().catch(() => undefined);
+    }
+  });
+}
+
+/**
+ * Fetch a fully-rendered HTML page through the verified browser session.
+ * Used as the last-resort fallback when the HTTP path is still challenged after
+ * captcha auto-solve (cookies alone may not satisfy the edge risk engine).
+ */
+export async function fetchHtmlViaBrowser(url: string, cfg: Config, logger: Logger): Promise<string> {
+  const ctx = await getBrowserContext(cfg, logger);
+  return withBrowserSession(async () => {
+    const page = await ctx.newPage();
+    page.setDefaultTimeout(60000);
+    try {
+      await page.goto(url, { waitUntil: 'load', timeout: 90000 }).catch((e: unknown) => {
+        logger.warn('browser: fetch goto failed', { error: String((e as Error).message ?? e) });
+      });
+      for (let round = 0; round < 4; round++) {
+        await sleep(2000);
+        if (await isCaptchaPage(page)) {
+          logger.info('browser: captcha detected while fetching HTML; auto-solving', { url: url.slice(0, 160), round });
+          await solveFocusCaptcha(page, cfg, logger);
+          await waitForCaptchaRedirect(page, 20000);
+          continue;
+        }
+        const html = await page.content();
+        if (html.length > 2000) {
+          await exportSession(ctx, cfg);
+          logger.info('browser: rendered HTML captured', { url: url.slice(0, 160), bytes: html.length });
+          return html;
+        }
+        await sleep(1500);
+      }
+      throw new AppError('NEED_HUMAN_VERIFICATION', 'browser fallback could not render the page', {
+        stage: 'browser_fetch',
+        action: 'mic auth',
+        url: url.slice(0, 200),
+      });
     } finally {
       await page.close().catch(() => undefined);
     }

@@ -39,6 +39,8 @@ export interface CompanyInput {
   request_id?: string;
   /** 由会话层注入；未注入时 m 站挑战 → NEED_HUMAN_VERIFICATION。 */
   onCaptcha?: (srcUrl: string) => Promise<void>;
+  /** 浏览器兜底取 HTML（会话层注入）。 */
+  onBrowserFetch?: (url: string) => Promise<string>;
 }
 
 export interface CompanyResponse {
@@ -148,6 +150,7 @@ interface ReviewRow {
 
 /** 详情快照（基础通道），缓存行/上游解析结果都能转换到这一层。 */
 interface DetailSnapshot {
+  source?: 'json' | 'html' | 'browser';
   company_name: string;
   address: string | null;
   established_at: string | null;
@@ -424,7 +427,7 @@ export class CompanyService {
     let audited: boolean | null;
     let cached = false;
     let stale = false;
-    let source: 'json' | 'cache' = 'json';
+    let source: 'json' | 'cache' | 'browser' = 'json';
     let detailFetchedAt = now;
     const cachedDetailRow = canCache ? this.readDetailRow(account) : null;
     const cachedMembershipRow = canCache ? this.readMembershipRow(account) : null;
@@ -439,7 +442,9 @@ export class CompanyService {
       audited = this.auditedFromCache(companyBefore, cachedDetailRow);
     } else {
       try {
-        const payload = await this.fetchBase(account, input.onCaptcha);
+        const payload = await this.fetchBase(account, input.onCaptcha, input.onBrowserFetch);
+        if (payload.source === 'browser') source = 'browser';
+        else if (payload.source === 'html') source = 'json';
         detailFetchedAt = nowSeconds();
         detail = snapshotFromPayload(payload);
         const merged = this.mergeFreshMembership(companyBefore, payload, warnings);
@@ -578,8 +583,14 @@ export class CompanyService {
     });
   }
 
-  private async fetchBase(account: string, onCaptcha?: (srcUrl: string) => Promise<void>): Promise<CompanyDetailPayload> {
-    const opts: DetailRequestOptions = onCaptcha ? { onCaptcha } : {};
+  private async fetchBase(
+    account: string,
+    onCaptcha?: (srcUrl: string) => Promise<void>,
+    onBrowserFetch?: (url: string) => Promise<string>,
+  ): Promise<CompanyDetailPayload> {
+    const opts: DetailRequestOptions = {};
+    if (onCaptcha) opts.onCaptcha = onCaptcha;
+    if (onBrowserFetch) opts.browserHtml = onBrowserFetch;
     return this.api.fetchDetail(account, opts);
   }
 
@@ -663,7 +674,7 @@ export class CompanyService {
     membership: MembershipInfo,
     audited: boolean | null,
     include: IncludeKey[],
-    source: 'json' | 'cache',
+    source: 'json' | 'cache' | 'browser' | 'html',
     warnings: Warning[],
   ): { detail: Omit<CompanyDetail, 'enrichment' | 'availability'>; availability: AvailabilityItem[] } {
     const availability: AvailabilityItem[] = [];
@@ -731,7 +742,7 @@ export class CompanyService {
       plant_area: plantArea,
       company_url: companyUrl,
       company_info_url: `https://m.made-in-china.com/company-${urlAccount}/info.html`,
-      detail_source: source,
+      detail_source: detail.source ?? source,
       include: [...include],
     };
     return { detail: composed, availability };
@@ -1336,6 +1347,7 @@ function normalizeSqlValue(v: unknown): string | number | null {
 
 function snapshotFromPayload(payload: CompanyDetailPayload): DetailSnapshot {
   return {
+    source: payload.source ?? 'json',
     company_name: payload.company_name,
     address: payload.address,
     established_at: payload.establishment,

@@ -55,12 +55,14 @@ export interface CompanyDetailPayload {
   system_certifications: string[];
   /** 原始 ssrData JSON（可截断后落库） */
   ssr_raw: unknown;
-  source: 'json';
+  source: 'json' | 'html' | 'browser';
 }
 
 export interface DetailRequestOptions {
   /** 验证码/JS challenge 求解器；由会话层注入（M3）。未注入时抛 CAPTCHA_REQUIRED。 */
   onCaptcha?: (srcUrl: string) => Promise<void>;
+  /** 浏览器兜底：当 HTTP 通道仍被挑战时，用已验证的浏览器会话取回页面 HTML。 */
+  browserHtml?: (url: string) => Promise<string>;
 }
 
 /** 上游正文中可能出现的字段标签（用于截断长文本）。 */
@@ -71,6 +73,7 @@ const BODY_LABELS = [
   'Year of Establishment',
   'Number of Employees',
   'Management System Certification',
+  'Product Certification',
   'Address',
   'Rating',
   'Company Overview',
@@ -195,18 +198,53 @@ export function splitCertifications(text: string | null): string[] {
   const seen = new Set<string>();
   for (const rawPart of text.split(/[,，;；、|]/)) {
     for (const andPart of rawPart.split(/\s+and\s+/i)) {
-      const s = andPart.replace(/\s+/g, ' ').trim().replace(/[.。]+$/, '');
+      let s = andPart.replace(/\s+/g, ' ').trim().replace(/[.。]+$/, '');
       if (!s) continue;
       // drop sentence-like fragments (the mobile page sometimes flattens a long paragraph)
       if (s.length > 40 || /\.\s/.test(s)) continue;
-      if (/\.(?:\s|$)/.test(s) && !CERT_HINT_RE.test(s)) continue;
-      if (!CERT_HINT_RE.test(s) && s.length > 20 && !/^others?$/i.test(s)) continue;
+      // strip trailing noise words ("BSCI audits", "ISO 9001 certification")
+      s = s.replace(/\s+(?:audits?|certifi(?:cation|cates?)|certified|standards?)$/i, '').trim();
+      // only keep tokens that clearly look like certification names
+      if (!CERT_HINT_RE.test(s) && !/^others?$/i.test(s)) continue;
+      if (!/^(?:ISO|IATF|BSCI|CE|FDA|LFGB|HACCP|BRC|GMP|OHSAS|SEDEX|SA\s?8000|ASME|RoHS|REACH|FSC|ANSI|ASTM|EN|DIN|JIS|SGS|TUV|TÜV|EICC|WRAP|AIB|LEED|BREEAM|PAS|QSR|QQS|IFS|Others)/i.test(s)) continue;
       const key = s.toLowerCase();
       if (seen.has(key)) continue;
       seen.add(key);
       out.push(s);
       if (out.length >= 15) return out;
     }
+  }
+  return out;
+}
+
+const CERT_TOKEN_RE =
+  /\b(ISO\s?\d{4,5}(?::\d{4})?|IATF\s?16949|BSCI|CE|FDA|LFGB|HACCP|BRC|GMP|OHSAS\s?\d{2,5}|SEDEX|SA\s?8000|ASME|RoHS|REACH|FSC|EICC|WRAP|AIB|LEED|BREEAM)\b/gi;
+
+function canonicalCertToken(raw: string): string {
+  const t = raw.replace(/\s+/g, ' ').trim();
+  const iso = /^ISO\s?(\d{4,5})(?::(\d{4}))?$/i.exec(t);
+  if (iso) return `ISO ${iso[1]}${iso[2] ? `:${iso[2]}` : ''}`;
+  if (/^1S0\s?\d/i.test(t)) return t.replace(/^1S0/i, 'ISO');
+  return t.toUpperCase() === 'CE' ? 'CE' : t;
+}
+
+/** Extract certification names mentioned in the company description (bounded context). */
+export function extractCertificationsFromText(text: string | null): string[] {
+  if (!text) return [];
+  const normalized = text.replace(/\b1S0(?=\s?\d)/g, 'ISO');
+  const out: string[] = [];
+  const seen = new Set<string>();
+  for (const m of normalized.matchAll(CERT_TOKEN_RE)) {
+    const raw = m[0] ?? '';
+    const idx = m.index ?? 0;
+    const context = normalized.slice(Math.max(0, idx - 120), idx + raw.length + 120);
+    if (!/certif|passed|audit|inspection|standard|compliance/i.test(context)) continue;
+    const token = canonicalCertToken(raw);
+    const key = token.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(token);
+    if (out.length >= 12) break;
   }
   return out;
 }
@@ -226,14 +264,29 @@ export function extractBodyFields(html: string): CompanyBodyFields {
   const { employees, text: employeeText } = parseEmployeeCount(employeesRaw ? cutAtNextLabel(employeesRaw) : null);
   const addressRaw = findLabeledValue(text, ['Address']);
   const address = addressRaw ? cutAtNextLabel(addressRaw) || null : null;
-  const certRaw = findLabeledValue(text, ['Management System Certification', 'Mgmt. Certification', 'Certifications']);
+  const certRaw = findLabeledValue(text, [
+    'Management System Certification',
+    'Product Certification',
+    'Mgmt. Certification',
+    'Certifications',
+  ]);
   const establishmentRaw = findLabeledValue(text, ['Year of Establishment']);
+  const structuredCerts = splitCertifications(certRaw ? cutAtNextLabel(certRaw) : null);
+  const textCerts = extractCertificationsFromText(text);
+  const merged: string[] = [];
+  const seen = new Set<string>();
+  for (const c of [...structuredCerts, ...textCerts]) {
+    const key = c.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    merged.push(c);
+  }
   return {
     address,
     employees,
     employee_text: employeeText,
     establishment: normalizeEstablishment(establishmentRaw),
-    system_certifications: splitCertifications(certRaw ? cutAtNextLabel(certRaw) : null),
+    system_certifications: merged.slice(0, 15),
   };
 }
 
@@ -310,7 +363,11 @@ function starsFromSymbol(symbol: Record<string, unknown> | null): number | null 
  * 解析 `info.html` → `CompanyDetailPayload`。
  * 契约校验（docs/05 §4.7）：ssrData 必须存在，`companyInfo.code===0` 且 `content.comName` 非空。
  */
-export function parseCompanyDetailHtml(html: string, requestedAccount?: string): CompanyDetailPayload {
+export function parseCompanyDetailHtml(
+  html: string,
+  requestedAccount?: string,
+  source: 'json' | 'html' | 'browser' = 'json',
+): CompanyDetailPayload {
   const ssr = record(parseSsrData(html));
   if (!ssr) {
     throw new AppError('UPSTREAM_CHANGED', 'ssrData root is not an object', { reason: 'SSR_DATA_SHAPE' });
@@ -392,7 +449,7 @@ export function parseCompanyDetailHtml(html: string, requestedAccount?: string):
     employee_text: body.employee_text,
     system_certifications: body.system_certifications,
     ssr_raw: ssr,
-    source: 'json',
+    source,
   };
 }
 
@@ -465,6 +522,16 @@ export class CompanyDetailApi {
       this.logger.info('company: challenge page detected, invoking injected captcha solver', { url });
       await opts.onCaptcha(url);
       res = await this.http.request(url, requestOpts);
+    }
+    if (isChallengePage(res) && opts.browserHtml) {
+      this.logger.info('company: HTTP path still challenged; falling back to browser-rendered HTML', { url });
+      const html = await opts.browserHtml(url);
+      const payload = parseCompanyDetailHtml(html, account, 'browser');
+      this.logger.debug('company: parsed info.html via browser fallback', {
+        account: payload.account,
+        bytes: html.length,
+      });
+      return payload;
     }
     if (isChallengePage(res)) {
       throw new AppError('CAPTCHA_REQUIRED', 'company page is behind an EdgeOne/Focus challenge', {

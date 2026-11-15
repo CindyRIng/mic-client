@@ -123,6 +123,13 @@ export async function withContext<T>(
     return await fn(ctx);
   } finally {
     closeContext(ctx);
+    // exit cleanly even when a browser session was opened (captcha/auth fallback)
+    try {
+      const session = await import('../../core/session/browser.js');
+      await session.closeBrowserSession();
+    } catch {
+      /* browser never started or already closed */
+    }
   }
 }
 
