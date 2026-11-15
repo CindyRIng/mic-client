@@ -487,7 +487,10 @@ export class SearchService {
     const pageClamped = page > totalPage;
     const effectivePage = pageClamped ? totalPage : page;
     const all = dedupe(pages.flatMap((p) => p.items), warnings);
-    const start = (effectivePage - 1) * pageSize;
+    // items fetched start at upstream window offset (firstUpstream-1)*20, not at page 1
+    const pageStart = (effectivePage - 1) * pageSize;
+    const windowBase = (firstUpstream - 1) * 20;
+    const start = Math.max(0, pageStart - windowBase);
     const items = all.slice(start, start + pageSize);
     if (total < all.length) {
       // upstream total lower than fetched items (ads/dup) — keep both truthful

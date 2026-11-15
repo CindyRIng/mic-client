@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 import { VERSION } from '../../version.js';
-import { registerGlobalOptions } from './output.js';
+import { registerGlobalOptions, setOutputMode, type GlobalOptions } from './output.js';
 import { registerSearchCommand } from './commands/search.js';
 import { registerRegionsCommand } from './commands/regions.js';
 import { registerCacheCommand } from './commands/cache.js';
@@ -19,6 +19,10 @@ export function buildCli(): Command {
     .description('Made-in-China local client: search factories, inspect companies, REST/CLI/MCP')
     .version(VERSION, '-V, --version', 'print version');
   registerGlobalOptions(program);
+  program.hook('preAction', (_thisCommand, actionCommand) => {
+    const opts = (actionCommand.optsWithGlobals?.() ?? program.opts()) as GlobalOptions;
+    setOutputMode(opts);
+  });
   registerSearchCommand(program);
   registerCompanyCommand(program);
   registerRegionsCommand(program);

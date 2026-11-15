@@ -1,9 +1,22 @@
 import type { Command } from 'commander';
 import type { AppContext } from '../../core/container.js';
+export type { AppContext } from '../../core/container.js';
 import type { ErrorCode, Meta } from '../../core/errors.js';
 import { AppError } from '../../core/errors.js';
 import { createContext, closeContext } from '../../core/container.js';
+import { newRequestId } from '../../core/logger.js';
+import { makeMeta } from '../../core/errors.js';
 import { VERSION } from '../../version.js';
+
+let outputMode: 'table' | 'json' | 'ndjson' = 'table';
+
+export function setOutputMode(opts: GlobalOptions): void {
+  outputMode = opts.json || opts.format === 'json' ? 'json' : opts.format === 'ndjson' ? 'ndjson' : 'table';
+}
+
+export function currentOutputMode(): 'table' | 'json' | 'ndjson' {
+  return outputMode;
+}
 
 export interface GlobalOptions {
   config?: string;
@@ -46,6 +59,7 @@ export function registerGlobalOptions(program: Command): void {
 }
 
 export function contextFromOptions(opts: GlobalOptions): AppContext {
+  setOutputMode(opts);
   if (opts.config) process.env.MIC_CONFIG = opts.config;
   const overrides: Record<string, unknown> = {};
   if (opts.cache === false) overrides.cache = { enabled: false };
@@ -56,6 +70,7 @@ export function contextFromOptions(opts: GlobalOptions): AppContext {
 }
 
 export function useJson(opts: GlobalOptions): boolean {
+  setOutputMode(opts);
   return Boolean(opts.json) || opts.format === 'json';
 }
 
@@ -73,6 +88,19 @@ export function envelope<T>(data: T, meta: Meta) {
 
 export function fail(e: unknown): never {
   const err = e instanceof AppError ? e : new AppError('INTERNAL_ERROR', String((e as Error)?.message ?? e));
+  if (outputMode === 'json' || outputMode === 'ndjson') {
+    process.stdout.write(
+      JSON.stringify(
+        {
+          ok: false,
+          error: err.toJSON(),
+          meta: makeMeta({ request_id: newRequestId(), source: 'cache', warnings: [] }),
+        },
+        null,
+        2,
+      ) + '\n',
+    );
+  }
   const exit = EXIT_CODES[err.code] ?? 1;
   if (process.env.MIC_DEBUG_ERRORS) {
     process.stderr.write((err.stack ?? err.message) + '\n');
