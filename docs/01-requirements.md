@@ -64,7 +64,7 @@
 | Actor | 描述 | 主要入口 | 关键诉求 |
 |---|---|---|---|
 | A1 CLI 用户 | 人工在终端查询、导出 JSON | `mic` 子命令 | 命令可复制、表格/JSON 可选、退出码可判 |
-| A2 REST 调用方 | 本地脚本/其他程序 | `GET http://127.0.0.1:8787/api/...` | 稳定 Schema、统一响应包、错误码、缓存语义 |
+| A2 REST 调用方 | 本地脚本/其他程序 | `GET http://127.0.0.1:8899/api/...` | 稳定 Schema、统一响应包、错误码、缓存语义 |
 | A3 MCP/Agent | Claude Code 等 MCP 客户端/LLM Agent | stdio MCP tools | 工具自描述、只读、错误可读、字段稳定 |
 | A4 维护者 | 开发者/排障者 | `mic doctor`、日志、缓存命令、测试 | 可观测、可复现、可回归 |
 | A5 后续平台扩展方 | 未来接入其他 B2B 平台 | core 抽象 | 平台适配层可插拔（M4+，本文件仅约束边界） |
@@ -158,7 +158,7 @@ flowchart TB
 | I-05 | 会员等级识别 | diamond/gold/free/unknown + audited 布尔 + evidence + confidence（FR-06） |
 | I-06 | 地区字典 | 32 省英文/中文/上游取值（31 省 refine + Qinghai）；已实测城市字典（河北 10 城 + 样本城市） |
 | I-07 | 本地缓存 | SQLite（WAL）+ TTL + refresh + stale 回退 + single-flight + 统计 |
-| I-08 | 三入口 | REST（127.0.0.1:8787）、CLI（`mic`）、MCP（stdio，4 个只读 tool） |
+| I-08 | 三入口 | REST（127.0.0.1:8899）、CLI（`mic`）、MCP（stdio，4 个只读 tool） |
 | I-09 | 会话与风控 | cookie jar、302/挑战检测、Focus Captcha 自动通过、`mic auth` 人工兜底、限速 |
 | I-10 | 错误与降级 | 统一错误码（README §3.5）、重试/降级矩阵、stale/partial 语义 |
 | I-11 | 可观测与配置 | 结构化日志、关键指标、配置优先级、`mic doctor` |
@@ -513,7 +513,7 @@ flowchart TD
 
 ### 4.9 FR-09 REST API 入口｜P0
 
-**描述**：提供本地 REST 服务（默认 `http://127.0.0.1:8787`），仅监听回环地址、无鉴权（说明见 NFR-03），统一响应包/错误码遵循 README §3.5。
+**描述**：提供本地 REST 服务（默认 `http://127.0.0.1:8899`），仅监听回环地址、无鉴权（说明见 NFR-03），统一响应包/错误码遵循 README §3.5。
 
 | 项 | 内容 |
 |---|---|
@@ -567,7 +567,7 @@ flowchart TD
 | `mic company <account\|comId>` | 公司详情 | `--include audit,response,contacts --json` |
 | `mic regions` | 地区字典 | `--province` |
 | `mic membership` | 会员等级说明（静态，含 KA/SKA 澄清） | `--json` |
-| `mic serve` | 启动本地 REST 服务（默认 127.0.0.1:8787） | `--host --port` |
+| `mic serve` | 启动本地 REST 服务（默认 127.0.0.1:8899） | `--host --port` |
 | `mic cache stats\|clear\|refresh` | 缓存管理 | `--scope --key` |
 | `mic auth` | 弹可见浏览器人工过验证/登录并固化会话 | `--timeout --profile` |
 | `mic mcp` | 启动 stdio MCP server | `--profile` |
@@ -710,7 +710,7 @@ flowchart TD
 
 | 名称 | 默认值 | 说明 |
 |---|---|---|
-| `MIC_REST_HOST` / `MIC_REST_PORT` | `127.0.0.1` / `8787` | REST 监听（非回环需显式确认） |
+| `MIC_REST_HOST` / `MIC_REST_PORT` | `127.0.0.1` / `8899` | REST 监听（非回环需显式确认） |
 | `MIC_DATA_DIR` | `~/.mic-client/data` | SQLite 与快照 |
 | `MIC_PROFILE_DIR` | `~/.mic-client/profiles/default` | 浏览器 profile |
 | `MIC_LOG_DIR` / `MIC_LOG_LEVEL` | `~/.mic-client/logs` / `info` | 日志 |

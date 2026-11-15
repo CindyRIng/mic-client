@@ -1,7 +1,7 @@
 # 文档总览（docs/）
 
 > 本目录是 **MIC Client 的正式文档基线**。规则：先文档、后开发；任何实现变更先改文档（或补 ADR）。
-> 当前阶段：**v1.0.2 已发布（2026-11-16，M0–M4 全部完成）**。文档状态见 §2；评审记录见 [review-report.md](review-report.md)；发布记录见 [CHANGELOG](../CHANGELOG.md)。
+> 当前阶段：**v1.0.3 已发布（2026-11-16，M0–M4 全部完成）**。文档状态见 §2；评审记录见 [review-report.md](review-report.md)；发布记录见 [CHANGELOG](../CHANGELOG.md)。
 
 ---
 

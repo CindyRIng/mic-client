@@ -3,6 +3,7 @@ import type { FastifyInstance } from 'fastify';
 import { buildRestServer } from '../../src/adapters/rest/server.js';
 import { VERSION } from '../../src/version.js';
 import { makeTestContext, type TestEnv } from './helpers.js';
+import { loadConfig } from '../../src/core/config.js';
 
 let env: TestEnv | null = null;
 let app: FastifyInstance | null = null;
@@ -22,6 +23,11 @@ afterEach(async () => {
 });
 
 describe('REST self-describing docs (ADR-0008 / docs/03 §2.3)', () => {
+  it('default REST port is 8899 (8787 is commonly occupied by other local services)', () => {
+    const cfg = loadConfig({});
+    expect(cfg.rest.port).toBe(8899);
+  });
+
   it('GET /openapi.json returns an OpenAPI 3.1 document for exactly the 8 business endpoints', async () => {
     const server = setup();
     const res = await server.inject({ method: 'GET', url: '/openapi.json' });
@@ -38,7 +44,7 @@ describe('REST self-describing docs (ADR-0008 / docs/03 §2.3)', () => {
     expect(spec.openapi).toBe('3.1.0');
     expect(spec.info.version).toBe(VERSION);
     expect(spec.info.title).toContain('MIC Client');
-    expect(spec.servers[0]?.url).toMatch(/^http:\/\/127\.0\.0\.1:/);
+    expect(spec.servers[0]?.url).toBe('http://127.0.0.1:8899');
 
     const methods: Record<string, string> = {};
     for (const [path, item] of Object.entries(spec.paths)) {

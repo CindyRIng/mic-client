@@ -13,7 +13,7 @@
 
 ## 决策
 
-1. **单进程运行时**：REST/CLI/MCP 共用 core；MCP 以 stdio 子进程启动；REST 只在 `127.0.0.1:8787` 监听；
+1. **单进程运行时**：REST/CLI/MCP 共用 core；MCP 以 stdio 子进程启动；REST 只在 `127.0.0.1:8899` 监听；
 2. **本地无鉴权**（仅本机回环），文档明确不可暴露公网/局域网；如未来需要共享，另立 ADR；
 3. **运行数据放仓库外**：`~/.mic-client/profiles/`（浏览器 profile）、`~/.mic-client/data/`（SQLite）、`~/.mic-client/logs/`；可通过 `--profile`/`--config`/env 覆盖；
 4. **密钥/敏感数据**：不存在上游 API key；cookie/storageState 视为敏感，禁止写日志/禁止提交仓库；.gitignore 覆盖 profile/data；

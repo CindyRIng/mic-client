@@ -8,7 +8,7 @@
 
 本文是 **MIC 本地客户端的 REST 接口契约源**：路径/参数/响应 Schema/错误码/warnings 以本文为准，02（架构）、04（CLI/MCP）、05（数据模型）、06（测试）引用本文，不得另造同义字段或错误码。
 
-- 定位：**只监听 `127.0.0.1:8787` 的本地无鉴权服务**；三入口（REST/CLI/MCP）共享 core，同一查询在三入口必须返回**同名字段、同语义**（FR-09）。
+- 定位：**只监听 `127.0.0.1:8899` 的本地无鉴权服务**；三入口（REST/CLI/MCP）共享 core，同一查询在三入口必须返回**同名字段、同语义**（FR-09）。
 - 数据来源：m 站匿名 JSON 优先（ADR-0001）；HTML/浏览器仅兜底；**不建模平台不公开的字段**（电话/邮箱等恒 `null`，见 §8.6）。
 - 上游事实全部来自 `docs/research/upstream-api.md` 与 `recon/artifacts/api/`；本文中「待验证」= 尚未实测，不得作为实现依据。
 
@@ -29,14 +29,14 @@
 
 ```bash
 # 1) 启动（实现后可用；启动方式见 02/07）
-curl -s http://127.0.0.1:8787/health
+curl -s http://127.0.0.1:8899/health
 
 # 2) 关键词 + 省搜索
-curl -sG 'http://127.0.0.1:8787/api/search/factories' \
+curl -sG 'http://127.0.0.1:8899/api/search/factories' \
   --data-urlencode 'keyword=glass' --data-urlencode 'province=Hebei'
 
 # 3) 公司详情（account = 迷你站子域名/mainUserAccount）
-curl -s 'http://127.0.0.1:8787/api/companies/xingchenglass'
+curl -s 'http://127.0.0.1:8899/api/companies/xingchenglass'
 ```
 
 > 说明：本仓库当前处于 M0 文档阶段，以上命令在实现 M1–M3 后可用；示例响应中的业务数据截取/改写自 `recon/artifacts/api/` 的 2026-11-15 匿名样例，仅作契约示意。
@@ -49,16 +49,16 @@ curl -s 'http://127.0.0.1:8787/api/companies/xingchenglass'
 
 | 项 | 值 |
 |---|---|
-| Base URL | `http://127.0.0.1:8787` |
-| 监听地址 | **仅回环** `127.0.0.1`（不监听 `0.0.0.0`/`::`）；端口默认 `8787`，可配置（`MIC_REST_PORT`/配置文件，见 02/07 配置表） |
+| Base URL | `http://127.0.0.1:8899` |
+| 监听地址 | **仅回环** `127.0.0.1`（不监听 `0.0.0.0`/`::`）；端口默认 `8899`，可配置（`MIC_REST_PORT`/配置文件，见 02/07 配置表） |
 | 协议 | HTTP/1.1（本地回环无 TLS；如需跨机访问由运维层反代并自行加认证，超出本项目边界） |
 | 路径前缀 | `/health` 与 `/api/*`；本版本 API 版本 = `v1`（见 `GET /api/version`） |
 | 并发模型 | 单进程；REST/CLI/MCP 可同时运行但共享 core 与 SQLite（05 定义并发约束） |
 
 ### 1.2 无鉴权与本地安全边界（NFR-03）
 
-- **无鉴权**：设计前提是「本机单用户」；能访问 `127.0.0.1:8787` 的本机进程被视为可信。文档不得表述为「公网可用」。
-- **Host 校验**：请求 `Host` 必须是 `127.0.0.1:8787`、`localhost:8787`、`[::1]:8787` 之一（带/不带端口按实际监听端口匹配）；否则返回 `400 INVALID_PARAM`，`details.reason="HOST_NOT_ALLOWED"`（防 DNS rebinding）。
+- **无鉴权**：设计前提是「本机单用户」；能访问 `127.0.0.1:8899` 的本机进程被视为可信。文档不得表述为「公网可用」。
+- **Host 校验**：请求 `Host` 必须是 `127.0.0.1:8899`、`localhost:8899`、`[::1]:8899` 之一（带/不带端口按实际监听端口匹配）；否则返回 `400 INVALID_PARAM`，`details.reason="HOST_NOT_ALLOWED"`（防 DNS rebinding）。
 - **CORS**：默认**不返回** `Access-Control-Allow-*` 头（浏览器跨源读取被阻断）；只有配置 `rest.cors_origin` 白名单时才回显该来源（默认关闭）。
 - **不泄露凭证**：响应与 `error.details` 不得包含上游 cookie、`Authorization`、profile 路径中的用户敏感信息；日志按 02/07 脱敏。
 - **请求限额**：请求体 ≤ 64 KiB（超限 `400 INVALID_PARAM`，`details.reason="PAYLOAD_TOO_LARGE"`）；请求行+查询串 ≤ 8 KiB（超限 `400 INVALID_PARAM`，`details.reason="REQUEST_URI_TOO_LONG"`）；`include`/`scope` 等枚举串长度受限（见各端点）。
@@ -355,8 +355,8 @@ fetch upstream_first..upstream_last（含首尾），拼接后跳过 ((page-1)*p
 - `/docs` 页脚链接到本文（GitHub）与 `/openapi.json`，便于导入 Postman/Insomnia/代码生成器。
 
 ```bash
-curl -s http://127.0.0.1:8787/openapi.json | jq '.paths | keys'
-curl -s http://127.0.0.1:8787/docs | head
+curl -s http://127.0.0.1:8899/openapi.json | jq '.paths | keys'
+curl -s http://127.0.0.1:8899/docs | head
 ```
 
 ## 3. `GET /health`
@@ -372,8 +372,8 @@ curl -s http://127.0.0.1:8787/docs | head
 **请求示例**
 
 ```bash
-curl -s 'http://127.0.0.1:8787/health'
-curl -s 'http://127.0.0.1:8787/health?deep=true'
+curl -s 'http://127.0.0.1:8899/health'
+curl -s 'http://127.0.0.1:8899/health?deep=true'
 ```
 
 **成功响应（`deep=false`）**
@@ -503,7 +503,7 @@ curl -s 'http://127.0.0.1:8787/health?deep=true'
 **请求示例**
 
 ```bash
-curl -s 'http://127.0.0.1:8787/api/version'
+curl -s 'http://127.0.0.1:8899/api/version'
 ```
 
 **成功响应**
@@ -574,9 +574,9 @@ curl -s 'http://127.0.0.1:8787/api/version'
 
 ```bash
 # 全部省份（32 项）
-curl -s 'http://127.0.0.1:8787/api/regions'
+curl -s 'http://127.0.0.1:8899/api/regions'
 # 单个省 + 城市（中文名可用）
-curl -sG 'http://127.0.0.1:8787/api/regions' --data-urlencode 'province=河北'
+curl -sG 'http://127.0.0.1:8899/api/regions' --data-urlencode 'province=河北'
 ```
 
 **成功响应（无 `province` 参数）** —— 省份列表按字典顺序（完整 32 项，示例即完整值）：
@@ -705,7 +705,7 @@ curl -sG 'http://127.0.0.1:8787/api/regions' --data-urlencode 'province=河北'
 **请求示例**
 
 ```bash
-curl -s 'http://127.0.0.1:8787/api/membership/levels'
+curl -s 'http://127.0.0.1:8899/api/membership/levels'
 ```
 
 **成功响应**
@@ -1713,7 +1713,7 @@ flowchart TD
 ### 10.2 请求示例
 
 ```bash
-curl -s 'http://127.0.0.1:8787/api/cache/stats'
+curl -s 'http://127.0.0.1:8899/api/cache/stats'
 ```
 
 ### 10.3 成功响应
@@ -3080,32 +3080,32 @@ X-Request-Id: req_m3x9q1k2q5
 
 ### 15.C 调用示例集（curl，≥8 个）
 
-> 假设服务已在 `127.0.0.1:8787` 运行。中文参数一律用 `--data-urlencode`；`-i` 用于查看状态码/响应头。
+> 假设服务已在 `127.0.0.1:8899` 运行。中文参数一律用 `--data-urlencode`；`-i` 用于查看状态码/响应头。
 
 **C1. 健康检查（存活 + 深度）**
 
 ```bash
-curl -s 'http://127.0.0.1:8787/health'
-curl -s 'http://127.0.0.1:8787/health?deep=true'
+curl -s 'http://127.0.0.1:8899/health'
+curl -s 'http://127.0.0.1:8899/health?deep=true'
 ```
 
 **C2. 版本信息**
 
 ```bash
-curl -s 'http://127.0.0.1:8787/api/version'
+curl -s 'http://127.0.0.1:8899/api/version'
 ```
 
 **C3. 省份字典 / 河北省城市（中文输入）**
 
 ```bash
-curl -s 'http://127.0.0.1:8787/api/regions'
-curl -sG 'http://127.0.0.1:8787/api/regions' --data-urlencode 'province=河北'
+curl -s 'http://127.0.0.1:8899/api/regions'
+curl -sG 'http://127.0.0.1:8899/api/regions' --data-urlencode 'province=河北'
 ```
 
 **C4. 关键词 + 省搜索（等价响应示例见 §7.7）**
 
 ```bash
-curl -sG 'http://127.0.0.1:8787/api/search/factories' \
+curl -sG 'http://127.0.0.1:8899/api/search/factories' \
   --data-urlencode 'keyword=glass' \
   --data-urlencode 'province=Hebei' \
   --data-urlencode 'page=1' \
@@ -3115,7 +3115,7 @@ curl -sG 'http://127.0.0.1:8787/api/search/factories' \
 **C5. 关键词 + 会员等级 + 认证供应商过滤（服务端 memberLevel + 本地 audited）**
 
 ```bash
-curl -sG 'http://127.0.0.1:8787/api/search/factories' \
+curl -sG 'http://127.0.0.1:8899/api/search/factories' \
   --data-urlencode 'keyword=glass' \
   --data-urlencode 'province=Hebei' \
   --data-urlencode 'membership_tier=diamond' \
@@ -3126,7 +3126,7 @@ curl -sG 'http://127.0.0.1:8787/api/search/factories' \
 **C6. 纯地区模式（仅省）**
 
 ```bash
-curl -sG 'http://127.0.0.1:8787/api/search/factories' \
+curl -sG 'http://127.0.0.1:8899/api/search/factories' \
   --data-urlencode 'province=河北'
 # 响应 query.search_mode=region（地区模式不新造 warning）
 ```
@@ -3135,13 +3135,13 @@ curl -sG 'http://127.0.0.1:8787/api/search/factories' \
 
 ```bash
 # 省 + 市（与 §7.8 示例一致；warnings: CITY_FILTERED_LOCALLY（+ NON_EXHAUSTIVE））
-curl -sG 'http://127.0.0.1:8787/api/search/factories' \
+curl -sG 'http://127.0.0.1:8899/api/search/factories' \
   --data-urlencode 'province=河北' \
   --data-urlencode 'city=廊坊' \
   --data-urlencode 'page=1'
 
 # 仅传市：由城市字典推导省（回显 query.province；不产生额外 warning）
-curl -sG 'http://127.0.0.1:8787/api/search/factories' \
+curl -sG 'http://127.0.0.1:8899/api/search/factories' \
   --data-urlencode 'city=廊坊' \
   --data-urlencode 'page=1'
 ```
@@ -3149,7 +3149,7 @@ curl -sG 'http://127.0.0.1:8787/api/search/factories' \
 **C8. 关键词 + 城市 + 翻页（组合模式）**
 
 ```bash
-curl -sG 'http://127.0.0.1:8787/api/search/factories' \
+curl -sG 'http://127.0.0.1:8899/api/search/factories' \
   --data-urlencode 'keyword=glass' \
   --data-urlencode 'city=Langfang' \
   --data-urlencode 'page=2' \
@@ -3159,7 +3159,7 @@ curl -sG 'http://127.0.0.1:8787/api/search/factories' \
 **C9. 大页（page_size=40 → 上游 20/页拼接）**
 
 ```bash
-curl -sG 'http://127.0.0.1:8787/api/search/factories' \
+curl -sG 'http://127.0.0.1:8899/api/search/factories' \
   --data-urlencode 'keyword=glass' \
   --data-urlencode 'province=Hebei' \
   --data-urlencode 'page=1' \
@@ -3170,7 +3170,7 @@ curl -sG 'http://127.0.0.1:8787/api/search/factories' \
 **C10. 参数错误：中文关键词被拒绝（INVALID_PARAM）**
 
 ```bash
-curl -si 'http://127.0.0.1:8787/api/search/factories' \
+curl -si 'http://127.0.0.1:8899/api/search/factories' \
   --data-urlencode 'keyword=玻璃' | head -20
 # HTTP/1.1 400 Bad Request
 # error.code=INVALID_PARAM, details.reason=NON_ENGLISH_KEYWORD
@@ -3179,7 +3179,7 @@ curl -si 'http://127.0.0.1:8787/api/search/factories' \
 **C11. 参数错误：free/unknown 会员过滤被拒绝（INVALID_PARAM）**
 
 ```bash
-curl -siG 'http://127.0.0.1:8787/api/search/factories' \
+curl -siG 'http://127.0.0.1:8899/api/search/factories' \
   --data-urlencode 'keyword=glass' \
   --data-urlencode 'membership_tier=free'
 # 400 INVALID_PARAM details.reason=UNSUPPORTED_MEMBERSHIP_FILTER
@@ -3188,26 +3188,26 @@ curl -siG 'http://127.0.0.1:8787/api/search/factories' \
 **C12. 公司详情（默认 include=audit,response）**
 
 ```bash
-curl -s 'http://127.0.0.1:8787/api/companies/xingchenglass'
+curl -s 'http://127.0.0.1:8899/api/companies/xingchenglass'
 ```
 
 **C13. 公司详情（全部增强，响应示例见 §8.5）**
 
 ```bash
-curl -sG 'http://127.0.0.1:8787/api/companies/xingchenglass' \
+curl -sG 'http://127.0.0.1:8899/api/companies/xingchenglass' \
   --data-urlencode 'include=all'
 ```
 
 **C14. 公司详情（数字 comId；301 反查 account）**
 
 ```bash
-curl -s 'http://127.0.0.1:8787/api/companies/1800987236'
+curl -s 'http://127.0.0.1:8899/api/companies/1800987236'
 ```
 
 **C15. 刷新缓存（仅失效）**
 
 ```bash
-curl -s -X POST 'http://127.0.0.1:8787/api/cache/refresh' \
+curl -s -X POST 'http://127.0.0.1:8899/api/cache/refresh' \
   -H 'Content-Type: application/json' \
   -d '{"scope":"search","target":{"keyword":"glass","province":"Hebei"},"wait":false}'
 ```
@@ -3215,7 +3215,7 @@ curl -s -X POST 'http://127.0.0.1:8787/api/cache/refresh' \
 **C16. 刷新缓存（同步重取公司详情，响应示例见 §9.4）**
 
 ```bash
-curl -s -X POST 'http://127.0.0.1:8787/api/cache/refresh' \
+curl -s -X POST 'http://127.0.0.1:8899/api/cache/refresh' \
   -H 'Content-Type: application/json' \
   -d '{"scope":"company","target":{"account":"xingchenglass","include":["audit","response"]},"wait":true}'
 ```
@@ -3223,7 +3223,7 @@ curl -s -X POST 'http://127.0.0.1:8787/api/cache/refresh' \
 **C17. 缓存统计**
 
 ```bash
-curl -s 'http://127.0.0.1:8787/api/cache/stats'
+curl -s 'http://127.0.0.1:8899/api/cache/stats'
 ```
 
 **C18. 429：观察 Retry-After（高频/并发时触发）**
@@ -3231,7 +3231,7 @@ curl -s 'http://127.0.0.1:8787/api/cache/stats'
 ```bash
 # 并发 8 个搜索请求，部分会得到 429
 for i in $(seq 1 8); do
-  curl -s -o /dev/null -D - -G 'http://127.0.0.1:8787/api/search/factories' \
+  curl -s -o /dev/null -D - -G 'http://127.0.0.1:8899/api/search/factories' \
     --data-urlencode 'keyword=glass' --data-urlencode 'province=Hebei' &
 done
 wait
@@ -3242,7 +3242,7 @@ wait
 **C19. NEED_HUMAN_VERIFICATION：需要人工过验证（公司页偶发 ~13% Focus Captcha）**
 
 ```bash
-curl -si 'http://127.0.0.1:8787/api/companies/xingchenglass' | head -30
+curl -si 'http://127.0.0.1:8899/api/companies/xingchenglass' | head -30
 # 可能出现 HTTP/1.1 409 Conflict
 # error.code=NEED_HUMAN_VERIFICATION, details.action="mic auth"
 #
@@ -3254,7 +3254,7 @@ curl -si 'http://127.0.0.1:8787/api/companies/xingchenglass' | head -30
 **C20. 广告位过滤（`include_ads=false` → `ADS_FILTERED`）**
 
 ```bash
-curl -sG 'http://127.0.0.1:8787/api/search/factories' \
+curl -sG 'http://127.0.0.1:8899/api/search/factories' \
   --data-urlencode 'keyword=glass' \
   --data-urlencode 'province=Hebei' \
   --data-urlencode 'include_ads=false'

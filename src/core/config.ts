@@ -44,7 +44,7 @@ export const DEFAULT_CONFIG: Config = {
   data_dir: path.join(os.homedir(), '.mic-client', 'data'),
   log_dir: path.join(os.homedir(), '.mic-client', 'logs'),
   log_level: 'info',
-  rest: { host: '127.0.0.1', port: 8787, strict_params: false },
+  rest: { host: '127.0.0.1', port: 8899, strict_params: false },
   upstream: {
     timeout_ms: 15000,
     rate_min_ms: 1500,

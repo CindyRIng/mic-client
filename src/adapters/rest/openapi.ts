@@ -476,8 +476,8 @@ export function buildOpenApiDocument(): Json {
         '- Contract: https://github.com/CindyRIng/mic-client/blob/main/docs/03-rest-api.md',
     },
     servers: [
-      { url: 'http://127.0.0.1:8787', description: 'default local loopback' },
-      { url: 'http://localhost:8787', description: 'localhost alias' },
+      { url: 'http://127.0.0.1:8899', description: 'default local loopback' },
+      { url: 'http://localhost:8899', description: 'localhost alias' },
     ],
     tags: [
       { name: 'System', description: 'health / version / diagnostics' },

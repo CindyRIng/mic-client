@@ -97,7 +97,7 @@ flowchart TB
 |---|---|---|---|
 | E1 离线单元 | L1 | `MIC_DATA_DIR=$(mktemp -d)`、`MIC_RATE_MIN_MS=0`、`MIC_RATE_MAX_MS=0`、固定 `TZ=Asia/Shanghai` | 不读 `~/.mic-client` 真实数据；不联网 |
 | E2 fixtures 契约 | L2 | fixtures 根目录指向 `recon/artifacts/api`；假时钟；mock HTTP | fixtures 只读，测试不得回写 |
-| E3 本地服务/入口 | L3、L4 | `mic serve --host 127.0.0.1 --port <ephemeral>`；临时 SQLite；`MIC_PROFILE_DIR` 指向临时目录 | REST 端口用随机空闲端口，避免与本机 8787 冲突；测试后清理进程 |
+| E3 本地服务/入口 | L3、L4 | `mic serve --host 127.0.0.1 --port <ephemeral>`；临时 SQLite；`MIC_PROFILE_DIR` 指向临时目录 | REST 端口用随机空闲端口，避免与本机 8899 冲突；测试后清理进程 |
 | E4 真实匿名上游 | L5、部分 L4 | `~/cloak-env/bin/cloak-run node ...`；限速 1.5–2.5s；独立测试 profile | 人工/夜间执行；不在共享 IP 上高频跑；失败即停并记录 |
 
 **依赖与约定**
@@ -378,7 +378,7 @@ flowchart TB
 
 ### 6.4 安全边界检查
 
-- [ ] REST 默认仅 `127.0.0.1:8787`；非回环需显式确认并 WARN（AC-N03）
+- [ ] REST 默认仅 `127.0.0.1:8899`；非回环需显式确认并 WARN（AC-N03）
 - [ ] 无鉴权说明出现在 README/07/help；无对外网络暴露默认值
 - [ ] 不调用任何登录后接口（`auditReport.do?xcase=viewReportDetail` 等）；实现中无登录态抓取
 - [ ] 电话/邮箱/WhatsApp/微信恒 `null` + `not_public_by_platform`；不建模「登录可得」
@@ -490,12 +490,12 @@ export MIC_RATE_MAX_MS=0
 
 ```bash
 # 启动服务（随机端口，临时数据目录）
-~/cloak-env/bin/cloak-run node dist/cli.js serve --host 127.0.0.1 --port 18787 &
+~/cloak-env/bin/cloak-run node dist/cli.js serve --host 127.0.0.1 --port 18899 &
 
 # 健康检查 + 搜索 + 详情（mock 或 live 由 env 决定）
-curl -s http://127.0.0.1:18787/health | jq .
-curl -s 'http://127.0.0.1:18787/api/search/factories?keyword=glass&province=Hebei&page=1&page_size=20' | jq '.ok,.data.pagination'
-curl -s 'http://127.0.0.1:18787/api/companies/xingchenglass' | jq '.data.membership'
+curl -s http://127.0.0.1:18899/health | jq .
+curl -s 'http://127.0.0.1:18899/api/search/factories?keyword=glass&province=Hebei&page=1&page_size=20' | jq '.ok,.data.pagination'
+curl -s 'http://127.0.0.1:18899/api/companies/xingchenglass' | jq '.data.membership'
 
 # CLI 一致性（--json 与 REST data 对比）
 ~/cloak-env/bin/cloak-run node dist/cli.js search --keyword glass --province Hebei --json | jq '.data.items[0].account'

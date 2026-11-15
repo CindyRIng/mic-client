@@ -12,7 +12,7 @@ export function registerServeCommand(program: Command): void {
     .command('serve')
     .description('start the local REST server (loopback only, docs/03 endpoints)')
     .option('--host <host>', 'listen host (loopback only: 127.0.0.1/localhost/::1)', '127.0.0.1')
-    .option('--port <port>', 'listen port (1-65535; 0 = random free port)', '8787')
+    .option('--port <port>', 'listen port (1-65535; 0 = random free port)', '8899')
     .action(async (cmdOpts) => {
       const opts = program.opts<GlobalOptions>();
       try {

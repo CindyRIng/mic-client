@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
+## [1.0.3] - 2026-11-16
+
+### Changed
+- **Default REST port moved from `8787` to `8899`**, because `8787` is commonly occupied by a
+  local service (e.g. `tanji`). The port remains configurable via `mic serve --port <n>` /
+  `MIC_REST_PORT` / `rest.port`; `--port 0` picks a random free port.
+- OpenAPI `servers` URLs, README badges/architecture/examples, all contract docs and ADR links
+  now reference `127.0.0.1:8899`; `PORT_IN_USE` still suggests `--port 0`/another port.
+- Tests: added a regression assertion for the default port (8899) and the OpenAPI server URL.
+
 ## [1.0.2] - 2026-11-16
 
 ### Added

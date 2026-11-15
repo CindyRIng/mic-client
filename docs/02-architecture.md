@@ -89,7 +89,7 @@
 
 采用 **分层 + 端口/适配器（hexagonal-lite）** 的单仓库 Node 22/TypeScript 应用：
 
-1. **Adapters（入口层）**：REST（Fastify，`127.0.0.1:8787`）、CLI（`mic`，commander）、MCP（stdio）。只做传输、参数校验、序列化与错误→协议映射。
+1. **Adapters（入口层）**：REST（Fastify，`127.0.0.1:8899`）、CLI（`mic`，commander）、MCP（stdio）。只做传输、参数校验、序列化与错误→协议映射。
 2. **Application services（应用服务层）**：搜索/详情/地区/缓存管理/会话认证的用例编排，是唯一允许跨组件协调的层。
 3. **Core components（核心组件层）**：http、api-client、session、captcha、fallback、normalizer/models、membership、regions、cache、config、log/metrics、raw-snapshot、health。
 4. **Infrastructure（本地/上游）**：SQLite、cookie jar / storageState、浏览器 profile、日志文件；上游 m 站 JSON、www HTML、浏览器通道。
@@ -101,7 +101,7 @@
 ```mermaid
 flowchart TB
   subgraph AD["入口适配层 adapters"]
-    REST["REST server (Fastify)<br/>127.0.0.1:8787"]
+    REST["REST server (Fastify)<br/>127.0.0.1:8899"]
     CLI["CLI mic<br/>search/company/regions/cache/auth/serve/mcp/doctor"]
     MCP["MCP stdio server<br/>search_factories/get_company/list_regions/explain_membership"]
   end
@@ -716,7 +716,7 @@ sequenceDiagram
 
 | 入口 | 命令（实现后可用） | 形态/生命周期 | 并发模型 | 浏览器 | I/O / 典型场景 |
 |---|---|---|---|---|---|
-| REST | `mic serve`（默认 `127.0.0.1:8787`） | 长驻；单实例（实例锁） | 上游全局串行队列；请求可并发但排队 | 懒启动；空闲自动关闭并释放锁 | HTTP 响应；本机脚本/其他程序 |
+| REST | `mic serve`（默认 `127.0.0.1:8899`） | 长驻；单实例（实例锁） | 上游全局串行队列；请求可并发但排队 | 懒启动；空闲自动关闭并释放锁 | HTTP 响应；本机脚本/其他程序 |
 | CLI | `mic search / company / regions / membership / cache / config / doctor / version` | 一次性进程 | 进程内串行 | 仅 `mic auth`（及极少数 doctor 探针）使用 | stdout 数据、stderr 日志；人工/脚本 |
 | MCP | `mic mcp`（stdio） | 随 MCP 客户端生命周期；子进程 | **单一 in-flight**（stdout 协议顺序） | 懒启动；与 CLI/REST 共享浏览器锁 | JSON-RPC over stdio；Claude Code 等 Agent |
 | 认证 | `mic auth` | 一次性交互进程 | 独占浏览器 | **headed**、独占 profile 锁 | 人工过验证码/可选登录；固化会话 |
@@ -791,7 +791,7 @@ flowchart LR
     U["用户 / 本机脚本"]
     AG["MCP 客户端（Claude Code 等 Agent）"]
     CLI2["mic CLI（一次性命令）"]
-    REST2["mic serve（127.0.0.1:8787，长驻）"]
+    REST2["mic serve（127.0.0.1:8899，长驻）"]
     MCP2["mic mcp（stdio 子进程）"]
     AUTH2["mic auth（可见浏览器，独占 profile）"]
     STATE[("~/.mic-client/<br/>profiles · data · logs · config.json")]
@@ -1212,7 +1212,7 @@ stateDiagram-v2
 | 路径 | `log_dir` | string | `~/.mic-client/logs` | 日志目录 |
 | 日志 | `log_level` | enum | `info` | `debug｜info｜warn｜error` |
 | REST | `rest.host` | string | `127.0.0.1` | **仅回环**；非回环 → `CONFIG_ERROR`（§10.1） |
-| REST | `rest.port` | int | `8787` | 1–65535；`mic serve --port` 可覆盖 |
+| REST | `rest.port` | int | `8899` | 1–65535；`mic serve --port` 可覆盖 |
 | REST | `rest.queue_max_wait_ms` | int | `5000` | REST 侧预计排队等待上限，超时→429（03 §1.9） |
 | REST | `rest.cors_origin` | string/null | `null` | CORS 白名单；默认关闭（03 §1.2） |
 | 上游 | `upstream.timeout_ms` | int | `15000` | 单请求超时；`--timeout` 可覆盖 |
@@ -1342,7 +1342,7 @@ stateDiagram-v2
 
 ### 10.1 本地监听与无鉴权边界
 
-1. **仅回环**：REST 默认 `127.0.0.1:8787`；启动时校验 `rest.host` 为回环地址，**非回环直接拒绝启动**（`CONFIG_ERROR`）。文档明确禁止绑定 `0.0.0.0`/局域网/公网（07 §9、[ADR-0007](decisions/0007-local-runtime-and-secrets.md)）。
+1. **仅回环**：REST 默认 `127.0.0.1:8899`；启动时校验 `rest.host` 为回环地址，**非回环直接拒绝启动**（`CONFIG_ERROR`）。文档明确禁止绑定 `0.0.0.0`/局域网/公网（07 §9、[ADR-0007](decisions/0007-local-runtime-and-secrets.md)）。
 2. **无鉴权是设计选择**：单机单用户、本地回环；不引入 Token/会话鉴权（复杂度与收益不匹配）。
 3. **风险声明**：同机其他进程/用户可能访问该回环端口（本机信任边界内）；不在响应中放敏感凭据，接口只读，限制超时与并发，降低被滥用影响。
 4. **加固项**：`Host` 头只接受 `127.0.0.1`/`localhost`/`::1`（否则 400 `INVALID_PARAM`，`details.reason="HOST_NOT_ALLOWED"`，防 DNS rebinding）；默认不返回 CORS 头（`rest.cors_origin` 白名单显式开启）；请求体 ≤64KiB、请求行+查询串 ≤8KiB；无 TLS（仅回环）（03 §1.2）。

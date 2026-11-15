@@ -35,6 +35,6 @@
 
 ## 证据
 
-- 实现后：`curl -s http://127.0.0.1:8787/openapi.json | jq '.paths | keys'` 返回 8 条业务路径；
-- `curl -s http://127.0.0.1:8787/docs` 返回自包含 HTML（无外部 `<script src>`）；
+- 实现后：`curl -s http://127.0.0.1:8899/openapi.json | jq '.paths | keys'` 返回 8 条业务路径；
+- `curl -s http://127.0.0.1:8899/docs` 返回自包含 HTML（无外部 `<script src>`）；
 - 测试：`tests/adapters/openapi.test.ts` 校验路径集合、版本、Host 校验与自包含性。

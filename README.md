@@ -16,7 +16,7 @@
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5.x-3178c6">
   <img alt="Tests" src="https://img.shields.io/badge/tests-248%20passed-brightgreen">
   <img alt="MCP" src="https://img.shields.io/badge/MCP-stdio-7c3aed">
-  <img alt="REST" src="https://img.shields.io/badge/REST-127.0.0.1%3A8787-0ea5e9">
+  <img alt="REST" src="https://img.shields.io/badge/REST-127.0.0.1%3A8899-0ea5e9">
 </p>
 
 ---
@@ -84,7 +84,7 @@ Made-in-China（made-in-china.com，中国制造网）是外贸供应商调研�
 
 ```
 ┌─────────────────────────────── 入口层 (adapters) ───────────────────────────────┐
-│   CLI (commander)        REST (Fastify, 127.0.0.1:8787)      MCP (stdio)        │
+│   CLI (commander)        REST (Fastify, 127.0.0.1:8899)      MCP (stdio)        │
 └───────────────────────────────────┬─────────────────────────────────────────────┘
                                     │ 共用 AppContext（config / logger / cache / http）
 ┌───────────────────────────────────▼───────────────────────── core ─────────────┐
@@ -188,7 +188,7 @@ mic version
 
 ```bash
 mic version
-# mic-client 1.0.2
+# mic-client 1.0.3
 # node v22.23.2
 # sqlite schema v1
 # upstream contract checked 2026-11-15
@@ -264,7 +264,7 @@ mic auth                         # 人工兜底：可见浏览器过验证码/�
 ## REST API
 
 ```bash
-mic serve --host 127.0.0.1 --port 8787      # 前台启动，仅回环监听
+mic serve --host 127.0.0.1 --port 8899      # 前台启动，仅回环监听
 ```
 
 ### 端点
@@ -287,8 +287,8 @@ mic serve --host 127.0.0.1 --port 8787      # 前台启动，仅回环监听
 
 ```bash
 mic serve
-# 打开 http://127.0.0.1:8787/docs      ← 自包含 HTML（无外部 CDN），支持“Try it”直接调用
-# 打开 http://127.0.0.1:8787/openapi.json ← OpenAPI 3.1，可导入 Postman/Insomnia/代码生成器
+# 打开 http://127.0.0.1:8899/docs      ← 自包含 HTML（无外部 CDN），支持“Try it”直接调用
+# 打开 http://127.0.0.1:8899/openapi.json ← OpenAPI 3.1，可导入 Postman/Insomnia/代码生成器
 ```
 
 ![REST API Docs](assets/rest-docs.png)
@@ -299,10 +299,10 @@ mic serve
 ### 示例
 
 ```bash
-curl "http://127.0.0.1:8787/api/search/factories?keyword=glass&province=Hebei&page=1"
-curl "http://127.0.0.1:8787/api/search/factories?province=%E6%B2%B3%E5%8C%97&city=%E5%BB%8A%E5%9D%8A"
-curl "http://127.0.0.1:8787/api/companies/xingchenglass?include=audit,response"
-curl "http://127.0.0.1:8787/health"
+curl "http://127.0.0.1:8899/api/search/factories?keyword=glass&province=Hebei&page=1"
+curl "http://127.0.0.1:8899/api/search/factories?province=%E6%B2%B3%E5%8C%97&city=%E5%BB%8A%E5%9D%8A"
+curl "http://127.0.0.1:8899/api/companies/xingchenglass?include=audit,response"
+curl "http://127.0.0.1:8899/health"
 ```
 
 ```jsonc
@@ -363,7 +363,7 @@ mic mcp --print-config     # 打印可直接粘贴的 MCP 客户端配置
 | `profile_dir` | `MIC_PROFILE_DIR` | `~/.mic-client/profiles/default` | cloakbrowser 持久 profile |
 | `data_dir` | `MIC_DATA_DIR` | `~/.mic-client/data` | SQLite / 会话 cookie |
 | `log_dir` / `log_level` | `MIC_LOG_DIR` / `MIC_LOG_LEVEL` | `~/.mic-client/logs` / `info` | 结构化日志 |
-| `rest.host` / `rest.port` | `MIC_REST_HOST` / `MIC_REST_PORT` | `127.0.0.1` / `8787` | REST 监听（仅回环） |
+| `rest.host` / `rest.port` | `MIC_REST_HOST` / `MIC_REST_PORT` | `127.0.0.1` / `8899` | REST 监听（仅回环） |
 | `upstream.timeout_ms` | `MIC_UPSTREAM_TIMEOUT_MS` | `15000` | 单请求超时 |
 | `upstream.rate_min_ms` / `rate_max_ms` | `MIC_RATE_MIN_MS` / `MIC_RATE_MAX_MS` | `1500` / `2500` | 上游间隔抖动 |
 | `cache.ttl_list_s` / `ttl_detail_s` / `ttl_regions_s` | `MIC_CACHE_TTL_*` | `6h` / `24h` / `30d` | 缓存 TTL |
@@ -478,7 +478,7 @@ npx vitest run tests/core tests/company tests/adapters
 
 ## 路线图与已知限制
 
-**状态：M0–M4 已完成，v1.0.2。** 详见 [docs/08-roadmap.md](docs/08-roadmap.md)。
+**状态：M0–M4 已完成，v1.0.3。** 详见 [docs/08-roadmap.md](docs/08-roadmap.md)。
 
 已知限制（有意为之/待验证）：
 

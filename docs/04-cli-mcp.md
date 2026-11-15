@@ -270,7 +270,7 @@ mic [GLOBAL OPTIONS] <command> [<subcommand>] [ARGS] [OPTIONS]
   "log_level": "info",
   "rest": {
     "host": "127.0.0.1",
-    "port": 8787
+    "port": 8899
   },
   "upstream": {
     "timeout_ms": 15000,
@@ -301,7 +301,7 @@ mic [GLOBAL OPTIONS] <command> [<subcommand>] [ARGS] [OPTIONS]
 | `profile_dir` | `--profile` | `MIC_PROFILE_DIR` | `~/.mic-client/profiles/default` | 浏览器 profile 目录；`--profile <name>` 覆盖为 `<profiles_dir>/<name>` |
 | `data_dir` | — | `MIC_DATA_DIR` | `~/.mic-client/data` | SQLite 与原始快照目录 |
 | `log_dir` / `log_level` | `--verbose`/`--quiet` | `MIC_LOG_DIR` / `MIC_LOG_LEVEL` | `~/.mic-client/logs` / `info` | 结构化日志文件与级别（debug/info/warn/error） |
-| `rest.host` / `rest.port` | `mic serve --host/--port` | `MIC_REST_HOST` / `MIC_REST_PORT` | `127.0.0.1` / `8787` | REST 监听（必须回环，§2.7.6） |
+| `rest.host` / `rest.port` | `mic serve --host/--port` | `MIC_REST_HOST` / `MIC_REST_PORT` | `127.0.0.1` / `8899` | REST 监听（必须回环，§2.7.6） |
 | `upstream.timeout_ms` | `--timeout` | `MIC_UPSTREAM_TIMEOUT_MS` | `15000` | 单请求超时（范围 1000–120000） |
 | `upstream.rate_min_ms` / `rate_max_ms` | — | `MIC_RATE_MIN_MS` / `MIC_RATE_MAX_MS` | `1500` / `2500` | 上游请求串行间隔抖动（范围 500–10000，且 min<max） |
 | `cache.ttl_list_s` / `ttl_detail_s` / `ttl_regions_s` | — | `MIC_CACHE_TTL_LIST_S` / `MIC_CACHE_TTL_DETAIL_S` / `MIC_CACHE_TTL_REGIONS_S` | `21600` / `86400` / `2592000` | 列表 6h / 详情 24h / 地区 30d（05 定稿） |
@@ -414,7 +414,7 @@ mic [GLOBAL OPTIONS] <command> [<subcommand>] [ARGS] [OPTIONS]
 | [`mic regions`](#273-mic-regions) | 省/市字典 | 一次性 | 否 | FR-07 | M1 |
 | [`mic cache`](#274-mic-cache) | `stats` / `clear` / `refresh` | 一次性 | 否 | FR-08 | M1/M2 |
 | [`mic auth`](#275-mic-auth) | 可见浏览器人工过验证码/登录并固化会话 | 交互式 | **是** | FR-12 | M3 |
-| [`mic serve`](#276-mic-serve) | 前台启动本地 REST 服务（127.0.0.1:8787） | 长驻 | 兜底时可能 | FR-09 | M3 |
+| [`mic serve`](#276-mic-serve) | 前台启动本地 REST 服务（127.0.0.1:8899） | 长驻 | 兜底时可能 | FR-09 | M3 |
 | [`mic mcp`](#277-mic-mcp) | 启动 stdio MCP server | 长驻 | 兜底时可能 | FR-11 | M3 |
 | [`mic config`](#278-mic-config) | `show` / `path` | 一次性 | 否 | FR-15 | M3 |
 | [`mic doctor`](#279-mic-doctor) | 环境/会话/网络/上游/契约自检 | 一次性 | 否 | FR-14 | M3 |
@@ -1296,7 +1296,7 @@ $ mic auth
 
 #### 2.7.6 `mic serve`
 
-**用途**：前台启动本地 REST 服务（默认 `http://127.0.0.1:8787`），与 CLI/MCP 共用 core；端点/参数/响应 Schema 由 [03 REST API](03-rest-api.md) 定义（FR-09）。与 07 §4 的启动方式一致。
+**用途**：前台启动本地 REST 服务（默认 `http://127.0.0.1:8899`），与 CLI/MCP 共用 core；端点/参数/响应 Schema 由 [03 REST API](03-rest-api.md) 定义（FR-09）。与 07 §4 的启动方式一致。
 
 **语法**
 
@@ -1309,7 +1309,7 @@ mic serve [--host <ip|host>] [--port <1-65535|0>]
 | 选项 | 类型 | 默认 | 说明 |
 |---|---|---|---|
 | `--host <h>` | string | 配置 `rest.host`（`127.0.0.1`） | **只允许回环地址**：`127.0.0.1`/`::1`/`localhost`；其他值 → `INVALID_PARAM`（安全限制，ADR-0007） |
-| `--port <n>` | int | 配置 `rest.port`（8787） | `1–65535`；`0`=让内核分配随机端口（启动时打印实际端口） |
+| `--port <n>` | int | 配置 `rest.port`（8899） | `1–65535`；`0`=让内核分配随机端口（启动时打印实际端口） |
 
 **规则**
 
@@ -1317,14 +1317,14 @@ mic serve [--host <ip|host>] [--port <1-65535|0>]
 - **S2 输出**：默认启动信息写 stderr（保持 stdout 干净）；`--json` 时 stdout 只打印**一行**启动 JSON（`{"event":"listening","host":...,"port":...,"pid":...}`），之后 stdout 静默，日志继续写文件/stderr。
 - **S3 安全边界**：仅回环；无鉴权（不能暴露公网/局域网，07 §9）；不因 `--host` 非法而降级绑定。
 - **S4 共享状态**：SQLite WAL（单写者，05）；浏览器 profile 单例/文件锁；可与 `mic mcp` 同时运行（不同进程、同一 core 配置），但**同端口只能一个实例**（`EADDRINUSE` → `CONFIG_ERROR`，退出码 1）。
-- **S5 健康检查**：提供 `GET /health`（03 定义响应）；运维可用 `curl -fsS http://127.0.0.1:8787/health` 探活。
+- **S5 健康检查**：提供 `GET /health`（03 定义响应）；运维可用 `curl -fsS http://127.0.0.1:8899/health` 探活。
 - **S6 全局选项**：`--json/--verbose/--quiet/--timeout/--profile/--config` 生效；`--no-cache` 可作为服务级默认（谨慎：会禁用缓存）；`--refresh` 与长驻语义冲突 → `INVALID_PARAM`。
 
 **示例（可复制）**
 
 ```bash
 mic serve
-mic serve --host 127.0.0.1 --port 8787
+mic serve --host 127.0.0.1 --port 8899
 mic serve --port 0 --json
 # 后台运行建议交给 systemd --user / nohup（见 07 §4）
 nohup mic serve > ~/.mic-client/logs/serve.out 2>&1 &
@@ -1333,16 +1333,16 @@ nohup mic serve > ~/.mic-client/logs/serve.out 2>&1 &
 **人类输出示例（stderr）**
 
 ```text
-[serve] listening on http://127.0.0.1:8787 (pid 4242)
+[serve] listening on http://127.0.0.1:8899 (pid 4242)
 [serve] data=/home/songqian/.mic-client/data/mic.sqlite profile=default
-[serve] health=http://127.0.0.1:8787/health  log=/home/songqian/.mic-client/logs/mic.log
+[serve] health=http://127.0.0.1:8899/health  log=/home/songqian/.mic-client/logs/mic.log
 [serve] ready. press Ctrl+C to stop
 ```
 
 **`--json` 启动输出示例（stdout 一行）**
 
 ```json
-{"event":"listening","host":"127.0.0.1","port":8787,"pid":4242,"profile":"default","data_dir":"/home/songqian/.mic-client/data","health_url":"http://127.0.0.1:8787/health"}
+{"event":"listening","host":"127.0.0.1","port":8899,"pid":4242,"profile":"default","data_dir":"/home/songqian/.mic-client/data","health_url":"http://127.0.0.1:8899/health"}
 ```
 
 **退出码**
@@ -1449,7 +1449,7 @@ $ mic config show
 3  log_dir                       /home/songqian/.mic-client/logs                default
 4  log_level                     info                                           default
 5  rest.host                     127.0.0.1                                      default
-6  rest.port                     8787                                           default
+6  rest.port                     8899                                           default
 7  upstream.timeout_ms           15000                                          default
 8  upstream.rate_min_ms          1500                                           default
 9  upstream.rate_max_ms          2500                                           default
@@ -1474,7 +1474,7 @@ $ mic config show
       "profile_dir": "/home/songqian/.mic-client/profiles/default",
       "data_dir": "/home/songqian/.mic-client/data",
       "log_level": "info",
-      "rest": { "host": "127.0.0.1", "port": 8787 },
+      "rest": { "host": "127.0.0.1", "port": 8899 },
       "upstream": { "timeout_ms": 15000, "rate_min_ms": 1500, "rate_max_ms": 2500 },
       "cache": { "ttl_list_s": 21600, "ttl_detail_s": 86400, "ttl_regions_s": 2592000 }
     },
@@ -2575,7 +2575,7 @@ mic mcp --print-config
 flowchart LR
   subgraph adapters["adapters（薄层）"]
     CLI["CLI adapter<br/>参数解析/表格/退出码"]
-    REST["REST adapter<br/>Fastify 127.0.0.1:8787"]
+    REST["REST adapter<br/>Fastify 127.0.0.1:8899"]
     MCP["MCP adapter<br/>stdio JSON-RPC"]
   end
 
@@ -2679,7 +2679,7 @@ flowchart LR
 
 | 维度 | REST | CLI | MCP |
 |---|---|---|---|
-| 传输 | HTTP `127.0.0.1:8787` | 进程 stdin/stdout | stdio JSON-RPC |
+| 传输 | HTTP `127.0.0.1:8899` | 进程 stdin/stdout | stdio JSON-RPC |
 | 输出封装 | HTTP body = envelope | `--json`=envelope；`table`=人类视图；默认无 HTTP 概念 | `content[0].text`=envelope JSON 字符串 |
 | 错误表达 | HTTP 状态 + envelope | 退出码 + stderr/JSON envelope | `isError:true` + envelope（协议错误另用 JSON-RPC error） |
 | 长驻 | `mic serve` 本体 | `serve`/`mcp` | `mic mcp` 本体 |
@@ -2710,7 +2710,7 @@ flowchart LR
 | `mic cache clear` | `--scope`（必填）、`--key`、`--older-than`、`--dry-run` | `mic cache clear --scope raw --older-than 7d --dry-run` | 0/2/1 |
 | `mic cache refresh` | `--scope`（必填）、身份参数/`--key`、`--stale-only`、`--all` | `mic cache refresh --scope list --keyword glass --province Hebei` | 0/2/3/4/5/6/1 |
 | `mic auth` | `--mode/--timeout/--profile/--reset` | `mic auth` | 0/2/4/5/1 |
-| `mic serve` | `--host/--port` | `mic serve --host 127.0.0.1 --port 8787` | 0/2/1 |
+| `mic serve` | `--host/--port` | `mic serve --host 127.0.0.1 --port 8899` | 0/2/1 |
 | `mic mcp` | `--transport/--no-resources/--print-config` | `mic mcp --print-config` | 0/2/1 |
 | `mic config show` | `--json` | `mic config show` | 0/1/2 |
 | `mic config path` | `--all/--json` | `mic config path --all` | 0/2/1 |

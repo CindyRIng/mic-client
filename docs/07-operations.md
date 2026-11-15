@@ -48,7 +48,7 @@
 | `profile_dir` | `MIC_PROFILE_DIR` | `~/.mic-client/profiles/default` | 浏览器 profile 目录 |
 | `data_dir` | `MIC_DATA_DIR` | `~/.mic-client/data` | SQLite/快照目录 |
 | `log_dir` / `log_level` | `MIC_LOG_DIR` / `MIC_LOG_LEVEL` | `~/.mic-client/logs` / `info` | 日志位置与级别（debug/info/warn/error） |
-| `rest.host` / `rest.port` | `MIC_REST_HOST` / `MIC_REST_PORT` | `127.0.0.1` / `8787` | REST 监听（仅回环） |
+| `rest.host` / `rest.port` | `MIC_REST_HOST` / `MIC_REST_PORT` | `127.0.0.1` / `8899` | REST 监听（仅回环） |
 | `upstream.timeout_ms` | `MIC_UPSTREAM_TIMEOUT_MS` | `15000` | 单请求超时 |
 | `upstream.rate_min_ms` / `rate_max_ms` | `MIC_RATE_MIN_MS` / `MIC_RATE_MAX_MS` | `1500` / `2500` | 上游请求间隔（抖动） |
 | `cache.ttl_list_s` / `cache.ttl_search_index_s` | `MIC_CACHE_TTL_LIST_S` / `MIC_CACHE_TTL_SEARCH_INDEX_S` | `21600` / `21600` | 列表上游页 6h / 派生索引 6h |
@@ -69,17 +69,17 @@
 
 ```bash
 mic search --keyword glass --province Hebei --json
-mic serve --host 127.0.0.1 --port 8787
+mic serve --host 127.0.0.1 --port 8899
 mic mcp
 
 # 启动 serve 后，浏览器打开自描述 API 文档：
-# http://127.0.0.1:8787/docs   （OpenAPI: http://127.0.0.1:8787/openapi.json）
+# http://127.0.0.1:8899/docs   （OpenAPI: http://127.0.0.1:8899/openapi.json）
 
 # 等价的手工启动方式（避免全局安装时）
 ~/cloak-env/bin/cloak-run node dist/cli.js search --keyword glass --province Hebei --json
 
 # REST 服务（前台）
-~/cloak-env/bin/cloak-run node dist/cli.js serve --host 127.0.0.1 --port 8787
+~/cloak-env/bin/cloak-run node dist/cli.js serve --host 127.0.0.1 --port 8899
 
 # REST 服务（后台，建议交给 systemd --user 或 nohup；示例）
 nohup ~/cloak-env/bin/cloak-run node dist/cli.js serve > ~/.mic-client/logs/serve.out 2>&1 &
@@ -142,7 +142,7 @@ MCP 客户端（如 Claude Code）配置示例：
 | `UPSTREAM_CHANGED` | 上游字段/结构变更 | 保存的原始快照定位差异；更新映射层与契约测试；临时走 HTML 兜底 |
 | `PARSE_ERROR` | DOM/JSON 改版、页面异常 | 打开 `raw_snapshots` 留档；对照 `docs/research` 更新解析规则 |
 | `RATE_LIMITED` (429) | 本地上游队列限速 | 等待 `Retry-After`；降低并发；增大 `rate_min/max_ms` |
-| REST 端口占用 | 8787 被占用 | `ss -lntp | grep 8787`；改 `--port` |
+| REST 端口占用 | 8899 被占用 | `ss -lntp | grep 8899`；改 `--port` |
 | SQLite `database is locked` | 多进程写/长事务 | 确保单写进程；`busy_timeout` 已设；必要时重启服务 |
 | MCP 客户端无响应 | stdio 启动失败/路径错误 | 检查客户端配置 command/args；手动执行 `mic doctor`；看 stderr |
 | 中文输出乱码 | 终端编码 | `export LANG=zh_CN.UTF-8`；CLI 默认输出 UTF-8 |
@@ -184,7 +184,7 @@ mic search --keyword glass --province Hebei --page 1 --json
 mic search --province Hebei --city Langfang --json          # 地区模式
 mic company xingchenglass --json
 mic cache stats
-mic serve --port 8787
+mic serve --port 8899
 mic mcp
 ```
 
