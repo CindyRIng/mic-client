@@ -1,0 +1,341 @@
+{
+ "generated_at": "2026-11-15T22:47+08:00",
+ "environment": "curl with/without probe10 storage-state cookies; mobile UA where noted",
+ "endpoints": [
+  {
+   "id": "mobile-supplier-search",
+   "method": "POST",
+   "url": "https://m.made-in-china.com/search/supplier",
+   "required_headers": {
+    "X-Requested-With": "XMLHttpRequest",
+    "Content-Type": "application/x-www-form-urlencoded"
+   },
+   "auth": "none (anonymous)",
+   "risk": "low; JSON gateway; CORS enabled",
+   "body_params": {
+    "word": "keyword (required; English)",
+    "page": "1-based page",
+    "pageSize": "default 20; server returns 20 items max even if pageSize=100 (totalPage computed from pageSize)",
+    "province": "English province name, e.g. Hebei (invalid -> total=0)",
+    "catCode": "category code e.g. 1500000000",
+    "comBusinessType": "1 Manufacturer/Factory | 2 Trading Company | 4 Group Corporation | 8 Other",
+    "managementCertification": "-5 ISO9001:2015 | 6 ISO 14001 | 10 ISO 9001 | -4 Others | 9 ISO 9000 | 20 BSCI | ...",
+    "memberLevel": "50 Diamond | 30 Gold | 0,1,3 Audited Supplier",
+    "annualRevenue": "1..7 ranges (1=<1M USD, 3=2.5~5M, 5=10~50M, 7=>100M)",
+    "rdCapacity": "4 OEM | 5 ODM | 01 Quick Response | 02 Fast Delivery | 03 Small-amount payment"
+   },
+   "response": "JSON: {total,totalNum,totalNum,page,pageSize,totalPage,dataList[20],dataFromCorrect,correctwords,...}",
+   "item_fields": [
+    "id",
+    "name",
+    "mainUserAccount",
+    "memberType",
+    "auditType",
+    "showAuditLogo",
+    "logoText",
+    "city",
+    "province",
+    "country",
+    "mainProduct",
+    "businessTypeList",
+    "comOwnerShip",
+    "systemCertificationList",
+    "comTurnOver",
+    "comPlantArea",
+    "csLevel",
+    "leadingFactory",
+    "companySymbol{stars,memberYears}",
+    "build/establishment?",
+    "encodeComId",
+    "companyUrl",
+    "companyInfoUrl",
+    "productReduce[]",
+    "showAd/ad",
+    "quickResponse",
+    "rdCapacityList"
+   ],
+   "samples": [
+    "mobile-search/supplier-search-glass-p1.json",
+    "mobile-search/supplier-search-province-hebei.json",
+    "mobile-search/supplier-search-province-hebei-diamond.json",
+    "mobile-search/supplier-search-multifilter.json"
+   ],
+   "notes": [
+    "total capped to 2000 (\"2,000+\", totalPage<=100) when more results; narrow filters return exact count (glass+province=Hebei -> 669)",
+    "page beyond totalPage clamps to last page",
+    "effective items per request = 20"
+   ],
+   "availability": "verified 2026-11-15 anonymous (no cookies)"
+  },
+  {
+   "id": "mobile-supplier-refine",
+   "method": "GET",
+   "url": "https://m.made-in-china.com/search/supplier/refine?word=<kw>&page=1[&<filter>=<value>...]",
+   "required_headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "auth": "none",
+   "risk": "low",
+   "response": "JSON array: [{value, subject, childs:[{name,value,count}], categoriesRefine}]",
+   "facets": [
+    "catCode (top 10)",
+    "comBusinessType",
+    "managementCertification",
+    "memberLevel",
+    "province (31 values)",
+    "annualRevenue",
+    "rdCapacity"
+   ],
+   "samples": [
+    "mobile-search/supplier-refine-glass.json",
+    "mobile-search/supplier-refine-glass-hebei.json",
+    "filters/facet-dictionaries.json"
+   ],
+   "notes": "facet counts reflect current filters; no employee-count facet"
+  },
+  {
+   "id": "mobile-product-search",
+   "method": "POST",
+   "url": "https://m.made-in-china.com/search/product",
+   "required_headers": {
+    "X-Requested-With": "XMLHttpRequest",
+    "Content-Type": "application/x-www-form-urlencoded"
+   },
+   "auth": "none",
+   "risk": "low (GET /search/product without XHR returns Focus captcha; POST JSON works)",
+   "body_params": {
+    "word": "keyword",
+    "page": "1-based",
+    "pageSize": "server effective 36",
+    "province": "English province name",
+    "catCode": "category code",
+    "industryProperty": "composite e.g. 1502080000_37326714_13491703"
+   },
+   "response": "JSON: {total,totalNum,page,pageSize,totalPage,dataList[36],...}; item has company{id,name,province,country,businessType,cooperationYear,rdCapacityList}, price_num,price_unit,minOrder,url,inquiryUrl",
+   "samples": [
+    "mobile-search/product-search-glass-p1.json",
+    "mobile-search/product-search-province-hebei.json",
+    "mobile-search/product-refine-glass.json"
+   ],
+   "availability": "verified anonymous"
+  },
+  {
+   "id": "mobile-product-refine",
+   "method": "GET",
+   "url": "https://m.made-in-china.com/search/product/refine?word=<kw>&page=1",
+   "required_headers": {
+    "X-Requested-With": "XMLHttpRequest"
+   },
+   "auth": "none",
+   "response": "JSON array facets: catCode(10), industryProperty x N, comBusinessType, province(30), tradeFacet",
+   "samples": [
+    "mobile-search/product-refine-glass.json"
+   ]
+  },
+  {
+   "id": "mobile-search-ssr-page",
+   "method": "GET",
+   "url": "https://m.made-in-china.com/search/supplier?word=<kw>&page=N[&province=..&...]",
+   "required_headers": {
+    "User-Agent": "mobile UA recommended"
+   },
+   "auth": "none",
+   "response": "HTML SSR containing <script type=\"text/json\" id=\"props\"> full JSON (dataList, appliedFilters, refineModels, page/total)",
+   "samples": [
+    "mobile-search/supplier-search-ssr-props-glass.json"
+   ],
+   "notes": "JSON POST endpoint is preferred; SSR parse only if POST blocked"
+  },
+  {
+   "id": "company-info-mobile",
+   "method": "GET",
+   "url": "https://m.made-in-china.com/company-<mainUserAccount>/info.html  (or /company-<mainUserAccount>/)",
+   "required_headers": {
+    "User-Agent": "mobile UA (desktop UA redirects to PC minisite)"
+   },
+   "auth": "none",
+   "risk": "medium: occasional Focus captcha (1/6 company page requests); retry with fresh session",
+   "response": "HTML with <script type=\"text/json\" id=\"ssrData\">: {isDiamondMember,comId,logUsername,companyInfo.content{comName,memberLevel,memberSince,sgsMember,auditReportLogo,mainProducts,businessTypes,establishment,reviewStatistics,companySymbol,onlineTradeAble,rd},suggestProducts,linkConfig,...}",
+   "samples": [
+    "mobile-company/xingchenglass-info-ssrData.json",
+    "mobile-company/hnfinsulation-info-ssrData.json",
+    "mobile-company/salienceglass-home-ssrData.json",
+    "mobile-company/contact-page-visible-fields.json"
+   ],
+   "notes": [
+    "/company/<numericId> -> 301 /company-<account>/ (numeric id from search JSON)",
+    "info.html additionally renders in HTML: Business Type, R&D Capacity, Main Products, Year of Establishment, Rating, Number of Employees, Management System Certification, Address, Company Overview (anonymous)",
+    "contact.html renders contact person name/title/department + city-level Address (anonymous); phone/email require login"
+   ]
+  },
+  {
+   "id": "sgs-audit-report-sections",
+   "method": "GET",
+   "url": "https://www.made-in-china.com/multi-search/sgs/report?comId=<encodeComId>[&lanCode=0]",
+   "required_headers": {},
+   "auth": "none",
+   "risk": "low",
+   "params": {
+    "comId": "ENCODED comId from list JSON (e.g. bSrtEKgyYcUf); numeric comId -> HTTP 500"
+   },
+   "response": "JSON {code:0,msg,data:[{content:\"General Information\",audit:true},...9 sections]}",
+   "samples": [
+    "company-json/sgs-audit-report-sections-salienceglass.json"
+   ]
+  },
+  {
+   "id": "reply-rate",
+   "method": "GET or POST",
+   "url": "https://data.made-in-china.com/extend/busiMerge/replyRate",
+   "params": {
+    "date": "YYYYMMDD (page JS uses today-2d)",
+    "comId": "encoded comId",
+    "operatorNo": "all"
+   },
+   "auth": "none",
+   "risk": "low",
+   "response": "JSON {status:1,data:[{calNumber,comId(numeric),operatorNo,l30BusiIntimeReplyRatio,l30BusiReplyDurAvg,l30TopIntimeReplyRatio,l30TopReplyDurAvg,l30BusiReplyDurAvgRange}]}",
+   "samples": [
+    "company-json/reply-rate-salienceglass.json"
+   ],
+   "notes": "date=YYYYMMDD changes data window snapshot (l30xx = last 30 days metrics)"
+  },
+  {
+   "id": "tm-sub-accounts",
+   "method": "GET",
+   "url": "https://www.made-in-china.com/im.do?xcase=getSubAccount&comIdStr=<encodeComId1,encodeComId2...>[&callback=cb]",
+   "auth": "none",
+   "risk": "low",
+   "response": "JSON/JSONP: {<encodeComId>:[{name,id}]}  (contact person names for chat accounts)",
+   "samples": [
+    "company-json/tm-sub-accounts-salienceglass.json"
+   ]
+  },
+  {
+   "id": "tm-online-status",
+   "method": "GET",
+   "url": "https://www.made-in-china.com/ajaxfunction.do?xcase=getTmStatus&user_ids[]=<encodeComId>_00&user_ids[]=...[&callback=cb]",
+   "auth": "none",
+   "risk": "low",
+   "response": "JSON/JSONP: {\"<encodeComId>_00\":{\"online\":true,\"status\":1}}",
+   "samples": [
+    "company-json/tm-online-status-salienceglass.json"
+   ]
+  },
+  {
+   "id": "company-reviews",
+   "method": "GET",
+   "url": "https://m.made-in-china.com/user/review/front/next?pageNum=1&sortType=1&foldFlag=false&reviewType=0&receiverComId=<encodeComId>&prodId=",
+   "auth": "none",
+   "risk": "low",
+   "response": "JSON {code:0,content:{reviewSearchItemVOList:[{overallReview,reviewContent,reviewId,sourceType,senderIpCountry,senderName(masked),receiverComName,titleText,productImgUrl,...}],totalPage,...}}",
+   "samples": [
+    "company-json/company-reviews-xingchenglass.json"
+   ],
+   "notes": "receiverComId = encodeComId (not numeric; numeric -> code 900004 invalid param)"
+  },
+  {
+   "id": "suggest-supplier",
+   "method": "GET",
+   "url": "https://keywordsuggestions.made-in-china.com/suggest/getEnSupplierSuggest.do?param=<kw>&kind=5&ad=1&id=MICSearchSuggest&count=10&ignoreCase=true&matchAnywhere=true&catflag=1",
+   "auth": "none",
+   "risk": "low",
+   "response": "JSONP-like text: null({\"ads\":[],\"sug\":[{word,root,count,catCode,catName,enc,related[],history,replaceWord,...}]})",
+   "samples": [
+    "suggest/suggest-parsed.json"
+   ],
+   "notes": [
+    "English only (Chinese -> empty)",
+    "prefix-ish matching: \"gla\" matches glass, \"lass\" -> empty",
+    "count = supplier result count for that keyword; useful to validate keyword volume",
+    "no callback param support (hardcoded null())"
+   ]
+  },
+  {
+   "id": "suggest-product",
+   "method": "GET",
+   "url": "https://keywordsuggestions.made-in-china.com/suggest/getEnProdSuggest.do?param=<kw>&kind=5&ad=1&id=MICSearchSuggest&count=10&ignoreCase=true&matchAnywhere=true&catflag=1&seo=1",
+   "auth": "none",
+   "response": "null({...sug:[...]}), product suggestions with catCode/catName/enc and related keywords",
+   "samples": [
+    "suggest/suggest-parsed.json"
+   ]
+  },
+  {
+   "id": "head-gethead",
+   "method": "GET",
+   "url": "https://www.made-in-china.com/head.do?xcase=getHead",
+   "auth": "none",
+   "response": "JSON {login,newMailNum,inquiryBasketNum,...} (login status probe)"
+  },
+  {
+   "id": "head-entrances",
+   "method": "GET",
+   "url": "https://www.made-in-china.com/head.do?xcase=entrances&_t=<ts>&lanCode=0",
+   "auth": "none",
+   "response": "JSON nav menu [{name,link,hoverDesc,children}]"
+  },
+  {
+   "id": "head-basket",
+   "method": "GET",
+   "url": "https://www.made-in-china.com/head.do?xcase=getBasketNum",
+   "auth": "none",
+   "response": "JSON {basketNum}"
+  },
+  {
+   "id": "keyword-history",
+   "method": "GET",
+   "url": "https://www.made-in-china.com/ajaxfunction.do?xcase=getKeywordHistory&_t=<ts>",
+   "auth": "cookie (recent searches)",
+   "response": "JSON {\"type\":\"2\",\"list\":[{\"word\":\"glass\"}]}"
+  },
+  {
+   "id": "youMayLike",
+   "method": "GET",
+   "url": "https://www.made-in-china.com/multi-search/ajax/youMayLike4Com?code=&buttonAdNum=5&neatWord=<kw>&page=1&word=<kw>&pageType=&from=huntc",
+   "auth": "none",
+   "response": "JSON {data:{prodList:[{prodUrl,hundredPicUrl,prodName,...}]}}"
+  },
+  {
+   "id": "spotlight",
+   "method": "GET",
+   "url": "https://www.made-in-china.com/multi-search/ajax/spotlightForCom?code=&buttonAdNum=5&neatWord=<kw>&page=1&word=<kw>&spotRecommedProdIds=&from=huntc&filterProdIds=<ids>",
+   "auth": "none",
+   "response": "JSON array of spotlight products"
+  },
+  {
+   "id": "seo-company-search",
+   "method": "GET",
+   "url": "https://www.made-in-china.com/company-search/<keyword>/C1[--CP_<Prov>][--CC_<Prov>_<City>][--CD_<Cat>-Catalog][--MC_<id>][--BT_<n>][--AR_<n>][--NE_<n>][--SGS_AS]/<page>.html",
+   "auth": "none but flaky: anonymous sometimes 200, sometimes 302/challenge; with warmed pid/JSESSIONID cookie 200",
+   "risk": "HIGH: EO/bot session binding; retry logic required",
+   "response": "HTML (30 rows) + facet links with counts; ONLY source for city-level and employee-count filtering",
+   "samples": [
+    "filters/seo-filter-codes.json",
+    "desktop/seo-filter-page-matrix.json"
+   ],
+   "notes": [
+    "27 filter codes observed; City & Town facet only on province-filtered pages",
+    "page cap = ceil(total/30); page beyond -> HTTP 301"
+   ]
+  },
+  {
+   "id": "audited-report-page",
+   "method": "GET",
+   "url": "https://<host>.en.made-in-china.com/audited-supplier-reports/report.html",
+   "auth": "anonymous (sample available) but challenge-prone",
+   "response": "301/redirect to /company-<Name>.html?isNewShowroomUrl=1&xcase=auditReport (HTML audit report)",
+   "samples": [
+    "desktop/audited-supplier-report-fanyuan99.html"
+   ]
+  },
+  {
+   "id": "audit-report-detail",
+   "method": "GET",
+   "url": "https://www.made-in-china.com/auditReport.do?xcase=viewReportDetail&comId=<numeric>&recId=<id>&org=<SGS|BV|...>",
+   "auth": "login required -> 302 to login",
+   "response": "HTML (login-gated)"
+  }
+ ],
+ "browser_free_conclusion": "List search + refine + company info JSON + audit sections + reply rate + IM/review enrichment all work over plain HTTP anonymously. City-level filtering and employee-count filtering still require desktop SEO company-search pages (session flaky)."
+}

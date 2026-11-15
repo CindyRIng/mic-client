@@ -1,0 +1,161 @@
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>请验证</title>
+    <style>
+
+        .main_div {
+            width: 80%; /* 使用百分比宽度 */
+            max-width: 500px; /* 最大宽度为 500px，适应大屏幕 */
+            height: 500px;
+            position: absolute;
+            margin: auto;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        #progressBarContainer {
+            display: none; /* 初始时隐藏 */
+            width: 100%;
+            background-color: #eee;
+            border-radius: 15px; /* 容器圆角 */
+            padding: 3px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            margin: 10px 0;
+        }
+
+        #progressBar {
+            /* ...其他样式保持不变... */
+            background-image: linear-gradient(
+                    45deg,
+                    rgba(255, 255, 255, 0.2) 25%,
+                    transparent 25%,
+                    transparent 50%,
+                    rgba(255, 255, 255, 0.2) 50%,
+                    rgba(255, 255, 255, 0.2) 75%,
+                    transparent 75%,
+                    transparent
+            );
+            border-radius: 12px;
+            background-size: 50px 50px; /* 条纹大小 */
+            animation: move-stripes 2s linear infinite; /* 条纹移动动画 */
+        }
+
+    </style>
+</head>
+<body>
+<div class="main_div">
+    <p id="fc-tips"></p>
+    <div id="captchaTip" style="margin-top:20px;"> </div>
+    <div id="mpanel2" style="margin-top:20px;">
+    </div>
+    <div id="progressBarContainer" style="width: 70%; background-color: #ddd;">
+        <div id="progressBar" style="width: 0%; height: 30px; background-color: #4CAF50; text-align: center; line-height: 30px; color: white;"></div>
+    </div>
+</div>
+<script type="text/javascript" src="https://captcha.vemic.com/js/jquery.min.js"></script>
+<!--<script src="https://captcha.vemic.com/js/FCaptcha-self-all.js"></script>-->
+<script src="https://captcha.vemic.com/js/FCaptcha-3.0.2-all.js"></script>
+<script>
+
+    if (navigator.language === 'zh-CN') {
+        document.title = '焦点验证码';
+        $('#fc-tips').html('请完成以下操作，验证您是真人。');
+    } else {
+        document.title = 'Focus Captcha';
+        $('#fc-tips').html('Please complete the following operation,<br> Verify that you are not a robot.');
+    }
+    // 二次验证
+    function verify(data, resolve, reject) {
+        $.ajax({
+            type: "post",
+            contentType: "application/json;charset=UTF-8",
+            url: "/fbrs/captcha/verifyCaptcha",
+            data: JSON.stringify(data),
+            timeout: 3000,
+            cache: false,
+            success: function (res) {
+                resolve(res)
+            },
+            error: function (err) {
+                reject(err)
+            }
+        })
+    }
+        function getParamValue(queryName,defaultValue) {
+            var query = decodeURI(window.location.search.substring(1));
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+            if (pair[0] === queryName) {
+                    return pair[1];
+                }
+            }
+            return defaultValue;
+        }
+
+    var fbrsInvalidKey = getParamValue('fbrsInvalidKey', '');
+    var fbrsRuleId = getParamValue('fbrsRuleId', '');
+    var prefix = getParamValue('prefix', '');
+    console.log(prefix);
+    var domain = window.location.host;
+    var protocol = window.location.protocol + "//";
+    // // 初始化验证码  弹出式
+    FCaptcha({
+        captchaId: 'c1d06b70-1547-44d1-b9a8-e17fdd8c85cf',
+        protocol: protocol,
+        apiServer: domain,  //服务器请求地址;
+        // protocol: 'https://',
+        // apiServer: 'captcha.vemic.com',  //服务器请求地址;
+        product: 'fixed',
+        lan: navigator.language === 'zh-CN' ? 'zh-CN' : 'en-us',
+        beforeCheck: function () {  //检验参数合法性的函数  mode ="pop"有效
+            var flag = true;
+            //实现: 参数合法性的判断逻辑, 返回一个boolean值
+            return flag
+        },
+        onReady: function () {
+        },  //加载完毕的回调
+        onSuccess: function (params) { //成功的回调
+            console.log(params);
+            verify({
+                "fbrsInvalidKey": fbrsInvalidKey,
+                "fbrsRuleId": fbrsRuleId,
+                "prefix": prefix,
+                "captchaVerification": params.captchaVerification
+            }, function (res) {
+                //使用,分割res
+                if (res === 'success') {
+                    $('#fc-tips').css('display', 'none');
+                    $('#mpanel2').css('display', 'none');
+                    if (navigator.language === 'zh-CN') {
+                        $('#captchaTip').html('<p>已完成验证！请等待跳转...</p>');
+                    } else {
+                        $('#captchaTip').html('<p>Verification completed! Please wait for the jump...</p>');
+                    }
+
+                    // 等待2s
+                    setTimeout(function () {
+                        var encodedSrcUrl = getParamValue('srcUrl', document.referrer);
+                        if (encodedSrcUrl) {
+                            window.location.replace(decodeURIComponent(encodedSrcUrl));
+                        }
+                    }, 2000);
+                }
+            }, function (err) {
+                console.error(err);
+            })
+
+        },
+        onError: function () {
+        }        //失败的回调
+    }, $('#mpanel2'));
+
+
+</script>
+</body>
+
+</html>

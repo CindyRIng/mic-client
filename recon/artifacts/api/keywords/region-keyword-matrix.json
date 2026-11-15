@@ -1,0 +1,513 @@
+{
+ "glass-hebei": {
+  "total": 1102,
+  "totalNum": "1,102",
+  "page": 1,
+  "pageSize": 20,
+  "totalPage": 56,
+  "dataFromCorrect": false,
+  "correctKey": null,
+  "correctResultNum": 0,
+  "searchWordAreIllegal": false,
+  "searchLanguageCode": "1",
+  "searchTransEn": "glass hebei",
+  "first3": [
+   {
+    "name": "Qinhuangdao Tianyao Glass Co., Ltd",
+    "city": "Qinhuangdao",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": false
+   },
+   {
+    "name": "Hebei Mio Import and Export Co., Ltd",
+    "city": "Xingtai",
+    "province": "Hebei",
+    "csLevel": 30,
+    "auditType": 1,
+    "ad": false
+   },
+   {
+    "name": "SHAHE CITY FANYUAN GLASS CO., LTD.",
+    "city": "Xingtai",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": false
+   }
+  ]
+ },
+ "glass-zhprov": {
+  "total": 0,
+  "totalNum": "0",
+  "page": 1,
+  "pageSize": 20,
+  "totalPage": 0,
+  "dataFromCorrect": false,
+  "correctKey": null,
+  "correctResultNum": 0,
+  "searchWordAreIllegal": false,
+  "searchLanguageCode": "1",
+  "searchTransEn": "glass",
+  "first3": []
+ },
+ "glass": {
+  "total": 2000,
+  "totalNum": "2,000+",
+  "page": 1,
+  "pageSize": 20,
+  "totalPage": 100,
+  "dataFromCorrect": false,
+  "correctKey": null,
+  "correctResultNum": 0,
+  "searchWordAreIllegal": false,
+  "searchLanguageCode": "1",
+  "searchTransEn": "glass",
+  "first3": [
+   {
+    "name": "QINGDAO KH MATERIALS CO., LTD",
+    "city": "Qingdao",
+    "province": "Shandong",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": true
+   },
+   {
+    "name": "QINGDAO REXI INDUSTRIES CO., LTD.",
+    "city": "Qingdao",
+    "province": "Shandong",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": true
+   },
+   {
+    "name": "Qinhuangdao Tianyao Glass Co., Ltd",
+    "city": "Qinhuangdao",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": true
+   }
+  ]
+ },
+ "hebei-glass": {
+  "total": 1102,
+  "totalNum": "1,102",
+  "page": 1,
+  "pageSize": 20,
+  "totalPage": 56,
+  "dataFromCorrect": false,
+  "correctKey": null,
+  "correctResultNum": 0,
+  "searchWordAreIllegal": false,
+  "searchLanguageCode": "1",
+  "searchTransEn": "hebei glass",
+  "first3": [
+   {
+    "name": "Qinhuangdao Tianyao Glass Co., Ltd",
+    "city": "Qinhuangdao",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": false
+   },
+   {
+    "name": "Hebei Mio Import and Export Co., Ltd",
+    "city": "Xingtai",
+    "province": "Hebei",
+    "csLevel": 30,
+    "auditType": 1,
+    "ad": false
+   },
+   {
+    "name": "SHAHE CITY FANYUAN GLASS CO., LTD.",
+    "city": "Xingtai",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": false
+   }
+  ]
+ },
+ "hebei-prov-facet": {
+  "total": 669,
+  "totalNum": "669",
+  "page": 1,
+  "pageSize": 20,
+  "totalPage": 34,
+  "dataFromCorrect": false,
+  "correctKey": null,
+  "correctResultNum": 0,
+  "searchWordAreIllegal": false,
+  "searchLanguageCode": "1",
+  "searchTransEn": "glass",
+  "first3": [
+   {
+    "name": "Qinhuangdao Tianyao Glass Co., Ltd",
+    "city": "Qinhuangdao",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": true
+   },
+   {
+    "name": "QINHUANGDAO GREEN STAR MIRROR CO., LTD.",
+    "city": "Qinhuangdao",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": false
+   },
+   {
+    "name": "HF GLASS PRODUCTS CO., LIMITED",
+    "city": "Cangzhou",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": false
+   }
+  ]
+ },
+ "hebei-prov": {
+  "total": 1101,
+  "totalNum": "1,101",
+  "page": 1,
+  "pageSize": 20,
+  "totalPage": 56,
+  "dataFromCorrect": false,
+  "correctKey": null,
+  "correctResultNum": 0,
+  "searchWordAreIllegal": false,
+  "searchLanguageCode": "1",
+  "searchTransEn": "hebei",
+  "first3": [
+   {
+    "name": "Hebei Xingchen Glass Technology Co., Ltd.",
+    "city": "Langfang",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": false
+   },
+   {
+    "name": "Joesco Hebei Metal Products Inc",
+    "city": "Hengshui",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": false
+   },
+   {
+    "name": "Hebei Yuanchang Food Mechanism & Technology Co., Ltd.",
+    "city": "Shijiazhuang",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": true
+   }
+  ]
+ },
+ "hebei-shijiazhuang": {
+  "total": 421,
+  "totalNum": "421",
+  "page": 1,
+  "pageSize": 20,
+  "totalPage": 22,
+  "dataFromCorrect": false,
+  "correctKey": null,
+  "correctResultNum": 0,
+  "searchWordAreIllegal": false,
+  "searchLanguageCode": "1",
+  "searchTransEn": "hebei shijiazhuang",
+  "first3": [
+   {
+    "name": "Shijiazhuang Longteng Machinery Co., Ltd.",
+    "city": "Shijiazhuang",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": false
+   },
+   {
+    "name": "Shijiazhuang An Pump Machinery Co., Ltd.",
+    "city": "Shijiazhuang",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": true
+   },
+   {
+    "name": "Hebei Shendu Commerce Co., Ltd.",
+    "city": "Shijiazhuang",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": false
+   }
+  ]
+ },
+ "hebei": {
+  "total": 1101,
+  "totalNum": "1,101",
+  "page": 1,
+  "pageSize": 20,
+  "totalPage": 56,
+  "dataFromCorrect": false,
+  "correctKey": null,
+  "correctResultNum": 0,
+  "searchWordAreIllegal": false,
+  "searchLanguageCode": "1",
+  "searchTransEn": "hebei",
+  "first3": [
+   {
+    "name": "Hebei Xingchen Glass Technology Co., Ltd.",
+    "city": "Langfang",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": false
+   },
+   {
+    "name": "Joesco Hebei Metal Products Inc",
+    "city": "Hengshui",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": false
+   },
+   {
+    "name": "Hebei Yuanchang Food Mechanism & Technology Co., Ltd.",
+    "city": "Shijiazhuang",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": true
+   }
+  ]
+ },
+ "langfang-prov": {
+  "total": 245,
+  "totalNum": "245",
+  "page": 1,
+  "pageSize": 20,
+  "totalPage": 13,
+  "dataFromCorrect": false,
+  "correctKey": null,
+  "correctResultNum": 0,
+  "searchWordAreIllegal": false,
+  "searchLanguageCode": "1",
+  "searchTransEn": "langfang",
+  "first3": [
+   {
+    "name": "Langfang Sandi Electric Tricycle Co., Ltd.",
+    "city": "Langfang",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": false
+   },
+   {
+    "name": "Langfang Senteng Artificial Lawn Co., Ltd.",
+    "city": "Langfang",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": false
+   },
+   {
+    "name": "Langfang Xinxing Chemical Co., Ltd.",
+    "city": "Langfang",
+    "province": "Hebei",
+    "csLevel": 30,
+    "auditType": 1,
+    "ad": false
+   }
+  ]
+ },
+ "langfang": {
+  "total": 278,
+  "totalNum": "278",
+  "page": 1,
+  "pageSize": 20,
+  "totalPage": 14,
+  "dataFromCorrect": false,
+  "correctKey": null,
+  "correctResultNum": 0,
+  "searchWordAreIllegal": false,
+  "searchLanguageCode": "1",
+  "searchTransEn": "langfang",
+  "first3": [
+   {
+    "name": "Langfang Sandi Electric Tricycle Co., Ltd.",
+    "city": "Langfang",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": false
+   },
+   {
+    "name": "Langfang Senteng Artificial Lawn Co., Ltd.",
+    "city": "Langfang",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": false
+   },
+   {
+    "name": "Langfang Xinxing Chemical Co., Ltd.",
+    "city": "Langfang",
+    "province": "Hebei",
+    "csLevel": 30,
+    "auditType": 1,
+    "ad": false
+   }
+  ]
+ },
+ "shijiazhuang-prov": {
+  "total": 1438,
+  "totalNum": "1,438",
+  "page": 1,
+  "pageSize": 20,
+  "totalPage": 72,
+  "dataFromCorrect": false,
+  "correctKey": null,
+  "correctResultNum": 0,
+  "searchWordAreIllegal": false,
+  "searchLanguageCode": "1",
+  "searchTransEn": "shijiazhuang",
+  "first3": [
+   {
+    "name": "Shijiazhuang OurPCB Tech. Ltd.",
+    "city": "Shijiazhuang",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": false
+   },
+   {
+    "name": "Shijiazhuang Hongdefa Machinery Co., Ltd.",
+    "city": "Shijiazhuang",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": false
+   },
+   {
+    "name": "Shijiazhuang Beautiful Year Food Co., Ltd.",
+    "city": "Shijiazhuang",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": true
+   }
+  ]
+ },
+ "shijiazhuang": {
+  "total": 1666,
+  "totalNum": "1,666",
+  "page": 1,
+  "pageSize": 20,
+  "totalPage": 84,
+  "dataFromCorrect": false,
+  "correctKey": null,
+  "correctResultNum": 0,
+  "searchWordAreIllegal": false,
+  "searchLanguageCode": "1",
+  "searchTransEn": "shijiazhuang",
+  "first3": [
+   {
+    "name": "Shijiazhuang OurPCB Tech. Ltd.",
+    "city": "Shijiazhuang",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": false
+   },
+   {
+    "name": "Shijiazhuang Hongdefa Machinery Co., Ltd.",
+    "city": "Shijiazhuang",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": false
+   },
+   {
+    "name": "Shijiazhuang Beautiful Year Food Co., Ltd.",
+    "city": "Shijiazhuang",
+    "province": "Hebei",
+    "csLevel": 50,
+    "auditType": 1,
+    "ad": true
+   }
+  ]
+ },
+ "zh-hebei-glass": {
+  "total": 0,
+  "totalNum": "0",
+  "page": 1,
+  "pageSize": 20,
+  "totalPage": 0,
+  "dataFromCorrect": false,
+  "correctKey": null,
+  "correctResultNum": 0,
+  "searchWordAreIllegal": false,
+  "searchLanguageCode": "1",
+  "searchTransEn": "河北 glass",
+  "first3": []
+ },
+ "zh-hebei": {
+  "total": 0,
+  "totalNum": "0",
+  "page": 1,
+  "pageSize": 20,
+  "totalPage": 0,
+  "dataFromCorrect": false,
+  "correctKey": null,
+  "correctResultNum": 0,
+  "searchWordAreIllegal": false,
+  "searchLanguageCode": "1",
+  "searchTransEn": "河北",
+  "first3": []
+ },
+ "_meta": {
+  "endpoint": "POST https://m.made-in-china.com/search/supplier (anonymous, header X-Requested-With: XMLHttpRequest)",
+  "desktop_check": {
+   "word=hebei": {
+    "http": 200,
+    "list_nodes_p1": 30,
+    "page_cap": 37,
+    "note": "page=38 -> HTTP 301 (redirect past last page)"
+   },
+   "word=河北": {
+    "http": 200,
+    "list_nodes": 0,
+    "note": "0 supplier found / No matches"
+   },
+   "word=hebei shijiazhuang": {
+    "http": 200,
+    "list_nodes": 30
+   },
+   "word=glass&comProvince=Hebei": {
+    "http": 200,
+    "list_nodes": 29,
+    "note": "all sampled cities are Hebei"
+   },
+   "word=hebei&comProvince=nolimit&page=37": {
+    "http": 200,
+    "list_nodes": 29
+   },
+   "word=hebei&page=38": {
+    "http": 301
+   }
+  },
+  "conclusions": [
+   "Chinese keywords return 0 results (English-only site; searchLanguageCode=1 detected but no index)",
+   "word=<city> / word=<province> works as free-text keyword match (name/keywords), NOT a strict region filter",
+   "multiword \"hebei shijiazhuang\" is AND-ish keyword match, all sampled results in Shijiazhuang,Hebei",
+   "strict province filter: province=Hebei param (total 669 for glass)",
+   "city filter: only SEO company-search pages (CC_<Prov>_<City>)",
+   "combined keyword+province: totals shift (shijiazhuang 1666 -> 1438 with province=Hebei)"
+  ]
+ }
+}

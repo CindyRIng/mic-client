@@ -1,0 +1,487 @@
+{
+ "source": {
+  "unfiltered": "https://www.made-in-china.com/company-search/glass/C1/1.html (anonymous 200, HTML filter panel)",
+  "province_page": "https://www.made-in-china.com/company-search/glass/C1--CP_Hebei/1.html (anonymous 200)",
+  "city_page": "https://www.made-in-china.com/company-search/glass/C1--CP_Hebei--CC_Hebei_Langfang/1.html"
+ },
+ "url_pattern": "https://www.made-in-china.com/company-search/<keyword>/C1[--CP_<Prov>][--CC_<Prov>_<City>][--CD_<CatLabel>-Catalog][--MC_<id>][--BT_<n>][--AR_<n>][--NE_<n>][--SGS_AS]/<page>.html",
+ "filter_code_prefixes": {
+  "CP_": "province",
+  "CC_<Prov>_<City>": "city",
+  "CD_<Category-Label>-Catalog": "category",
+  "MC_<id>": "management certification",
+  "BT_<n>": "business type",
+  "AR_<n>": "annual revenue",
+  "NE_<n>": "no. of employees",
+  "SGS_AS": "audited supplier"
+ },
+ "refine_panel_unfiltered": [
+  {
+   "group": "Province & Region",
+   "items": [
+    {
+     "label": "Guangdong",
+     "code": "C1--CP_Guangdong",
+     "count": 7612,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Guangdong/1.html"
+    },
+    {
+     "label": "Zhejiang",
+     "code": "C1--CP_Zhejiang",
+     "count": 3648,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Zhejiang/1.html"
+    },
+    {
+     "label": "Shandong",
+     "code": "C1--CP_Shandong",
+     "count": 3470,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Shandong/1.html"
+    },
+    {
+     "label": "Jiangsu",
+     "code": "C1--CP_Jiangsu",
+     "count": 2904,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Jiangsu/1.html"
+    },
+    {
+     "label": "Hebei",
+     "code": "C1--CP_Hebei",
+     "count": 1299,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Hebei/1.html"
+    },
+    {
+     "label": "Fujian",
+     "code": "C1--CP_Fujian",
+     "count": 1116,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Fujian/1.html"
+    },
+    {
+     "label": "Shanghai",
+     "code": "C1--CP_Shanghai",
+     "count": 1017,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Shanghai/1.html"
+    },
+    {
+     "label": "Henan",
+     "code": "C1--CP_Henan",
+     "count": 925,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Henan/1.html"
+    },
+    {
+     "label": "Anhui",
+     "code": "C1--CP_Anhui",
+     "count": 638,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Anhui/1.html"
+    },
+    {
+     "label": "Hubei",
+     "code": "C1--CP_Hubei",
+     "count": 304,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Hubei/1.html"
+    },
+    {
+     "label": "Tianjin",
+     "code": "C1--CP_Tianjin",
+     "count": 294,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Tianjin/1.html"
+    },
+    {
+     "label": "Hunan",
+     "code": "C1--CP_Hunan",
+     "count": 294,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Hunan/1.html"
+    },
+    {
+     "label": "Jiangxi",
+     "code": "C1--CP_Jiangxi",
+     "count": 258,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Jiangxi/1.html"
+    },
+    {
+     "label": "Beijing",
+     "code": "C1--CP_Beijing",
+     "count": 253,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Beijing/1.html"
+    },
+    {
+     "label": "Liaoning",
+     "code": "C1--CP_Liaoning",
+     "count": 208,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Liaoning/1.html"
+    },
+    {
+     "label": "Sichuan",
+     "code": "C1--CP_Sichuan",
+     "count": 200,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Sichuan/1.html"
+    },
+    {
+     "label": "Chongqing",
+     "code": "C1--CP_Chongqing",
+     "count": 138,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Chongqing/1.html"
+    },
+    {
+     "label": "Shaanxi",
+     "code": "C1--CP_Shaanxi",
+     "count": 135,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Shaanxi/1.html"
+    },
+    {
+     "label": "Guangxi",
+     "code": "C1--CP_Guangxi",
+     "count": 71,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Guangxi/1.html"
+    },
+    {
+     "label": "Shanxi",
+     "code": "C1--CP_Shanxi",
+     "count": 71,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Shanxi/1.html"
+    },
+    {
+     "label": "Hongkong S.A.R.",
+     "code": "C1--CP_Hongkong",
+     "count": 35,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Hongkong/1.html"
+    },
+    {
+     "label": "Hainan",
+     "code": "C1--CP_Hainan",
+     "count": 33,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Hainan/1.html"
+    },
+    {
+     "label": "Jilin",
+     "code": "C1--CP_Jilin",
+     "count": 26,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Jilin/1.html"
+    },
+    {
+     "label": "Yunnan",
+     "code": "C1--CP_Yunnan",
+     "count": 24,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Yunnan/1.html"
+    },
+    {
+     "label": "Inner Mongolia",
+     "code": "C1--CP_InnerMongolia",
+     "count": 17,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_InnerMongolia/1.html"
+    },
+    {
+     "label": "Guizhou",
+     "code": "C1--CP_Guizhou",
+     "count": 16,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Guizhou/1.html"
+    },
+    {
+     "label": "Gansu",
+     "code": "C1--CP_Gansu",
+     "count": 14,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Gansu/1.html"
+    },
+    {
+     "label": "Heilongjiang",
+     "code": "C1--CP_Heilongjiang",
+     "count": 14,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Heilongjiang/1.html"
+    },
+    {
+     "label": "Taiwan, China",
+     "code": "C1--CP_Taiwan",
+     "count": 11,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Taiwan/1.html"
+    },
+    {
+     "label": "Ningxia",
+     "code": "C1--CP_Ningxia",
+     "count": 4,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Ningxia/1.html"
+    },
+    {
+     "label": "Xinjiang",
+     "code": "C1--CP_Xinjiang",
+     "count": 4,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Xinjiang/1.html"
+    },
+    {
+     "label": "Qinghai",
+     "code": "C1--CP_Qinghai",
+     "count": 1,
+     "url": "https://www.made-in-china.com/company-search/glass/C1--CP_Qinghai/1.html"
+    }
+   ]
+  }
+ ],
+ "provinces_hebei_page": [
+  {
+   "province": "Guangdong",
+   "label": "Guangdong",
+   "count": 7612,
+   "code": "C1--CP_Guangdong"
+  },
+  {
+   "province": "Zhejiang",
+   "label": "Zhejiang",
+   "count": 3648,
+   "code": "C1--CP_Zhejiang"
+  },
+  {
+   "province": "Shandong",
+   "label": "Shandong",
+   "count": 3470,
+   "code": "C1--CP_Shandong"
+  },
+  {
+   "province": "Jiangsu",
+   "label": "Jiangsu",
+   "count": 2904,
+   "code": "C1--CP_Jiangsu"
+  },
+  {
+   "province": "Hebei",
+   "label": "Hebei",
+   "count": 1299,
+   "code": "C1--CP_Hebei"
+  },
+  {
+   "province": "Fujian",
+   "label": "Fujian",
+   "count": 1116,
+   "code": "C1--CP_Fujian"
+  },
+  {
+   "province": "Shanghai",
+   "label": "Shanghai",
+   "count": 1017,
+   "code": "C1--CP_Shanghai"
+  },
+  {
+   "province": "Henan",
+   "label": "Henan",
+   "count": 925,
+   "code": "C1--CP_Henan"
+  },
+  {
+   "province": "Anhui",
+   "label": "Anhui",
+   "count": 638,
+   "code": "C1--CP_Anhui"
+  },
+  {
+   "province": "Hubei",
+   "label": "Hubei",
+   "count": 304,
+   "code": "C1--CP_Hubei"
+  },
+  {
+   "province": "Tianjin",
+   "label": "Tianjin",
+   "count": 294,
+   "code": "C1--CP_Tianjin"
+  },
+  {
+   "province": "Hunan",
+   "label": "Hunan",
+   "count": 294,
+   "code": "C1--CP_Hunan"
+  },
+  {
+   "province": "Jiangxi",
+   "label": "Jiangxi",
+   "count": 258,
+   "code": "C1--CP_Jiangxi"
+  },
+  {
+   "province": "Beijing",
+   "label": "Beijing",
+   "count": 253,
+   "code": "C1--CP_Beijing"
+  },
+  {
+   "province": "Liaoning",
+   "label": "Liaoning",
+   "count": 208,
+   "code": "C1--CP_Liaoning"
+  },
+  {
+   "province": "Sichuan",
+   "label": "Sichuan",
+   "count": 200,
+   "code": "C1--CP_Sichuan"
+  },
+  {
+   "province": "Chongqing",
+   "label": "Chongqing",
+   "count": 138,
+   "code": "C1--CP_Chongqing"
+  },
+  {
+   "province": "Shaanxi",
+   "label": "Shaanxi",
+   "count": 135,
+   "code": "C1--CP_Shaanxi"
+  },
+  {
+   "province": "Guangxi",
+   "label": "Guangxi",
+   "count": 71,
+   "code": "C1--CP_Guangxi"
+  },
+  {
+   "province": "Shanxi",
+   "label": "Shanxi",
+   "count": 71,
+   "code": "C1--CP_Shanxi"
+  },
+  {
+   "province": "Hongkong",
+   "label": "Hongkong S.A.R.",
+   "count": 35,
+   "code": "C1--CP_Hongkong"
+  },
+  {
+   "province": "Hainan",
+   "label": "Hainan",
+   "count": 33,
+   "code": "C1--CP_Hainan"
+  },
+  {
+   "province": "Jilin",
+   "label": "Jilin",
+   "count": 26,
+   "code": "C1--CP_Jilin"
+  },
+  {
+   "province": "Yunnan",
+   "label": "Yunnan",
+   "count": 24,
+   "code": "C1--CP_Yunnan"
+  },
+  {
+   "province": "InnerMongolia",
+   "label": "Inner Mongolia",
+   "count": 17,
+   "code": "C1--CP_InnerMongolia"
+  },
+  {
+   "province": "Guizhou",
+   "label": "Guizhou",
+   "count": 16,
+   "code": "C1--CP_Guizhou"
+  },
+  {
+   "province": "Gansu",
+   "label": "Gansu",
+   "count": 14,
+   "code": "C1--CP_Gansu"
+  },
+  {
+   "province": "Heilongjiang",
+   "label": "Heilongjiang",
+   "count": 14,
+   "code": "C1--CP_Heilongjiang"
+  },
+  {
+   "province": "Taiwan",
+   "label": "Taiwan, China",
+   "count": 11,
+   "code": "C1--CP_Taiwan"
+  },
+  {
+   "province": "Ningxia",
+   "label": "Ningxia",
+   "count": 4,
+   "code": "C1--CP_Ningxia"
+  },
+  {
+   "province": "Xinjiang",
+   "label": "Xinjiang",
+   "count": 4,
+   "code": "C1--CP_Xinjiang"
+  },
+  {
+   "province": "Qinghai",
+   "label": "Qinghai",
+   "count": 1,
+   "code": "C1--CP_Qinghai"
+  }
+ ],
+ "cities_hebei": [
+  {
+   "city": "Shijiazhuang",
+   "province": "Hebei",
+   "code": "C1--CP_Hebei--CC_Hebei_Shijiazhuang",
+   "count": 215
+  },
+  {
+   "city": "Hengshui",
+   "province": "Hebei",
+   "code": "C1--CP_Hebei--CC_Hebei_Hengshui",
+   "count": 138
+  },
+  {
+   "city": "Cangzhou",
+   "province": "Hebei",
+   "code": "C1--CP_Hebei--CC_Hebei_Cangzhou",
+   "count": 98
+  },
+  {
+   "city": "Xingtai",
+   "province": "Hebei",
+   "code": "C1--CP_Hebei--CC_Hebei_Xingtai",
+   "count": 71
+  },
+  {
+   "city": "Baoding",
+   "province": "Hebei",
+   "code": "C1--CP_Hebei--CC_Hebei_Baoding",
+   "count": 55
+  },
+  {
+   "city": "Langfang",
+   "province": "Hebei",
+   "code": "C1--CP_Hebei--CC_Hebei_Langfang",
+   "count": 45
+  },
+  {
+   "city": "Handan",
+   "province": "Hebei",
+   "code": "C1--CP_Hebei--CC_Hebei_Handan",
+   "count": 19
+  },
+  {
+   "city": "Tangshan",
+   "province": "Hebei",
+   "code": "C1--CP_Hebei--CC_Hebei_Tangshan",
+   "count": 14
+  },
+  {
+   "city": "Qinhuangdao",
+   "province": "Hebei",
+   "code": "C1--CP_Hebei--CC_Hebei_Qinhuangdao",
+   "count": 13
+  },
+  {
+   "city": "Zhangjiakou",
+   "province": "Hebei",
+   "code": "C1--CP_Hebei--CC_Hebei_Zhangjiakou",
+   "count": 1
+  }
+ ],
+ "notes": [
+  "SEO company-search page is the ONLY source for city-level (CC_) and employee-count (NE_) filtering.",
+  "Anonymous HTTP access is flaky (sometimes 200, sometimes 302/challenge); retry 2-3x with 3-5s backoff, keep cookie jar warm.",
+  "Filtering combines by adding more --<code> segments; page cap = ceil(total/30); page beyond last -> HTTP 301.",
+  "NE values: 1=<5, 2=5-50, 3=51-200, 4=201-500, 5=501-1000, 6=>1000 people.",
+  "BT values: 1=Manufacturer/Factory, 2=Trading Company, 4=Group Corporation.",
+  "AR values: 1=<1M,2=1~2.5M,3=2.5~5M,4=5~10M,5=10~50M,6=50~100M,7=>100M USD."
+ ],
+ "mobile_json_api_gap": {
+  "city": "not supported in POST /search/supplier (city param ignored)",
+  "noOfEmployees": "not supported",
+  "audited": "memberLevel=0,1,3 works",
+  "province": "province=<English name> works"
+ }
+}

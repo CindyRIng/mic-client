@@ -1,0 +1,86 @@
+{
+ "seo-ar5.html": {
+  "size_bytes": 261522,
+  "list_nodes": 10,
+  "captcha": false,
+  "cities_sample": [
+   "Shijiazhuang, Hebei",
+   "Hengshui, Hebei",
+   "Shijiazhuang, Hebei",
+   "Shijiazhuang, Hebei",
+   "Shijiazhuang, Hebei"
+  ]
+ },
+ "seo-bt1.html": {
+  "size_bytes": 662042,
+  "list_nodes": 29,
+  "captcha": false,
+  "cities_sample": [
+   "Qinhuangdao, Hebei",
+   "Cangzhou, Hebei",
+   "Tangshan, Hebei",
+   "Cangzhou, Hebei",
+   "Cangzhou, Hebei"
+  ]
+ },
+ "seo-city-anon.html": {
+  "size_bytes": 0,
+  "list_nodes": 0,
+  "captcha": false,
+  "cities_sample": []
+ },
+ "seo-city-cookie.html": {
+  "size_bytes": 669739,
+  "list_nodes": 30,
+  "captcha": false,
+  "cities_sample": [
+   "Langfang, Hebei",
+   "Langfang, Hebei",
+   "Langfang, Hebei",
+   "Langfang, Hebei",
+   "Langfang, Hebei"
+  ]
+ },
+ "seo-mc.html": {
+  "size_bytes": 685894,
+  "list_nodes": 29,
+  "captcha": false,
+  "cities_sample": [
+   "Tangshan, Hebei",
+   "Cangzhou, Hebei",
+   "Hengshui, Hebei",
+   "Langfang, Hebei",
+   "Shijiazhuang, Hebei"
+  ]
+ },
+ "seo-ne2.html": {
+  "size_bytes": 683536,
+  "list_nodes": 30,
+  "captcha": false,
+  "cities_sample": [
+   "Qinhuangdao, Hebei",
+   "Cangzhou, Hebei",
+   "Xingtai, Hebei",
+   "Shijiazhuang, Hebei",
+   "Cangzhou, Hebei"
+  ]
+ },
+ "seo-prov.html": {
+  "size_bytes": 0,
+  "list_nodes": 0,
+  "captcha": false,
+  "cities_sample": []
+ },
+ "seo-sgsas.html": {
+  "size_bytes": 673427,
+  "list_nodes": 29,
+  "captcha": false,
+  "cities_sample": [
+   "Qinhuangdao, Hebei",
+   "Cangzhou, Hebei",
+   "Tangshan, Hebei",
+   "Xingtai, Hebei",
+   "Qinhuangdao, Hebei"
+  ]
+ }
+}

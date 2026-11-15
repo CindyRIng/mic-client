@@ -1,0 +1,42 @@
+# --- Node / build ---
+node_modules/
+node_modules
+dist/
+coverage/
+*.tsbuildinfo
+
+# --- local runtime ---
+.profile*
+data/
+*.sqlite
+*.sqlite-*
+*.db
+raw/
+
+# --- OS / editor ---
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# --- 本地临时 ---
+*.log
+tmp/
+
+# --- recon artifacts: 仓库只保留精选证据（完整快照本地保留）---
+recon/artifacts/*
+!recon/artifacts/README.md
+!recon/artifacts/api/
+!recon/artifacts/api/**
+!recon/artifacts/sample-normalized.json
+!recon/artifacts/m-company/
+!recon/artifacts/m-company/**
+!recon/artifacts/captcha/
+!recon/artifacts/captcha/run1/
+!recon/artifacts/captcha/run1/**
+!recon/artifacts/region-mode/
+!recon/artifacts/region-mode/*.json
+
+# --- 会话/凭据，永不入库 ---
+**/storage-state.json
+**/cookies.json

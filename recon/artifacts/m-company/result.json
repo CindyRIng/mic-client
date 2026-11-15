@@ -1,0 +1,44 @@
+[
+  {
+    "step": "m-home",
+    "title": "Made-in-China.com - Manufacturers, Suppliers & Products in China"
+  },
+  {
+    "account": "xingchenglass",
+    "url": "https://m.made-in-china.com/company-xingchenglass/info.html",
+    "ok": false,
+    "captcha": true,
+    "bodyHead": "Please complete the following operation, Verify that you are not a robot. Swipe right to complete verification"
+  },
+  {
+    "account": "hnfinsulation",
+    "url": "https://m.made-in-china.com/company-hnfinsulation/info.html",
+    "ok": true,
+    "memberLevel": "gold",
+    "memberSince": "2025",
+    "sgsMember": true,
+    "establishment": "2019-12-20",
+    "mainProducts": [
+      "Foam glass",
+      " Glass wool",
+      " Rock wool"
+    ],
+    "stars": "2",
+    "keys": [
+      "comId",
+      "comName",
+      "memberLevel",
+      "memberSince",
+      "sgsMember",
+      "auditReportLogo",
+      "mainProducts",
+      "businessTypes",
+      "establishment",
+      "onlineTradeAble",
+      "companySymbol",
+      "logoUrl",
+      "om",
+      "rd"
+    ]
+  }
+]

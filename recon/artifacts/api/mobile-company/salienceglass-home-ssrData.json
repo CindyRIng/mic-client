@@ -1,0 +1,679 @@
+{
+ "isDiamondMember": true,
+ "hasPromotions": false,
+ "comId": "1752301672",
+ "logUsername": "salienceglass",
+ "navActiveVal": "1",
+ "headInfo": {
+  "enUrl": "https://m.made-in-china.com/company-salienceglass",
+  "selectUrl": "made-in-china.com/co_salienceglass/",
+  "showPcSite": true,
+  "showInquiry": false,
+  "logonBuyer": false,
+  "userType": null,
+  "unReadQuotationNumber": 0,
+  "unReadMessageNumber": 0,
+  "logonUser": null,
+  "foreign": false,
+  "unreviewedCnt": 0,
+  "showReview": false
+ },
+ "companyInfo": {
+  "code": 0,
+  "err": "",
+  "content": {
+   "comId": "bSrtEKgyYcUf",
+   "comName": "Qingdao Salience Industry Co.,Ltd",
+   "memberLevel": "diamond",
+   "memberSince": "2025",
+   "sgsMember": true,
+   "auditReportLogo": {
+    "comId": 1752301672,
+    "showAuditLogo": true,
+    "logoUrl": "https://www.micstatic.com/common/img/as/ico-as-new.png",
+    "logoUrl4App": "https://www.micstatic.com/common/img/as/ico-as-new-app.png",
+    "rankingLogoUrl": "https://www.micstatic.com/common/img/as/audit-new.png",
+    "logoText": "Audited Supplier",
+    "description": "Audited by an independent third-party inspection agency",
+    "logoWithText": "https://www.micstatic.com/common/img/as/as_audited_member_s_new.png"
+   },
+   "mainProducts": [
+    "Laminated Glass",
+    " Tempered Glass",
+    " Silver Mirror",
+    " Aluminium Mirror",
+    " Reflective Glass",
+    " Building Glass",
+    " Tinted Glass",
+    " Float Glass",
+    " Acid Etched Glass",
+    " Pattern Glass"
+   ],
+   "businessTypes": [],
+   "establishment": "",
+   "reviewStatistics": {
+    "rating": "5.0/5",
+    "reviewListUrl": "https://m.made-in-china.com/user/review/company-salienceglass/list/"
+   },
+   "onlineTradeAble": true,
+   "companySymbol": {
+    "comId": 1752301672,
+    "stars": "5",
+    "intStars": 5
+   },
+   "logoUrl": "//image.made-in-china.com/206f0j00rRPfpKhtBUiY/Qingdao-Salience-Industry-Co-Ltd.jpg",
+   "om": true,
+   "rd": []
+  },
+  "success": true
+ },
+ "suggestProducts": {
+  "code": 0,
+  "err": "",
+  "content": {
+   "products": [
+    {
+     "prodId": "VfuRYUlDBGpA",
+     "name": "China Manufacturer/Factory 3mm/4mm/5mm/6mm Decorative/Silver/Aluminium Mirror for Indoor/Hotel/Home Dressing/Float Glass Sheet",
+     "url": "https://m.made-in-china.com/product/China-Manufacturer-Factory-3mm-4mm-5mm-6mm-Decorative-Silver-Aluminium-Mirror-for-Indoor-Hotel-Home-Dressing-Float-Glass-Sheet-2113421522.html",
+     "img550Url": "//image.made-in-china.com/202f0j00PcaCuQEtVJoV/China-Manufacturer-Factory-3mm-4mm-5mm-6mm-Decorative-Silver-Aluminium-Mirror-for-Indoor-Hotel-Home-Dressing-Float-Glass-Sheet.jpg",
+     "img300Url": "//image.made-in-china.com/43f34j00PcaCuQEtVJoV/China-Manufacturer-Factory-3mm-4mm-5mm-6mm-Decorative-Silver-Aluminium-Mirror-for-Indoor-Hotel-Home-Dressing-Float-Glass-Sheet.jpg",
+     "prodRelatedType": "1",
+     "unitPrice": "US$ 2.39-5.78/Square Meter",
+     "unitPriceNoUnit": "US$ 2.39-5.78",
+     "minOrder": "1,000 Square Meters",
+     "inquiryUrl": "/inquiry/send/product/2113421522?from=shrom&page=homepage&location=featured_products&lan=en",
+     "ads": "pdid:VfuRYUlDBGpA,pcid:bSrtEKgyYcUf,si:1,a:1",
+     "pf": "mp"
+    },
+    {
+     "prodId": "LtPYMIHlITRD",
+     "name": "Custom 3/4/5/6mm Dark Blue/Dark Grey/Euro Grey/Light Grey/Euro Bronze Fire Place/Floating/Float/Reflective Glass for Building/Stained/Color Sheet/Tinted/Colored",
+     "url": "https://m.made-in-china.com/product/Custom-3-4-5-6mm-Dark-Blue-Dark-Grey-Euro-Grey-Light-Grey-Euro-Bronze-Fire-Place-Floating-Float-Reflective-Glass-for-Building-Stained-Color-Sheet-Tinted-Colored-2113464342.html",
+     "img550Url": "//image.made-in-china.com/202f0j00uFjcksTKnzpI/Custom-3-4-5-6mm-Dark-Blue-Dark-Grey-Euro-Grey-Light-Grey-Euro-Bronze-Fire-Place-Floating-Float-Reflective-Glass-for-Building-Stained-Color-Sheet-Tinted-Colored.jpg",
+     "img300Url": "//image.made-in-china.com/43f34j00uFjcksTKnzpI/Custom-3-4-5-6mm-Dark-Blue-Dark-Grey-Euro-Grey-Light-Grey-Euro-Bronze-Fire-Place-Floating-Float-Reflective-Glass-for-Building-Stained-Color-Sheet-Tinted-Colored.jpg",
+     "prodRelatedType": "1",
+     "unitPrice": "US$ 2.21-8.79/Square Meter",
+     "unitPriceNoUnit": "US$ 2.21-8.79",
+     "minOrder": "1,000 Square Meters",
+     "inquiryUrl": "/inquiry/send/product/2113464342?from=shrom&page=homepage&location=featured_products&lan=en",
+     "ads": "pdid:LtPYMIHlITRD,pcid:bSrtEKgyYcUf,si:1,a:2",
+     "pf": "mp"
+    },
+    {
+     "prodId": "IaoYZtBxqfrz",
+     "name": "China Manufacturer Price Customized Size 6.38mm/8.38mm/10.38mm/12.38mm Laminated/Architectural Glass /Layer Glass/Safety Glass for Building",
+     "url": "https://m.made-in-china.com/product/China-Manufacturer-Price-Customized-Size-6-38mm-8-38mm-10-38mm-12-38mm-Laminated-Architectural-Glass-Layer-Glass-Safety-Glass-for-Building-2116793412.html",
+     "img550Url": "//image.made-in-china.com/202f0j00vdKoZClrlkgU/China-Manufacturer-Price-Customized-Size-6-38mm-8-38mm-10-38mm-12-38mm-Laminated-Architectural-Glass-Layer-Glass-Safety-Glass-for-Building.jpg",
+     "img300Url": "//image.made-in-china.com/43f34j00vdKoZClrlkgU/China-Manufacturer-Price-Customized-Size-6-38mm-8-38mm-10-38mm-12-38mm-Laminated-Architectural-Glass-Layer-Glass-Safety-Glass-for-Building.jpg",
+     "prodRelatedType": "1",
+     "unitPrice": "US$ 2.37-3.45/Square Meter",
+     "unitPriceNoUnit": "US$ 2.37-3.45",
+     "minOrder": "600 Square Meters",
+     "inquiryUrl": "/inquiry/send/product/2116793412?from=shrom&page=homepage&location=featured_products&lan=en",
+     "ads": "pdid:IaoYZtBxqfrz,pcid:bSrtEKgyYcUf,si:1,a:3",
+     "pf": "mp"
+    },
+    {
+     "prodId": "NGbROWCoLTYB",
+     "name": "6mm Acid Sand Blasting Stain/Privacy/Opaque/Etched/Frosted/Frost/Sandblasting/Sandblasted Glass Price for Decoration/Window/Building/Bathroom",
+     "url": "https://m.made-in-china.com/product/6mm-Acid-Sand-Blasting-Stain-Privacy-Opaque-Etched-Frosted-Frost-Sandblasting-Sandblasted-Glass-Price-for-Decoration-Window-Building-Bathroom-2116897852.html",
+     "img550Url": "//image.made-in-china.com/202f0j00YbdBwnAJdFkt/6mm-Acid-Sand-Blasting-Stain-Privacy-Opaque-Etched-Frosted-Frost-Sandblasting-Sandblasted-Glass-Price-for-Decoration-Window-Building-Bathroom.jpg",
+     "img300Url": "//image.made-in-china.com/43f34j00YbdBwnAJdFkt/6mm-Acid-Sand-Blasting-Stain-Privacy-Opaque-Etched-Frosted-Frost-Sandblasting-Sandblasted-Glass-Price-for-Decoration-Window-Building-Bathroom.jpg",
+     "prodRelatedType": "1",
+     "unitPrice": "US$ 2.74-9.42/Square Meter",
+     "unitPriceNoUnit": "US$ 2.74-9.42",
+     "minOrder": "1,000 Square Meters",
+     "inquiryUrl": "/inquiry/send/product/2116897852?from=shrom&page=homepage&location=featured_products&lan=en",
+     "ads": "pdid:NGbROWCoLTYB,pcid:bSrtEKgyYcUf,si:2,a:1",
+     "pf": "mp"
+    },
+    {
+     "prodId": "jpRrUlicHukX",
+     "name": "Chinese Wholesale Factory 3/4/5/6/8/10/12mm Ocean/Lake/ Dark Blue/Dark Green/Euro Bronze/Euro Grey Tinted Float Glass Price for Colored/Color",
+     "url": "https://m.made-in-china.com/product/Chinese-Wholesale-Factory-3-4-5-6-8-10-12mm-Ocean-Lake-Dark-Blue-Dark-Green-Euro-Bronze-Euro-Grey-Tinted-Float-Glass-Price-for-Colored-Color-2232427845.html",
+     "img550Url": "//image.made-in-china.com/202f0j00ukTMRQfCgnoy/Chinese-Wholesale-Factory-3-4-5-6-8-10-12mm-Ocean-Lake-Dark-Blue-Dark-Green-Euro-Bronze-Euro-Grey-Tinted-Float-Glass-Price-for-Colored-Color.jpg",
+     "img300Url": "//image.made-in-china.com/43f34j00ukTMRQfCgnoy/Chinese-Wholesale-Factory-3-4-5-6-8-10-12mm-Ocean-Lake-Dark-Blue-Dark-Green-Euro-Bronze-Euro-Grey-Tinted-Float-Glass-Price-for-Colored-Color.jpg",
+     "prodRelatedType": "1",
+     "unitPrice": "US$ 2.12-4.97/Square Meter",
+     "unitPriceNoUnit": "US$ 2.12-4.97",
+     "minOrder": "1,000 Square Meters",
+     "inquiryUrl": "/inquiry/send/product/2232427845?from=shrom&page=homepage&location=featured_products&lan=en",
+     "ads": "pdid:jpRrUlicHukX,pcid:bSrtEKgyYcUf,si:2,a:2",
+     "pf": "mp"
+    },
+    {
+     "prodId": "kALYieSUOapq",
+     "name": "Ultra Clear and Low Iron Tempered Glass 5mm 99% High Transmittance",
+     "url": "https://m.made-in-china.com/product/Ultra-Clear-and-Low-Iron-Tempered-Glass-5mm-99-High-Transmittance-2113746562.html",
+     "img550Url": "//image.made-in-china.com/202f0j00MyZkdehaAfgG/Ultra-Clear-and-Low-Iron-Tempered-Glass-5mm-99-High-Transmittance.jpg",
+     "img300Url": "//image.made-in-china.com/43f34j00MyZkdehaAfgG/Ultra-Clear-and-Low-Iron-Tempered-Glass-5mm-99-High-Transmittance.jpg",
+     "prodRelatedType": "1",
+     "unitPrice": "US$ 2.5-3.5/Square Meter",
+     "unitPriceNoUnit": "US$ 2.5-3.5",
+     "minOrder": "1,000 Square Meters",
+     "inquiryUrl": "/inquiry/send/product/2113746562?from=shrom&page=homepage&location=featured_products&lan=en",
+     "ads": "pdid:kALYieSUOapq,pcid:bSrtEKgyYcUf,si:2,a:3",
+     "pf": "mp"
+    }
+   ],
+   "record": "VfuRYUlDBGpA%2CLtPYMIHlITRD%2CIaoYZtBxqfrz%2CNGbROWCoLTYB%2CjpRrUlicHukX%2CkALYieSUOapq"
+  },
+  "success": true
+ },
+ "showExhibitProducts": {
+  "code": 0,
+  "err": "",
+  "content": {
+   "showStyle": "3",
+   "exhibits": [
+    {
+     "exhibitTitle": "New Arrival",
+     "source": "2",
+     "products": [
+      {
+       "prodId": "LADRxmEOTGYF",
+       "name": "5mm/5.3mm/6mm Bronze Nashiji Pattern Glass for Door /Window",
+       "url": "https://m.made-in-china.com/product/5mm-5-3mm-6mm-Bronze-Nashiji-Pattern-Glass-for-Door-Window-2114009302.html",
+       "img550Url": "//image.made-in-china.com/202f0j00jymkcltnMYzs/5mm-5-3mm-6mm-Bronze-Nashiji-Pattern-Glass-for-Door-Window.jpg",
+       "img300Url": "//image.made-in-china.com/43f34j00jymkcltnMYzs/5mm-5-3mm-6mm-Bronze-Nashiji-Pattern-Glass-for-Door-Window.jpg",
+       "prodRelatedType": "1",
+       "unitPrice": "US$ 2.57-5.79/Square Meter",
+       "unitPriceNoUnit": "US$ 2.57-5.79",
+       "minOrder": "1,800 Square Meters",
+       "inquiryUrl": "",
+       "ads": "pdid:LADRxmEOTGYF,pcid:bSrtEKgyYcUf,a:1,prodcls:New-Arrival",
+       "pf": ""
+      },
+      {
+       "prodId": "OfzYgMdVXAre",
+       "name": "5mm/8mm/10mm Bronze Moru Pattern Glass on Hot Sale",
+       "url": "https://m.made-in-china.com/product/5mm-8mm-10mm-Bronze-Moru-Pattern-Glass-on-Hot-Sale-2113936962.html",
+       "img550Url": "//image.made-in-china.com/202f0j00rNzqPgGnOLpu/5mm-8mm-10mm-Bronze-Moru-Pattern-Glass-on-Hot-Sale.jpg",
+       "img300Url": "//image.made-in-china.com/43f34j00rNzqPgGnOLpu/5mm-8mm-10mm-Bronze-Moru-Pattern-Glass-on-Hot-Sale.jpg",
+       "prodRelatedType": "1",
+       "unitPrice": "US$ 1.85-5.77/Square Meter",
+       "unitPriceNoUnit": "US$ 1.85-5.77",
+       "minOrder": "1,700 Square Meters",
+       "inquiryUrl": "",
+       "ads": "pdid:OfzYgMdVXAre,pcid:bSrtEKgyYcUf,a:2,prodcls:New-Arrival",
+       "pf": ""
+      },
+      {
+       "prodId": "zGLrZICOZTYB",
+       "name": "5mm/6mm/8mm/10mm Ultra Clear Moru Glass for Decoration on Hot Sale",
+       "url": "https://m.made-in-china.com/product/5mm-6mm-8mm-10mm-Ultra-Clear-Moru-Glass-for-Decoration-on-Hot-Sale-2113897342.html",
+       "img550Url": "//image.made-in-china.com/202f0j00UyfobYRkOPge/5mm-6mm-8mm-10mm-Ultra-Clear-Moru-Glass-for-Decoration-on-Hot-Sale.jpg",
+       "img300Url": "//image.made-in-china.com/43f34j00UyfobYRkOPge/5mm-6mm-8mm-10mm-Ultra-Clear-Moru-Glass-for-Decoration-on-Hot-Sale.jpg",
+       "prodRelatedType": "1",
+       "unitPrice": "US$ 1.12-5.78/Square Meter",
+       "unitPriceNoUnit": "US$ 1.12-5.78",
+       "minOrder": "1,700 Square Meters",
+       "inquiryUrl": "",
+       "ads": "pdid:zGLrZICOZTYB,pcid:bSrtEKgyYcUf,a:3,prodcls:New-Arrival",
+       "pf": ""
+      },
+      {
+       "prodId": "FGuYwbNPbTpU",
+       "name": "4mm/5mm/5.3mm/6mm Euro Grey Reflective Glass with Top Quality",
+       "url": "https://m.made-in-china.com/product/4mm-5mm-5-3mm-6mm-Euro-Grey-Reflective-Glass-with-Top-Quality-2113892962.html",
+       "img550Url": "//image.made-in-china.com/202f0j00LOUcQotIsPzs/4mm-5mm-5-3mm-6mm-Euro-Grey-Reflective-Glass-with-Top-Quality.jpg",
+       "img300Url": "//image.made-in-china.com/43f34j00LOUcQotIsPzs/4mm-5mm-5-3mm-6mm-Euro-Grey-Reflective-Glass-with-Top-Quality.jpg",
+       "prodRelatedType": "1",
+       "unitPrice": "US$ 1.08-5.47/Square Meter",
+       "unitPriceNoUnit": "US$ 1.08-5.47",
+       "minOrder": "1,700 Square Meters",
+       "inquiryUrl": "",
+       "ads": "pdid:FGuYwbNPbTpU,pcid:bSrtEKgyYcUf,a:4,prodcls:New-Arrival",
+       "pf": ""
+      },
+      {
+       "prodId": "aTLUPbdCvtrf",
+       "name": "4mm/5mm/5.3mm/6mm Dark Blue Reflective Glass for Building on Hot Sale",
+       "url": "https://m.made-in-china.com/product/4mm-5mm-5-3mm-6mm-Dark-Blue-Reflective-Glass-for-Building-on-Hot-Sale-2113931162.html",
+       "img550Url": "//image.made-in-china.com/202f0j00cNWoAwvnclzq/4mm-5mm-5-3mm-6mm-Dark-Blue-Reflective-Glass-for-Building-on-Hot-Sale.jpg",
+       "img300Url": "//image.made-in-china.com/43f34j00cNWoAwvnclzq/4mm-5mm-5-3mm-6mm-Dark-Blue-Reflective-Glass-for-Building-on-Hot-Sale.jpg",
+       "prodRelatedType": "1",
+       "unitPrice": "US$ 1.05-5.39/Square Meter",
+       "unitPriceNoUnit": "US$ 1.05-5.39",
+       "minOrder": "900 Square Meters",
+       "inquiryUrl": "",
+       "ads": "pdid:aTLUPbdCvtrf,pcid:bSrtEKgyYcUf,a:5,prodcls:New-Arrival",
+       "pf": ""
+      },
+      {
+       "prodId": "LtgUZoCPJGRY",
+       "name": "4mm/5mm/5.3mm /6mm Bronze Reflective Glass/Tinted Glass for Wholesale",
+       "url": "https://m.made-in-china.com/product/4mm-5mm-5-3mm-6mm-Bronze-Reflective-Glass-Tinted-Glass-for-Wholesale-2113892362.html",
+       "img550Url": "//image.made-in-china.com/202f0j00ZnUcQDEzVPuI/4mm-5mm-5-3mm-6mm-Bronze-Reflective-Glass-Tinted-Glass-for-Wholesale.jpg",
+       "img300Url": "//image.made-in-china.com/43f34j00ZnUcQDEzVPuI/4mm-5mm-5-3mm-6mm-Bronze-Reflective-Glass-Tinted-Glass-for-Wholesale.jpg",
+       "prodRelatedType": "1",
+       "unitPrice": "US$ 2.39-5.37/Square Meter",
+       "unitPriceNoUnit": "US$ 2.39-5.37",
+       "minOrder": "1,000 Square Meters",
+       "inquiryUrl": "",
+       "ads": "pdid:LtgUZoCPJGRY,pcid:bSrtEKgyYcUf,a:6,prodcls:New-Arrival",
+       "pf": ""
+      },
+      {
+       "prodId": "ZAvpIdTDhtrc",
+       "name": "5mm/5.3mm/6mm Clear Nashiji Pattern Glass for Door and Window",
+       "url": "https://m.made-in-china.com/product/5mm-5-3mm-6mm-Clear-Nashiji-Pattern-Glass-for-Door-and-Window-2117145992.html",
+       "img550Url": "//image.made-in-china.com/202f0j00fNRkvJECYDra/5mm-5-3mm-6mm-Clear-Nashiji-Pattern-Glass-for-Door-and-Window.jpg",
+       "img300Url": "//image.made-in-china.com/43f34j00fNRkvJECYDra/5mm-5-3mm-6mm-Clear-Nashiji-Pattern-Glass-for-Door-and-Window.jpg",
+       "prodRelatedType": "1",
+       "unitPrice": "US$ 2.33-5.79/Square Meter",
+       "unitPriceNoUnit": "US$ 2.33-5.79",
+       "minOrder": "500 Square Meters",
+       "inquiryUrl": "",
+       "ads": "pdid:ZAvpIdTDhtrc,pcid:bSrtEKgyYcUf,a:7,prodcls:New-Arrival",
+       "pf": ""
+      },
+      {
+       "prodId": "GtlRxMnjjAUu",
+       "name": "3mm/4mm/6mm Silver Mirror with Copper Free for Hotel",
+       "url": "https://m.made-in-china.com/product/3mm-4mm-6mm-Silver-Mirror-with-Copper-Free-for-Hotel-2114003162.html",
+       "img550Url": "//image.made-in-china.com/202f0j00iyfbYDaIsPgK/3mm-4mm-6mm-Silver-Mirror-with-Copper-Free-for-Hotel.jpg",
+       "img300Url": "//image.made-in-china.com/43f34j00iyfbYDaIsPgK/3mm-4mm-6mm-Silver-Mirror-with-Copper-Free-for-Hotel.jpg",
+       "prodRelatedType": "1",
+       "unitPrice": "US$ 2.17-4.19/Square Meter",
+       "unitPriceNoUnit": "US$ 2.17-4.19",
+       "minOrder": "1,000 Square Meters",
+       "inquiryUrl": "",
+       "ads": "pdid:GtlRxMnjjAUu,pcid:bSrtEKgyYcUf,a:8,prodcls:New-Arrival",
+       "pf": ""
+      }
+     ]
+    },
+    {
+     "exhibitTitle": "Popular Products",
+     "source": "2",
+     "products": [
+      {
+       "prodId": "GYcUETrJoRVe",
+       "name": "15/19mm Manufacturer Wholesale Factory Art Tempered Building/Window Glass Clear Float Glass",
+       "url": "https://m.made-in-china.com/product/15-19mm-Manufacturer-Wholesale-Factory-Art-Tempered-Building-Window-Glass-Clear-Float-Glass-2225206115.html",
+       "img550Url": "//image.made-in-china.com/202f0j00WkeBIzKECScf/15-19mm-Manufacturer-Wholesale-Factory-Art-Tempered-Building-Window-Glass-Clear-Float-Glass.jpg",
+       "img300Url": "//image.made-in-china.com/43f34j00WkeBIzKECScf/15-19mm-Manufacturer-Wholesale-Factory-Art-Tempered-Building-Window-Glass-Clear-Float-Glass.jpg",
+       "prodRelatedType": "1",
+       "unitPrice": "US$ 1.65-15/Square Meter",
+       "unitPriceNoUnit": "US$ 1.65-15",
+       "minOrder": "1,000 Square Meters",
+       "inquiryUrl": "",
+       "ads": "pdid:GYcUETrJoRVe,pcid:bSrtEKgyYcUf,a:1,prodcls:Popular-Products",
+       "pf": ""
+      },
+      {
+       "prodId": "XABRVFtHJfUT",
+       "name": "5mm/8mm/10mm Euo Grey Moru Glass with Size 2100*3300",
+       "url": "https://m.made-in-china.com/product/5mm-8mm-10mm-Euo-Grey-Moru-Glass-with-Size-2100-3300-2117151792.html",
+       "img550Url": "//image.made-in-china.com/202f0j00mnGbUquJLDry/5mm-8mm-10mm-Euo-Grey-Moru-Glass-with-Size-2100-3300.jpg",
+       "img300Url": "//image.made-in-china.com/43f34j00mnGbUquJLDry/5mm-8mm-10mm-Euo-Grey-Moru-Glass-with-Size-2100-3300.jpg",
+       "prodRelatedType": "1",
+       "unitPrice": "US$ 1.96-5.83/Square Meter",
+       "unitPriceNoUnit": "US$ 1.96-5.83",
+       "minOrder": "1,000 Square Meters",
+       "inquiryUrl": "",
+       "ads": "pdid:XABRVFtHJfUT,pcid:bSrtEKgyYcUf,a:2,prodcls:Popular-Products",
+       "pf": ""
+      },
+      {
+       "prodId": "BGXpiztJIfYb",
+       "name": "4mm 5mm 5.3mm6mm Coating Glass/ Reflective Glass/Reflection Glass with Best Quality",
+       "url": "https://m.made-in-china.com/product/4mm-5mm-5-3mm6mm-Coating-Glass-Reflective-Glass-Reflection-Glass-with-Best-Quality-2117146732.html",
+       "img550Url": "//image.made-in-china.com/202f0j00EOfqAyshEDpH/4mm-5mm-5-3mm6mm-Coating-Glass-Reflective-Glass-Reflection-Glass-with-Best-Quality.jpg",
+       "img300Url": "//image.made-in-china.com/43f34j00EOfqAyshEDpH/4mm-5mm-5-3mm6mm-Coating-Glass-Reflective-Glass-Reflection-Glass-with-Best-Quality.jpg",
+       "prodRelatedType": "1",
+       "unitPrice": "US$ 2.39-5.37/Square Meter",
+       "unitPriceNoUnit": "US$ 2.39-5.37",
+       "minOrder": "1,600 Square Meters",
+       "inquiryUrl": "",
+       "ads": "pdid:BGXpiztJIfYb,pcid:bSrtEKgyYcUf,a:3,prodcls:Popular-Products",
+       "pf": ""
+      },
+      {
+       "prodId": "STKpDAGjJtRb",
+       "name": "4mm/5mm/5.3mm/6mm Dark Green/F Green Reflective Glass for Hot Sale",
+       "url": "https://m.made-in-china.com/product/4mm-5mm-5-3mm-6mm-Dark-Green-F-Green-Reflective-Glass-for-Hot-Sale-2117146712.html",
+       "img550Url": "//image.made-in-china.com/202f0j00OyfbCKGlELuk/4mm-5mm-5-3mm-6mm-Dark-Green-F-Green-Reflective-Glass-for-Hot-Sale.jpg",
+       "img300Url": "//image.made-in-china.com/43f34j00OyfbCKGlELuk/4mm-5mm-5-3mm-6mm-Dark-Green-F-Green-Reflective-Glass-for-Hot-Sale.jpg",
+       "prodRelatedType": "1",
+       "unitPrice": "US$ 1.74-5.37/Square Meter",
+       "unitPriceNoUnit": "US$ 1.74-5.37",
+       "minOrder": "1,600 Square Meters",
+       "inquiryUrl": "",
+       "ads": "pdid:STKpDAGjJtRb,pcid:bSrtEKgyYcUf,a:4,prodcls:Popular-Products",
+       "pf": ""
+      },
+      {
+       "prodId": "WASYlhGuvTre",
+       "name": "4mm/5mm/5.3mm/6mm Black Reflective Glass with Best Price",
+       "url": "https://m.made-in-china.com/product/4mm-5mm-5-3mm-6mm-Black-Reflective-Glass-with-Best-Price-2117146552.html",
+       "img550Url": "//image.made-in-china.com/202f0j00FnpbyzfLZDro/4mm-5mm-5-3mm-6mm-Black-Reflective-Glass-with-Best-Price.jpg",
+       "img300Url": "//image.made-in-china.com/43f34j00FnpbyzfLZDro/4mm-5mm-5-3mm-6mm-Black-Reflective-Glass-with-Best-Price.jpg",
+       "prodRelatedType": "1",
+       "unitPrice": "US$ 2.37-5.39/Square Meter",
+       "unitPriceNoUnit": "US$ 2.37-5.39",
+       "minOrder": "900 Square Meters",
+       "inquiryUrl": "",
+       "ads": "pdid:WASYlhGuvTre,pcid:bSrtEKgyYcUf,a:5,prodcls:Popular-Products",
+       "pf": ""
+      },
+      {
+       "prodId": "mGBrqgJjsAUC",
+       "name": "One Stop Pool Fencing Laminated Glass Clear and Buildings Glass",
+       "url": "https://m.made-in-china.com/product/One-Stop-Pool-Fencing-Laminated-Glass-Clear-and-Buildings-Glass-2117068032.html",
+       "img550Url": "//image.made-in-china.com/202f0j00IyNqcpvaCGrM/One-Stop-Pool-Fencing-Laminated-Glass-Clear-and-Buildings-Glass.jpg",
+       "img300Url": "//image.made-in-china.com/43f34j00IyNqcpvaCGrM/One-Stop-Pool-Fencing-Laminated-Glass-Clear-and-Buildings-Glass.jpg",
+       "prodRelatedType": "1",
+       "unitPrice": "US$ 2.81-19.84/Square Meter",
+       "unitPriceNoUnit": "US$ 2.81-19.84",
+       "minOrder": "1,000 Square Meters",
+       "inquiryUrl": "",
+       "ads": "pdid:mGBrqgJjsAUC,pcid:bSrtEKgyYcUf,a:6,prodcls:Popular-Products",
+       "pf": ""
+      },
+      {
+       "prodId": "vtSpognAsfYj",
+       "name": "Reflective/Float /Toughened/Laminated/Tinted/Pattern//Building Glass for Building Window",
+       "url": "https://m.made-in-china.com/product/Reflective-Float-Toughened-Laminated-Tinted-Pattern-Building-Glass-for-Building-Window-2117068732.html",
+       "img550Url": "//image.made-in-china.com/202f0j00IONkBleEhYrf/Reflective-Float-Toughened-Laminated-Tinted-Pattern-Building-Glass-for-Building-Window.jpg",
+       "img300Url": "//image.made-in-china.com/43f34j00IONkBleEhYrf/Reflective-Float-Toughened-Laminated-Tinted-Pattern-Building-Glass-for-Building-Window.jpg",
+       "prodRelatedType": "1",
+       "unitPrice": "US$ 1.36-6.38/Square Meter",
+       "unitPriceNoUnit": "US$ 1.36-6.38",
+       "minOrder": "2,600 Square Meters",
+       "inquiryUrl": "",
+       "ads": "pdid:vtSpognAsfYj,pcid:bSrtEKgyYcUf,a:7,prodcls:Popular-Products",
+       "pf": ""
+      }
+     ]
+    }
+   ]
+  },
+  "success": true
+ },
+ "haslive": "0",
+ "leadingFactory": "false",
+ "productFacetVo": {
+  "code": 0,
+  "err": "",
+  "content": [
+   {
+    "comId": "bSrtEKgyYcUf",
+    "title": "Silicone Sealant",
+    "encryptGroup": false,
+    "img": "//image.made-in-china.com/43f34j00AzbBDlPdSvpn/Top-Manufacturer-of-Silicone-Sealant-Providing-Various-Types-of-Sealants-for-Construction-Applications.jpg",
+    "targetUrl": "/company-salienceglass/product-group/qeGamXKUOIpL/Silicone-Sealant-1.html?sf=categories",
+    "pst": "1",
+    "facetId": "qeGamXKUOIpL",
+    "ads": "prodcls:Silicone-Sealant"
+   },
+   {
+    "comId": "bSrtEKgyYcUf",
+    "title": "Anti-Glare Glass",
+    "encryptGroup": false,
+    "img": "//image.made-in-china.com/43f34j00qmUhiNfgCeGo/Anti-Glare-Glass-for-Art-Picture-Frame-Display.jpg",
+    "targetUrl": "/company-salienceglass/product-group/iqOfWyDlnIGH/Anti-Glare-Glass-1.html?sf=categories",
+    "pst": "1",
+    "facetId": "iqOfWyDlnIGH",
+    "ads": "prodcls:Anti-Glare-Glass"
+   },
+   {
+    "comId": "bSrtEKgyYcUf",
+    "title": "Solar Glass",
+    "encryptGroup": false,
+    "img": "//image.made-in-china.com/43f34j00oRuCjvMtrnzw/Transparent-BIPV-Solar-Glass-for-Building-Curtain-Wall-Facade-Power-Generation.jpg",
+    "targetUrl": "/company-salienceglass/product-group/UeTaDFcEOipk/Solar-Glass-1.html?sf=categories",
+    "pst": "1",
+    "facetId": "UeTaDFcEOipk",
+    "ads": "prodcls:Solar-Glass"
+   },
+   {
+    "comId": "bSrtEKgyYcUf",
+    "title": "MACHINE",
+    "encryptGroup": false,
+    "img": "//image.made-in-china.com/43f34j00TUHvLSszvYrl/CNC-Automatic-Glass-Cutting-Machine-Equipped-with-a-Flat-Glass-Feeding.jpg",
+    "targetUrl": "/company-salienceglass/product-group/PeAtEvIKYDRB/MACHINE-1.html?sf=categories",
+    "pst": "1",
+    "facetId": "PeAtEvIKYDRB",
+    "ads": "prodcls:MACHINE"
+   },
+   {
+    "comId": "bSrtEKgyYcUf",
+    "title": "Colorful Glass",
+    "encryptGroup": false,
+    "img": "//image.made-in-china.com/43f34j00BTZeSqOcyCpM/Eco-Friendly-Rainbow-Colorful-Glass-Iridescent-Glass-for-Backsplash-Furniture-or-Art-Installation.jpg",
+    "targetUrl": "/company-salienceglass/product-group/HeGfkJvXsiUt/Colorful-Glass-1.html?sf=categories",
+    "pst": "1",
+    "facetId": "HeGfkJvXsiUt",
+    "ads": "prodcls:Colorful-Glass"
+   },
+   {
+    "comId": "bSrtEKgyYcUf",
+    "title": "PDLC Film Smart Glass",
+    "encryptGroup": false,
+    "img": "//image.made-in-china.com/43f34j00IaWCHeKlqEzQ/Smart-Switchable-Electric-Privacy-Pdlc-Film-Glass-for-Windows-Doors-and-Partitions.jpg",
+    "targetUrl": "/company-salienceglass/product-group/XbEAkZjCMIUs/PDLC-Film-Smart-Glass-1.html?sf=categories",
+    "pst": "1",
+    "facetId": "XbEAkZjCMIUs",
+    "ads": "prodcls:PDLC-Film-Smart-Glass"
+   },
+   {
+    "comId": "bSrtEKgyYcUf",
+    "title": "Clear Float Glass",
+    "encryptGroup": false,
+    "img": "//image.made-in-china.com/43f34j00WkeBIzKECScf/15-19mm-Manufacturer-Wholesale-Factory-Art-Tempered-Building-Window-Glass-Clear-Float-Glass.jpg",
+    "targetUrl": "/company-salienceglass/product-group/GqEATwLVsDpb/Clear-Float-Glass-1.html?sf=categories",
+    "pst": "1",
+    "facetId": "GqEATwLVsDpb",
+    "ads": "prodcls:Clear-Float-Glass"
+   },
+   {
+    "comId": "bSrtEKgyYcUf",
+    "title": "Ultra Clear Float Glass",
+    "encryptGroup": false,
+    "img": "//image.made-in-china.com/43f34j00IqFeSMNrPjbC/High-Quality-4-5-6-8-10-12-15-19mm-Ultra-Clear-Low-Iron-Float-Sheet-Glass-for-Building.jpg",
+    "targetUrl": "/company-salienceglass/product-group/poxtaLPTFDRb/Ultra-Clear-Float-Glass-1.html?sf=categories",
+    "pst": "1",
+    "facetId": "poxtaLPTFDRb",
+    "ads": "prodcls:Ultra-Clear-Float-Glass"
+   },
+   {
+    "comId": "bSrtEKgyYcUf",
+    "title": "Reflective Glass",
+    "encryptGroup": false,
+    "img": "//image.made-in-china.com/43f34j00uFjcksTKnzpI/Custom-3-4-5-6mm-Dark-Blue-Dark-Grey-Euro-Grey-Light-Grey-Euro-Bronze-Fire-Place-Floating-Float-Reflective-Glass-for-Building-Stained-Color-Sheet-Tinted-Colored.jpg",
+    "targetUrl": "/company-salienceglass/product-group/womGzDXUhIYB/Reflective-Glass-1.html?sf=categories",
+    "pst": "1",
+    "facetId": "womGzDXUhIYB",
+    "ads": "prodcls:Reflective-Glass"
+   },
+   {
+    "comId": "bSrtEKgyYcUf",
+    "title": "Tinted Glass",
+    "encryptGroup": false,
+    "img": "//image.made-in-china.com/43f34j00ukTMRQfCgnoy/Chinese-Wholesale-Factory-3-4-5-6-8-10-12mm-Ocean-Lake-Dark-Blue-Dark-Green-Euro-Bronze-Euro-Grey-Tinted-Float-Glass-Price-for-Colored-Color.jpg",
+    "targetUrl": "/company-salienceglass/product-group/GbJAOCBHZlYX/Tinted-Glass-1.html?sf=categories",
+    "pst": "1",
+    "facetId": "GbJAOCBHZlYX",
+    "ads": "prodcls:Tinted-Glass"
+   },
+   {
+    "comId": "bSrtEKgyYcUf",
+    "title": "Mirror",
+    "encryptGroup": false,
+    "img": "//image.made-in-china.com/43f34j00PcaCuQEtVJoV/China-Manufacturer-Factory-3mm-4mm-5mm-6mm-Decorative-Silver-Aluminium-Mirror-for-Indoor-Hotel-Home-Dressing-Float-Glass-Sheet.jpg",
+    "targetUrl": "/company-salienceglass/product-group/UqnaOIXDClpw/Mirror-1.html?sf=categories",
+    "pst": "1",
+    "facetId": "UqnaOIXDClpw",
+    "ads": "prodcls:Mirror"
+   },
+   {
+    "comId": "bSrtEKgyYcUf",
+    "title": "Laminated Glass",
+    "encryptGroup": false,
+    "img": "//image.made-in-china.com/43f34j00dnZbIYLcLprF/6-38mm-17-52mm-High-Quality-Clear-and-Safety-Laminated-Glass-for-Windows-and-Buildings.jpg",
+    "targetUrl": "/company-salienceglass/product-group/GbEfIdRCsiUA/Laminated-Glass-1.html?sf=categories",
+    "pst": "1",
+    "facetId": "GbEfIdRCsiUA",
+    "ads": "prodcls:Laminated-Glass"
+   },
+   {
+    "comId": "bSrtEKgyYcUf",
+    "title": "Decorative Glass",
+    "encryptGroup": false,
+    "img": "//image.made-in-china.com/43f34j00vMBeYQAKERoP/3-4-5-6-8mm-Clear-Transparent-Tempered-Pattern-Figured-Glass-for-Architectural-Decoration.jpg",
+    "targetUrl": "/company-salienceglass/product-group/RoJTGBurIDYb/Decorative-Glass-1.html?sf=categories",
+    "pst": "1",
+    "facetId": "RoJTGBurIDYb",
+    "ads": "prodcls:Decorative-Glass"
+   },
+   {
+    "comId": "bSrtEKgyYcUf",
+    "title": "Glass Block",
+    "encryptGroup": false,
+    "img": "//image.made-in-china.com/43f34j00EeQBsfmJMKbM/Stunning-Electroplated-Blue-Glass-Wall-Bricks-for-Modern-Interiors-Glass-Block-Brick.jpg",
+    "targetUrl": "/company-salienceglass/product-group/DeEAoCdPnHRS/Glass-Block-1.html?sf=categories",
+    "pst": "1",
+    "facetId": "DeEAoCdPnHRS",
+    "ads": "prodcls:Glass-Block"
+   },
+   {
+    "comId": "bSrtEKgyYcUf",
+    "title": "Tempered Glass",
+    "encryptGroup": false,
+    "img": "//image.made-in-china.com/43f34j00tCOejpEPhRoB/Premium-3-4-5-6-8-10-12-15-19mm-Flat-and-Curved-Tempered-Glass.jpg",
+    "targetUrl": "/company-salienceglass/product-group/boEGBJMjZHYZ/Tempered-Glass-1.html?sf=categories",
+    "pst": "1",
+    "facetId": "boEGBJMjZHYZ",
+    "ads": "prodcls:Tempered-Glass"
+   },
+   {
+    "comId": "bSrtEKgyYcUf",
+    "title": "Anti-Reflective Glass",
+    "encryptGroup": false,
+    "img": "//image.made-in-china.com/43f34j00SFLqDOGWlBzj/Anti-Reflective-Museum-Glass-for-Photo-Frame-From-Factory.jpg",
+    "targetUrl": "/company-salienceglass/product-group/aeJAtkiOuIRx/Anti-Reflective-Glass-1.html?sf=categories",
+    "pst": "1",
+    "facetId": "aeJAtkiOuIRx",
+    "ads": "prodcls:Anti-Reflective-Glass"
+   },
+   {
+    "comId": "bSrtEKgyYcUf",
+    "title": "Insulated Glass/Hollow Glass",
+    "encryptGroup": false,
+    "img": "//image.made-in-china.com/43f34j00AynkidOleugZ/Factory-Priced-Tempered-Insulated-Glass-Hollow-Architectural-Glass-Specialist.jpg",
+    "targetUrl": "/company-salienceglass/product-group/pqQaHGUADIrT/Insulated-Glass-Hollow-Glass-1.html?sf=categories",
+    "pst": "1",
+    "facetId": "pqQaHGUADIrT",
+    "ads": "prodcls:Insulated-Glass-Hollow-Glass"
+   },
+   {
+    "comId": "bSrtEKgyYcUf",
+    "title": "Low E Glass",
+    "encryptGroup": false,
+    "img": "//image.made-in-china.com/43f34j00KOHkVGBrZlzc/Low-E-Tempered-Insulated-Glass-Used-for-Curtain-Wall-Building-Window.jpg",
+    "targetUrl": "/company-salienceglass/product-group/uoxaEpsVviRe/Low-E-Glass-1.html?sf=categories",
+    "pst": "1",
+    "facetId": "uoxaEpsVviRe",
+    "ads": "prodcls:Low-E-Glass"
+   },
+   {
+    "comId": "bSrtEKgyYcUf",
+    "title": "Clear Sheet Glass",
+    "encryptGroup": false,
+    "img": "//image.made-in-china.com/43f34j00KFocvPywGLrb/High-Quality-Clear-Sheet-Glass-1-7mm-1-8mm-for-Buildings-Windows-Doors.jpg",
+    "targetUrl": "/company-salienceglass/product-group/OemtHnSxuIpE/Clear-Sheet-Glass-1.html?sf=categories",
+    "pst": "1",
+    "facetId": "OemtHnSxuIpE",
+    "ads": "prodcls:Clear-Sheet-Glass"
+   }
+  ],
+  "success": true
+ },
+ "linkConfig": {
+  "swrHomepageUrl": "https://m.made-in-china.com/company-salienceglass/",
+  "swrProdListUrl": "https://m.made-in-china.com/company-salienceglass/productlist.html",
+  "swrCompanyInfoUrl": "https://m.made-in-china.com/company-salienceglass/info.html",
+  "swrContactUrl": "https://m.made-in-china.com/company-salienceglass/contact.html",
+  "swrDiscoverUrl": "https://m.made-in-china.com/company-salienceglass/Discover.html",
+  "swrPromotionsUrl": "https://m.made-in-china.com/company-salienceglass/selected.html"
+ },
+ "lang": "en",
+ "i18n": {
+  "header": {
+   "Since": "Since",
+   "DiamondMember": "Diamond Member",
+   "AuditedSupplier": "Audited Supplier",
+   "more": "More",
+   "BusinessType": "Business Type",
+   "RDCapacity": "R&D Capacity",
+   "SecuredTrading": "Secured Trading Service",
+   "Rating": "Rating",
+   "ResponseTime": "Response Time",
+   "ResponseRate": "Response Rate",
+   "MainProducts": "Main Products",
+   "YearofEstablishment": "Year of Establishment",
+   "BusinessLevel": "Business Level",
+   "Home": "Home",
+   "Product": "Product",
+   "Company": "Company",
+   "Discover": "Discover",
+   "Live": "Live",
+   "Contact": "Contact",
+   "Categories": "Categories",
+   "Chat": "Chat",
+   "ChatNow": "Chat Now",
+   "SendInquiry": "Send Inquiry",
+   "SignOut": "Sign out",
+   "SignIn": "Sign In",
+   "JoinFree": "Join Free",
+   "Messages": "Messages",
+   "Quotations": "Quotations",
+   "RatingReviews": "Ratings & Reviews",
+   "SourcingRequest": "Sourcing Requests",
+   "Associates": "Associates",
+   "Favorites": "Favorites",
+   "Follow": "Follow",
+   "ContactUs": "Help",
+   "Language": "Language",
+   "PCSite": "PC Site",
+   "Inquiries": "Inquiries",
+   "Chats": "Chats",
+   "SearchSupplier": "Search from this supplier",
+   "ContactwithMade": "Contact with Made-in-China.com",
+   "App": "App"
+  },
+  "footer": {
+   "HotProducts": "Hot Products",
+   "HotProductsPrice": "Hot Products Price",
+   "WholesaleHotProducts": "Wholesale Hot Products",
+   "AllRightsReserved": "All Rights Reserved."
+  },
+  "live": {
+   "Livestream": "Livestream",
+   "Upcoming": "Upcoming",
+   "Replay": "Replay",
+   "Subscribed": "Subscribed",
+   "Subscribe": "Subscribe",
+   "Livenow": "Live now!",
+   "Live": "Live",
+   "Time": "Time",
+   "Subscribedsuccessfully": "Subscribed successfully. We will remind you when the live show starts."
+  },
+  "mainprod": {
+   "FeaturedProducts": "Featured Products",
+   "ViewMore": "View More"
+  },
+  "search": {
+   "RecentSearches": "Recent Searches",
+   "PopularSearches": "Popular Searches",
+   "Categories": "Categories",
+   "AllProducts": "All Products",
+   "Cancel": "Cancel",
+   "Ok": "Ok",
+   "SearchSupplier": "Search from this supplier"
+  }
+ }
+}

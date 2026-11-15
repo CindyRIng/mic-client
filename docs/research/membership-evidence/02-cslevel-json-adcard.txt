@@ -1,0 +1,9 @@
+// 来源: 同上搜索结果页 ad/focusing 卡片的内嵌 JSON（2026-11-15）
+// csLevel=50 => Diamond Member; 30 => Gold Member（见页面内 JS 模板条件）
+"csLevel":"50",
+                        "showAS":"true",
+                        "auditLogoUrl":"https://www.micstatic.com/common/img/as/ico-as.png"
+
+<!-- 页面内模板条件：
+{{ if(csLevel && (csLevel==50 || csLevel==30)){ }} ... {{ if(csLevel==50){ }} diamond_32.png ... Diamond Member {{ } }} {{ if(csLevel==30){ }} gold_32.png ... Gold Member {{ } }} ... {{ } }}
+-->

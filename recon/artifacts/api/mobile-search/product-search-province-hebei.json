@@ -1,0 +1,122 @@
+{
+ "total": 52858,
+ "totalNum": "52,858",
+ "page": 1,
+ "pageSize": 36,
+ "totalPage": 834,
+ "dataFromCorrect": false,
+ "correctKey": null,
+ "correctResultNum": 0,
+ "formatedCorrectResultNum": "0",
+ "startIndex": 0,
+ "needSuggest": false,
+ "redirectUrl": "",
+ "crawlerFspError": false,
+ "adList": [],
+ "calassifyWords": null,
+ "promoteVideos": [],
+ "showPlanB": false,
+ "followSupplierIds": null,
+ "searchWordAreIllegal": false,
+ "searchLanguageCode": null,
+ "searchTransEn": null,
+ "foreignVisit": false,
+ "dataList": [
+  {
+   "activity": false,
+   "ad": true,
+   "adsDataPrefix": "t:50,aid:pyNAfWivfkDs,si:1,pcid:eXlTnSrOCdaR,pdid:lapYHXBTHWUw,a:1,mds:36,pa:2",
+   "advertise": {
+    "linkCom": false
+   },
+   "auditType": 1,
+   "showAuditLogo": true,
+   "logoUrl": "https://www.micstatic.com/common/img/as/ico-as-new.png",
+   "logoText": "Audited Supplier",
+   "description": "Audited by an independent third-party inspection agency",
+   "company": {
+    "businessType": "Manufacturer/Factory",
+    "cooperationYear": "2025",
+    "country": "China",
+    "id": 1794202671,
+    "name": "Qinhuangdao Tianyao Glass Co., Ltd",
+    "province": "Hebei",
+    "rdCapacityList": [
+     "ODM"
+    ]
+   },
+   "companyUrl": "/company-tianyaoglass/",
+   "id": 2152749472,
+   "img550Url": "https://image.made-in-china.com/202f0j00oQheTAWthvpO/4mm-5mm-6mm-8mm-10mm-12mm-Tinted-Reflective-Float-Glass-Euro-Bronze-Dark-Grey-Colored-Glass-for-Windows-and-Doors.jpg",
+   "imgUrl": "https://image.made-in-china.com/2f1j00oQheTAWthvpO/4mm-5mm-6mm-8mm-10mm-12mm-Tinted-Reflective-Float-Glass-Euro-Bronze-Dark-Grey-Colored-Glass-for-Windows-and-Doors.jpg",
+   "inquiryUrl": "https://m.made-in-china.com/inquiry/send/product/2152749472?from=search&target=prod&word=glass",
+   "memberType": 10,
+   "minOrder": "200 Square Meters",
+   "name": "4mm 5mm 6mm 8mm 10mm 12mm Tinted Reflective Float Glass Euro Bronze Dark Grey Colored Glass for Windows and Doors",
+   "preventProd": false,
+   "prodRelatedType": "1",
+   "promote": false,
+   "showMainProductsPromote": false,
+   "trLayout": "2",
+   "trMiniProducts": [],
+   "tradeFlag": true,
+   "url": "https://m.made-in-china.com/product/4mm-5mm-6mm-8mm-10mm-12mm-Tinted-Reflective-Float-Glass-Euro-Bronze-Dark-Grey-Colored-Glass-for-Windows-and-Doors-2152749472.html",
+   "validTag": false,
+   "leadingFactory": false,
+   "prodTradeBaseInfo": {
+    "prodType": 1,
+    "buttonText": "Buy Now",
+    "showStsBadge": true,
+    "stsTip": "Only orders paid through Secured Trading are eligible for payment protection."
+   },
+   "price_num": "US $ 3.8-4.8",
+   "price_unit": "Square Meter"
+  },
+  {
+   "activity": false,
+   "ad": false,
+   "adsDataPrefix": "t:80,aid:,si:1,pcid:eXlTnSrOCdaR,pdid:yZLGJtIVgjau,a:2,mds:36,pa:2",
+   "auditType": 1,
+   "showAuditLogo": true,
+   "logoUrl": "https://www.micstatic.com/common/img/as/ico-as-new.png",
+   "logoText": "Audited Supplier",
+   "description": "Audited by an independent third-party inspection agency",
+   "company": {
+    "businessType": "Manufacturer/Factory",
+    "cooperationYear": "2025",
+    "country": "China",
+    "id": 1794202671,
+    "name": "Qinhuangdao Tianyao Glass Co., Ltd",
+    "province": "Hebei",
+    "rdCapacityList": [
+     "ODM"
+    ]
+   },
+   "companyUrl": "/company-tianyaoglass/",
+   "id": 1983403811,
+   "img550Url": "https://image.made-in-china.com/202f0j00hwdcqmHMMUpD/Wholesale-2mm-3-mm-4mm-5mm-6mm-8mm-10mm-12mm-Architectural-Building-Clear-Low-Iron-Low-E-Tempered-Float-Sheet-Glass-Price.jpg",
+   "imgUrl": "https://image.made-in-china.com/2f1j00hwdcqmHMMUpD/Wholesale-2mm-3-mm-4mm-5mm-6mm-8mm-10mm-12mm-Architectural-Building-Clear-Low-Iron-Low-E-Tempered-Float-Sheet-Glass-Price.jpg",
+   "inquiryUrl": "https://m.made-in-china.com/inquiry/send/product/1983403811?from=search&target=prod&word=glass",
+   "memberType": 10,
+   "minOrder": "500 Square Meters",
+   "name": "Wholesale 2mm 3 mm 4mm 5mm 6mm 8mm 10mm 12mm Architectural Building Clear Low Iron Low E Tempered Float Sheet Glass Price",
+   "preventProd": false,
+   "prodRelatedType": "1",
+   "promote": false,
+   "showMainProductsPromote": false,
+   "trMiniProducts": [],
+   "tradeFlag": true,
+   "url": "https://m.made-in-china.com/product/Wholesale-2mm-3-mm-4mm-5mm-6mm-8mm-10mm-12mm-Architectural-Building-Clear-Low-Iron-Low-E-Tempered-Float-Sheet-Glass-Price-1983403811.html",
+   "validTag": false,
+   "leadingFactory": false,
+   "prodTradeBaseInfo": {
+    "prodType": 2,
+    "buttonText": "",
+    "showStsBadge": true,
+    "stsTip": "Only orders paid through Secured Trading are eligible for payment protection."
+   },
+   "price_num": "US $ 1.99-9.98",
+   "price_unit": "Square Meter"
+  }
+ ]
+}

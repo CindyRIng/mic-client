@@ -1,0 +1,13 @@
+HTTP/2 302 
+timing-allow-origin: *
+origin-agent-cluster: ?0
+location: https://captcha.made-in-china.com/verification.html?srcUrl=https://www.made-in-china.com/company-search/glass/C1--CP_Hebei--CC_Hebei_Langfang/2.html
+pragma: no-cache
+expires: 0
+server: TencentEdgeOne
+cache-control: must-revalidate, no-cache, no-store
+content-length: 0
+date: Sun, 15 Nov 2026 14:44:41 GMT
+eo-log-uuid: 16504384529875194101
+eo-cache-status: MISS
+

@@ -1,0 +1,729 @@
+{
+ "page": 1,
+ "pageSize": 20,
+ "total": 2000,
+ "totalPage": 100,
+ "searchWord": "glass",
+ "appliedFilters": {},
+ "refineModels": [
+  {
+   "value": "catCode",
+   "subject": "Categories",
+   "childs": [
+    {
+     "name": "Manufacturing & Processing Machinery",
+     "value": "1900000000",
+     "count": 4960
+    },
+    {
+     "name": "Industrial Equipment & Components",
+     "value": "3400000000",
+     "count": 4521
+    },
+    {
+     "name": "Construction & Decoration",
+     "value": "1500000000",
+     "count": 3537
+    },
+    {
+     "name": "Tools & Hardware",
+     "value": "3200000000",
+     "count": 3149
+    },
+    {
+     "name": "Light Industry & Daily Use",
+     "value": "1800000000",
+     "count": 2616
+    },
+    {
+     "name": "Electrical & Electronics",
+     "value": "1600000000",
+     "count": 2549
+    },
+    {
+     "name": "Packaging & Printing",
+     "value": "3600000000",
+     "count": 2207
+    },
+    {
+     "name": "Auto, Motorcycle Parts & Accessories",
+     "value": "2900000000",
+     "count": 1771
+    },
+    {
+     "name": "Chemicals",
+     "value": "1300000000",
+     "count": 1527
+    },
+    {
+     "name": "Consumer Electronics",
+     "value": "1400000000",
+     "count": 1073
+    }
+   ],
+   "categoriesRefine": true
+  },
+  {
+   "value": "comBusinessType",
+   "subject": "Company Type",
+   "childs": [
+    {
+     "name": "Trading Company",
+     "value": "2",
+     "count": 11573
+    },
+    {
+     "name": "Manufacturer/Factory",
+     "value": "1",
+     "count": 6922
+    },
+    {
+     "name": "Group Corporation",
+     "value": "4",
+     "count": 66
+    },
+    {
+     "name": "Other",
+     "value": "8",
+     "count": 0
+    }
+   ],
+   "categoriesRefine": false
+  },
+  {
+   "value": "managementCertification",
+   "subject": "Management Certification",
+   "childs": [
+    {
+     "name": "ISO9001:2015",
+     "value": "-5",
+     "count": 1671
+    },
+    {
+     "name": "ISO 14001",
+     "value": "6",
+     "count": 1086
+    },
+    {
+     "name": "ISO 9001",
+     "value": "10",
+     "count": 722
+    },
+    {
+     "name": "Others",
+     "value": "-4",
+     "count": 592
+    },
+    {
+     "name": "ISO 9000",
+     "value": "9",
+     "count": 221
+    },
+    {
+     "name": "BSCI",
+     "value": "20",
+     "count": 163
+    },
+    {
+     "name": "ISO 14000",
+     "value": "5",
+     "count": 144
+    },
+    {
+     "name": "ISO 20000",
+     "value": "8",
+     "count": 117
+    },
+    {
+     "name": "GMP",
+     "value": "26",
+     "count": 108
+    },
+    {
+     "name": "OHSAS/ OHSMS 18001",
+     "value": "11",
+     "count": 91
+    },
+    {
+     "name": "IATF16949",
+     "value": "31",
+     "count": 86
+    },
+    {
+     "name": "QC 080000",
+     "value": "12",
+     "count": 85
+    },
+    {
+     "name": "ISO 14064",
+     "value": "7",
+     "count": 72
+    },
+    {
+     "name": "FSC",
+     "value": "40",
+     "count": 68
+    },
+    {
+     "name": "HSE",
+     "value": "4",
+     "count": 64
+    },
+    {
+     "name": "ISO 50001",
+     "value": "37",
+     "count": 62
+    },
+    {
+     "name": "ISO 13485",
+     "value": "28",
+     "count": 55
+    },
+    {
+     "name": "SEDEX",
+     "value": "21",
+     "count": 37
+    },
+    {
+     "name": "HACCP",
+     "value": "27",
+     "count": 34
+    },
+    {
+     "name": "ISO 22000",
+     "value": "35",
+     "count": 34
+    },
+    {
+     "name": "BRC",
+     "value": "19",
+     "count": 33
+    },
+    {
+     "name": "ISO 17025",
+     "value": "42",
+     "count": 28
+    },
+    {
+     "name": "IFS",
+     "value": "34",
+     "count": 27
+    },
+    {
+     "name": "ISO 10012",
+     "value": "41",
+     "count": 27
+    },
+    {
+     "name": "ANSI/ESD",
+     "value": "1",
+     "count": 26
+    },
+    {
+     "name": "SA 8000",
+     "value": "13",
+     "count": 24
+    },
+    {
+     "name": "ASME",
+     "value": "23",
+     "count": 24
+    },
+    {
+     "name": "EICC",
+     "value": "3",
+     "count": 23
+    },
+    {
+     "name": "QHSE",
+     "value": "17",
+     "count": 21
+    },
+    {
+     "name": "QSR",
+     "value": "29",
+     "count": 20
+    },
+    {
+     "name": "WRAP",
+     "value": "22",
+     "count": 20
+    },
+    {
+     "name": "ISO 29001",
+     "value": "36",
+     "count": 20
+    },
+    {
+     "name": "BS 25999-2",
+     "value": "2",
+     "count": 20
+    },
+    {
+     "name": "SHE Audits",
+     "value": "18",
+     "count": 19
+    },
+    {
+     "name": "GAP",
+     "value": "33",
+     "count": 18
+    },
+    {
+     "name": "AIB",
+     "value": "32",
+     "count": 16
+    },
+    {
+     "name": "LEED",
+     "value": "16",
+     "count": 16
+    },
+    {
+     "name": "PAS 28000",
+     "value": "30",
+     "count": 15
+    },
+    {
+     "name": "BREEAM",
+     "value": "14",
+     "count": 15
+    },
+    {
+     "name": "HQE",
+     "value": "15",
+     "count": 14
+    },
+    {
+     "name": "ISO9001:2008",
+     "value": "-1",
+     "count": 5
+    },
+    {
+     "name": "ISO45001:2016",
+     "value": "-7",
+     "count": 2
+    },
+    {
+     "name": "ISO14001:2004",
+     "value": "-2",
+     "count": 1
+    },
+    {
+     "name": "ISO14001:2015",
+     "value": "-6",
+     "count": 1
+    }
+   ],
+   "categoriesRefine": false
+  },
+  {
+   "value": "memberLevel",
+   "subject": "Member Type",
+   "childs": [
+    {
+     "name": "Diamond Member",
+     "value": "50",
+     "count": 0
+    },
+    {
+     "name": "Gold Member",
+     "value": "30",
+     "count": 0
+    },
+    {
+     "name": "Audited Supplier",
+     "value": "0,1,3",
+     "count": 0
+    }
+   ],
+   "categoriesRefine": false
+  },
+  {
+   "value": "province",
+   "subject": "Company Location",
+   "childs": [
+    {
+     "name": "Guangdong",
+     "value": "Guangdong",
+     "count": 3372
+    },
+    {
+     "name": "Shandong",
+     "value": "Shandong",
+     "count": 1916
+    },
+    {
+     "name": "Zhejiang",
+     "value": "Zhejiang",
+     "count": 1866
+    },
+    {
+     "name": "Jiangsu",
+     "value": "Jiangsu",
+     "count": 1410
+    },
+    {
+     "name": "Hebei",
+     "value": "Hebei",
+     "count": 669
+    },
+    {
+     "name": "Henan",
+     "value": "Henan",
+     "count": 560
+    },
+    {
+     "name": "Fujian",
+     "value": "Fujian",
+     "count": 560
+    },
+    {
+     "name": "Shanghai",
+     "value": "Shanghai",
+     "count": 543
+    },
+    {
+     "name": "Anhui",
+     "value": "Anhui",
+     "count": 320
+    },
+    {
+     "name": "Tianjin",
+     "value": "Tianjin",
+     "count": 169
+    },
+    {
+     "name": "Hunan",
+     "value": "Hunan",
+     "count": 160
+    },
+    {
+     "name": "Jiangxi",
+     "value": "Jiangxi",
+     "count": 146
+    },
+    {
+     "name": "Hubei",
+     "value": "Hubei",
+     "count": 140
+    },
+    {
+     "name": "Beijing",
+     "value": "Beijing",
+     "count": 127
+    },
+    {
+     "name": "Liaoning",
+     "value": "Liaoning",
+     "count": 104
+    },
+    {
+     "name": "Sichuan",
+     "value": "Sichuan",
+     "count": 98
+    },
+    {
+     "name": "Chongqing",
+     "value": "Chongqing",
+     "count": 84
+    },
+    {
+     "name": "Shaanxi",
+     "value": "Shaanxi",
+     "count": 61
+    },
+    {
+     "name": "Guangxi",
+     "value": "Guangxi",
+     "count": 31
+    },
+    {
+     "name": "Shanxi",
+     "value": "Shanxi",
+     "count": 29
+    },
+    {
+     "name": "Hainan",
+     "value": "Hainan",
+     "count": 18
+    },
+    {
+     "name": "Yunnan",
+     "value": "Yunnan",
+     "count": 11
+    },
+    {
+     "name": "Hongkong S.A.R.",
+     "value": "Hongkong",
+     "count": 9
+    },
+    {
+     "name": "Gansu",
+     "value": "Gansu",
+     "count": 9
+    },
+    {
+     "name": "Inner Mongolia",
+     "value": "InnerMongolia",
+     "count": 7
+    },
+    {
+     "name": "Jilin",
+     "value": "Jilin",
+     "count": 6
+    },
+    {
+     "name": "Guizhou",
+     "value": "Guizhou",
+     "count": 5
+    },
+    {
+     "name": "Heilongjiang",
+     "value": "Heilongjiang",
+     "count": 4
+    },
+    {
+     "name": "Xinjiang",
+     "value": "Xinjiang",
+     "count": 2
+    },
+    {
+     "name": "Taiwan, China",
+     "value": "Taiwan",
+     "count": 2
+    },
+    {
+     "name": "Ningxia",
+     "value": "Ningxia",
+     "count": 2
+    }
+   ],
+   "categoriesRefine": false
+  },
+  {
+   "value": "annualRevenue",
+   "subject": "Annual Revenue",
+   "childs": [
+    {
+     "name": "<1 Million USD ",
+     "value": "1",
+     "count": 8157
+    },
+    {
+     "name": "2.5 ~ 5 Million USD ",
+     "value": "3",
+     "count": 125
+    },
+    {
+     "name": "10 ~ 50 Million USD ",
+     "value": "5",
+     "count": 116
+    },
+    {
+     "name": "5 ~ 10 Million USD ",
+     "value": "4",
+     "count": 112
+    },
+    {
+     "name": "1 ~ 2.5 Million USD ",
+     "value": "2",
+     "count": 106
+    },
+    {
+     "name": ">100 Million USD ",
+     "value": "7",
+     "count": 26
+    },
+    {
+     "name": "50 ~ 100 Million USD ",
+     "value": "6",
+     "count": 20
+    }
+   ],
+   "categoriesRefine": false
+  }
+ ],
+ "dataList": [
+  {
+   "id": 1750231872,
+   "name": "QINGDAO KH MATERIALS CO., LTD",
+   "mainUserAccount": "khglass",
+   "memberType": 10,
+   "auditType": 1,
+   "showAuditLogo": true,
+   "logoUrl": "https://www.micstatic.com/common/img/as/ico-as-new.png",
+   "logoText": "Audited Supplier",
+   "logoPicUrl": "http://image.made-in-china.com/205f0j00GEVRsPKdZUbA/made-in-china.jpg",
+   "city": "Qingdao",
+   "province": "Shandong",
+   "country": "China",
+   "showAd": true,
+   "adstr": "t:50,si:1,pcid:NXxTPKrDJcRa,a:1,mds:20,pa:3,sw:glass,aid:lNcTfEtAVVDh,c:16",
+   "adsDataC": "t:50,si:1,pcid:NXxTPKrDJcRa,a:1,mds:20,pa:3,sw:glass,aid:lNcTfEtAVVDh,c:16,st:3",
+   "productReduce": [
+    {
+     "id": "2234678595",
+     "image": "https://image.made-in-china.com/2f1j00NeqMOWBEkVkI/4X8-Building-Clear-Float-Glass-Sheet-Price-Factory-Wholesale-4mm-15mm.jpg",
+     "imageUrl100": "https://image.made-in-china.com/3f2j00NeqMOWBEkVkI/4X8-Building-Clear-Float-Glass-Sheet-Price-Factory-Wholesale-4mm-15mm.jpg",
+     "name": "4X8 Building Clear Float Glass Sheet Price Factory Wholesale 4mm-15mm",
+     "url": "https://m.made-in-china.com/product/4X8-Building-Clear-Float-Glass-Sheet-Price-Factory-Wholesale-4mm-15mm-2234678595.html",
+     "prodUrl": "https://m.made-in-china.com/product/4X8-Building-Clear-Float-Glass-Sheet-Price-Factory-Wholesale-4mm-15mm-2234678595.html",
+     "prodRelatedType": "1",
+     "adsDataP": "t:50,si:1,pcid:NXxTPKrDJcRa,pdid:VrDUvwbKMLkN,a:1,pa:8,sw:glass,aid:lNcTfEtAVVDh,c:16,tps:1,st:8",
+     "adsDataS": "t:50,si:1,pcid:NXxTPKrDJcRa,pdid:VrDUvwbKMLkN,a:1,pa:8,sw:glass,aid:lNcTfEtAVVDh,c:16,tps:1,st:2",
+     "adsDataPrefix": "t:50,si:1,pcid:NXxTPKrDJcRa,pdid:VrDUvwbKMLkN,a:1,pa:8,sw:glass,aid:lNcTfEtAVVDh,c:16,tps:1",
+     "catCode": "1502010000",
+     "videoId": 1049781745,
+     "price_num": "Negotiated",
+     "encodeProdId": "VrDUvwbKMLkN",
+     "trafficAdsData": "",
+     "adsId": "lNcTfEtAVVDh",
+     "adsType": "",
+     "deliveryType": "ads",
+     "serviceId": "rEiQVSAOqmgc",
+     "gifList": [],
+     "trafficProdUrl": "https://m.made-in-china.com/product/4X8-Building-Clear-Float-Glass-Sheet-Price-Factory-Wholesale-4mm-15mm-2234678595.html?ads_tp=&ads_id=lNcTfEtAVVDh",
+     "foreign": false
+    }
+   ],
+   "businessTypeList": [
+    "Manufacturer/Factory"
+   ],
+   "comOwnerShip": "Limited Company",
+   "productionLinesNumbers": "6",
+   "rdCapacityList": [
+    "ODM",
+    "OEM"
+   ],
+   "systemCertificationList": [
+    "ISO 9001",
+    "QC 080000"
+   ],
+   "companyUrl": "https://m.made-in-china.com/company-khglass/",
+   "companyInfoUrl": "https://m.made-in-china.com/company-khglass/info.html",
+   "comTurnOver": "",
+   "comPlantArea": "",
+   "encodeComId": "NXxTPKrDJcRa",
+   "followFlag": false,
+   "businessTypeForShow": "Manufacturer/Factory",
+   "rdCapacityForShow": "OEM/ODM",
+   "mainProduct": "Building Glass, Mirror, Decorative Glass, Architectural Glass, Laminated Glass, Float Glass, Tempered Glass, Reflective Glass",
+   "cityOrProvince": "Shandong",
+   "systemCertificationForShow": "ISO 9001,QC 080000",
+   "adsDataPrefix": "t:50,si:1,pcid:NXxTPKrDJcRa,a:1,mds:20,pa:3,sw:glass,aid:lNcTfEtAVVDh,c:16",
+   "trafficAdsData": "",
+   "itemIndex": 0,
+   "csLevel": 50,
+   "leadingFactory": false,
+   "companySymbol": {
+    "comId": 1750231872,
+    "stars": "4",
+    "intStars": 4
+   },
+   "adsId": "lNcTfEtAVVDh",
+   "adsType": "",
+   "deliveryType": "ads",
+   "serviceId": "rEiQVSAOqmgc",
+   "quickResponse": false,
+   "ad": true,
+   "advertise": {
+    "id": "1855115404",
+    "linkCom": false
+   },
+   "fastDelivery": false,
+   "trafficComUrl": "https://m.made-in-china.com/company-khglass/?ads_tp=&ads_id=lNcTfEtAVVDh",
+   "trafficUrl": "https://m.made-in-china.com/company-khglass/?ads_tp=&ads_id=lNcTfEtAVVDh"
+  },
+  {
+   "id": 1794202671,
+   "name": "Qinhuangdao Tianyao Glass Co., Ltd",
+   "mainUserAccount": "tianyaoglass",
+   "memberType": 10,
+   "auditType": 1,
+   "showAuditLogo": true,
+   "logoUrl": "https://www.micstatic.com/common/img/as/ico-as-new.png",
+   "logoText": "Audited Supplier",
+   "logoPicUrl": "http://image.made-in-china.com/205f0j00wEgGCLIoquRH/made-in-china.jpg",
+   "city": "Qinhuangdao",
+   "province": "Hebei",
+   "country": "China",
+   "showAd": true,
+   "adstr": "t:50,si:1,pcid:eXlTnSrOCdaR,a:2,mds:20,pa:3,sw:glass,aid:pyNAfWivfkDs,c:16",
+   "adsDataC": "t:50,si:1,pcid:eXlTnSrOCdaR,a:2,mds:20,pa:3,sw:glass,aid:pyNAfWivfkDs,c:16,st:3",
+   "productReduce": [
+    {
+     "id": "2198840642",
+     "image": "https://image.made-in-china.com/2f1j00hLvetWbdkZgm/8mm-10mm-12mm-Low-E-Coated-Glass-Sheet-Manufacturer.jpg",
+     "imageUrl100": "https://image.made-in-china.com/3f2j00hLvetWbdkZgm/8mm-10mm-12mm-Low-E-Coated-Glass-Sheet-Manufacturer.jpg",
+     "name": "8mm 10mm 12mm Low E Coated Glass Sheet Manufacturer",
+     "url": "https://m.made-in-china.com/product/8mm-10mm-12mm-Low-E-Coated-Glass-Sheet-Manufacturer-2198840642.html",
+     "prodUrl": "https://m.made-in-china.com/product/8mm-10mm-12mm-Low-E-Coated-Glass-Sheet-Manufacturer-2198840642.html",
+     "prodRelatedType": "1",
+     "adsDataP": "t:50,si:1,pcid:eXlTnSrOCdaR,pdid:bajYiICdfZRn,a:2,pa:8,sw:glass,aid:pyNAfWivfkDs,c:16,tps:1,st:8",
+     "adsDataS": "t:50,si:1,pcid:eXlTnSrOCdaR,pdid:bajYiICdfZRn,a:2,pa:8,sw:glass,aid:pyNAfWivfkDs,c:16,tps:1,st:2",
+     "adsDataPrefix": "t:50,si:1,pcid:eXlTnSrOCdaR,pdid:bajYiICdfZRn,a:2,pa:8,sw:glass,aid:pyNAfWivfkDs,c:16,tps:1",
+     "catCode": "1502030000",
+     "videoId": 1120111844,
+     "price_num": "Negotiated",
+     "encodeProdId": "bajYiICdfZRn",
+     "trafficAdsData": "",
+     "adsId": "pyNAfWivfkDs",
+     "adsType": "",
+     "deliveryType": "ads",
+     "serviceId": "uQHncjgJFxqm",
+     "gifList": [],
+     "trafficProdUrl": "https://m.made-in-china.com/product/8mm-10mm-12mm-Low-E-Coated-Glass-Sheet-Manufacturer-2198840642.html?ads_tp=&ads_id=pyNAfWivfkDs",
+     "foreign": false
+    }
+   ],
+   "businessTypeList": [
+    "Manufacturer/Factory"
+   ],
+   "comOwnerShip": "Limited Company",
+   "productionLinesNumbers": "Above 10",
+   "rdCapacityList": [
+    "ODM",
+    "Own Brand"
+   ],
+   "systemCertificationList": [
+    "ISO 9001"
+   ],
+   "companyUrl": "https://m.made-in-china.com/company-tianyaoglass/",
+   "companyInfoUrl": "https://m.made-in-china.com/company-tianyaoglass/info.html",
+   "comTurnOver": "",
+   "comPlantArea": "",
+   "encodeComId": "eXlTnSrOCdaR",
+   "followFlag": false,
+   "businessTypeForShow": "Manufacturer/Factory",
+   "rdCapacityForShow": "OEM/ODM",
+   "mainProduct": "Clear Float Glass, Float Glass, Tempered Glass, Laminated Glass, Glass Sheet",
+   "cityOrProvince": "Hebei",
+   "systemCertificationForShow": "ISO 9001",
+   "adsDataPrefix": "t:50,si:1,pcid:eXlTnSrOCdaR,a:2,mds:20,pa:3,sw:glass,aid:pyNAfWivfkDs,c:16",
+   "trafficAdsData": "",
+   "itemIndex": 0,
+   "csLevel": 50,
+   "leadingFactory": false,
+   "companySymbol": {
+    "comId": 1794202671,
+    "stars": "5",
+    "intStars": 5
+   },
+   "adsId": "pyNAfWivfkDs",
+   "adsType": "",
+   "deliveryType": "ads",
+   "serviceId": "uQHncjgJFxqm",
+   "quickResponse": false,
+   "ad": true,
+   "advertise": {
+    "id": "1858418254",
+    "linkCom": false
+   },
+   "fastDelivery": false,
+   "trafficComUrl": "https://m.made-in-china.com/company-tianyaoglass/?ads_tp=&ads_id=pyNAfWivfkDs",
+   "trafficUrl": "https://m.made-in-china.com/company-tianyaoglass/?ads_tp=&ads_id=pyNAfWivfkDs"
+  }
+ ],
+ "_note": "extracted from <script type=\"text/json\" id=\"props\"> on m.made-in-china.com/search/supplier?word=glass (SSR page); trimmed"
+}

@@ -1,0 +1,316 @@
+[
+ {
+  "value": "catCode",
+  "subject": "Categories",
+  "childs": [
+   {
+    "name": "Construction & Decoration",
+    "value": "1500000000",
+    "count": 303
+   },
+   {
+    "name": "Industrial Equipment & Components",
+    "value": "3400000000",
+    "count": 270
+   },
+   {
+    "name": "Manufacturing & Processing Machinery",
+    "value": "1900000000",
+    "count": 268
+   },
+   {
+    "name": "Tools & Hardware",
+    "value": "3200000000",
+    "count": 235
+   },
+   {
+    "name": "Metallurgy, Mineral & Energy",
+    "value": "2000000000",
+    "count": 164
+   },
+   {
+    "name": "Chemicals",
+    "value": "1300000000",
+    "count": 151
+   },
+   {
+    "name": "Security & Protection",
+    "value": "2500000000",
+    "count": 113
+   },
+   {
+    "name": "Auto, Motorcycle Parts & Accessories",
+    "value": "2900000000",
+    "count": 110
+   },
+   {
+    "name": "Light Industry & Daily Use",
+    "value": "1800000000",
+    "count": 107
+   },
+   {
+    "name": "Electrical & Electronics",
+    "value": "1600000000",
+    "count": 53
+   }
+  ],
+  "categoriesRefine": true
+ },
+ {
+  "value": "comBusinessType",
+  "subject": "Company Type",
+  "childs": [
+   {
+    "name": "Trading Company",
+    "value": "2",
+    "count": 616
+   },
+   {
+    "name": "Manufacturer/Factory",
+    "value": "1",
+    "count": 401
+   },
+   {
+    "name": "Group Corporation",
+    "value": "4",
+    "count": 4
+   }
+  ],
+  "categoriesRefine": false
+ },
+ {
+  "value": "managementCertification",
+  "subject": "Management Certification",
+  "childs": [
+   {
+    "name": "ISO9001:2015",
+    "value": "-5",
+    "count": 108
+   },
+   {
+    "name": "ISO 14001",
+    "value": "6",
+    "count": 87
+   },
+   {
+    "name": "ISO 9001",
+    "value": "10",
+    "count": 31
+   },
+   {
+    "name": "Others",
+    "value": "-4",
+    "count": 27
+   },
+   {
+    "name": "ISO 9000",
+    "value": "9",
+    "count": 12
+   },
+   {
+    "name": "ISO 14000",
+    "value": "5",
+    "count": 9
+   },
+   {
+    "name": "BSCI",
+    "value": "20",
+    "count": 8
+   },
+   {
+    "name": "QC 080000",
+    "value": "12",
+    "count": 6
+   },
+   {
+    "name": "HSE",
+    "value": "4",
+    "count": 6
+   },
+   {
+    "name": "ISO 20000",
+    "value": "8",
+    "count": 6
+   },
+   {
+    "name": "OHSAS/ OHSMS 18001",
+    "value": "11",
+    "count": 6
+   },
+   {
+    "name": "IATF16949",
+    "value": "31",
+    "count": 5
+   },
+   {
+    "name": "ISO 50001",
+    "value": "37",
+    "count": 5
+   },
+   {
+    "name": "GMP",
+    "value": "26",
+    "count": 4
+   },
+   {
+    "name": "ISO 14064",
+    "value": "7",
+    "count": 4
+   },
+   {
+    "name": "ANSI/ESD",
+    "value": "1",
+    "count": 2
+   },
+   {
+    "name": "ISO 22000",
+    "value": "35",
+    "count": 2
+   },
+   {
+    "name": "BRC",
+    "value": "19",
+    "count": 2
+   },
+   {
+    "name": "ASME",
+    "value": "23",
+    "count": 1
+   },
+   {
+    "name": "SA 8000",
+    "value": "13",
+    "count": 1
+   },
+   {
+    "name": "HACCP",
+    "value": "27",
+    "count": 1
+   },
+   {
+    "name": "ISO45001:2016",
+    "value": "-7",
+    "count": 1
+   },
+   {
+    "name": "FSC",
+    "value": "40",
+    "count": 1
+   },
+   {
+    "name": "SEDEX",
+    "value": "21",
+    "count": 1
+   }
+  ],
+  "categoriesRefine": false
+ },
+ {
+  "value": "memberLevel",
+  "subject": "Member Type",
+  "childs": [
+   {
+    "name": "Diamond Member",
+    "value": "50",
+    "count": 0
+   },
+   {
+    "name": "Gold Member",
+    "value": "30",
+    "count": 0
+   },
+   {
+    "name": "Audited Supplier",
+    "value": "0,1,3",
+    "count": 0
+   }
+  ],
+  "categoriesRefine": false
+ },
+ {
+  "value": "province",
+  "subject": "Company Location",
+  "childs": [
+   {
+    "name": "Hebei",
+    "value": "Hebei",
+    "count": 668
+   }
+  ],
+  "categoriesRefine": false
+ },
+ {
+  "value": "rdCapacity",
+  "subject": "Trade Capacity",
+  "childs": [
+   {
+    "name": "OEM",
+    "value": "4",
+    "count": 535
+   },
+   {
+    "name": "ODM",
+    "value": "5",
+    "count": 518
+   },
+   {
+    "name": "Quick Response",
+    "value": "01",
+    "count": 319
+   },
+   {
+    "name": "Fast Delivery",
+    "value": "02",
+    "count": 464
+   },
+   {
+    "name": "Small-amount payment",
+    "value": "03",
+    "count": 404
+   }
+  ],
+  "categoriesRefine": false
+ },
+ {
+  "value": "annualRevenue",
+  "subject": "Annual Revenue",
+  "childs": [
+   {
+    "name": "<1 Million USD ",
+    "value": "1",
+    "count": 495
+   },
+   {
+    "name": "2.5 ~ 5 Million USD ",
+    "value": "3",
+    "count": 12
+   },
+   {
+    "name": "10 ~ 50 Million USD ",
+    "value": "5",
+    "count": 10
+   },
+   {
+    "name": "1 ~ 2.5 Million USD ",
+    "value": "2",
+    "count": 4
+   },
+   {
+    "name": "5 ~ 10 Million USD ",
+    "value": "4",
+    "count": 3
+   },
+   {
+    "name": "50 ~ 100 Million USD ",
+    "value": "6",
+    "count": 2
+   },
+   {
+    "name": ">100 Million USD ",
+    "value": "7",
+    "count": 1
+   }
+  ],
+  "categoriesRefine": false
+ }
+]

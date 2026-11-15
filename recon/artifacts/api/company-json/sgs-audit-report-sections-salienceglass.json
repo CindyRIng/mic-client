@@ -1,0 +1,42 @@
+{
+ "code": 0,
+ "msg": null,
+ "data": [
+  {
+   "content": "General Information",
+   "audit": true
+  },
+  {
+   "content": "Export Trade Capacity",
+   "audit": true
+  },
+  {
+   "content": "Manufacturing Capacity",
+   "audit": false
+  },
+  {
+   "content": "Service Capacity",
+   "audit": true
+  },
+  {
+   "content": "Quality Control Capacity",
+   "audit": false
+  },
+  {
+   "content": "R&D Capacity",
+   "audit": true
+  },
+  {
+   "content": "Financial Capacity",
+   "audit": false
+  },
+  {
+   "content": "Sustainable Development Capacity",
+   "audit": false
+  },
+  {
+   "content": "Photos",
+   "audit": true
+  }
+ ]
+}

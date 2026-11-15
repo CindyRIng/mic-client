@@ -1,0 +1,128 @@
+{
+ "isDiamondMember": true,
+ "hasPromotions": false,
+ "comId": "616022644",
+ "logUsername": "lvxingmirror",
+ "navActiveVal": "3",
+ "headInfo": {
+  "enUrl": "https://m.made-in-china.com/company-lvxingmirror/info.html",
+  "selectUrl": "made-in-china.com/co_lvxingmirror/company_info.html",
+  "showPcSite": true,
+  "showInquiry": false,
+  "logonBuyer": false,
+  "userType": null,
+  "unReadQuotationNumber": 0,
+  "unReadMessageNumber": 0,
+  "logonUser": null,
+  "foreign": false,
+  "unreviewedCnt": 0,
+  "showReview": false
+ },
+ "companyInfo": {
+  "code": 0,
+  "err": "",
+  "content": {
+   "comId": "qMbERDQHVTlp",
+   "comName": "QINHUANGDAO GREEN STAR MIRROR CO., LTD.",
+   "memberLevel": "diamond",
+   "memberSince": "2018",
+   "sgsMember": true,
+   "auditReportLogo": {
+    "comId": 616022644,
+    "showAuditLogo": true,
+    "logoUrl": "https://www.micstatic.com/common/img/as/ico-as-new.png",
+    "logoUrl4App": "https://www.micstatic.com/common/img/as/ico-as-new-app.png",
+    "rankingLogoUrl": "https://www.micstatic.com/common/img/as/audit-new.png",
+    "logoText": "Audited Supplier",
+    "description": "Audited by an independent third-party inspection agency",
+    "logoWithText": "https://www.micstatic.com/common/img/as/as_audited_member_s_new.png"
+   },
+   "mainProducts": [
+    "Mirror",
+    " Clear Glass",
+    " Tempered Glass",
+    " Laminated Glass",
+    " Stained Glass",
+    " Glass Bevel",
+    " Bevel Clusters",
+    " Glass Mosaic"
+   ],
+   "businessTypes": [
+    "Manufacturer/Factory & Trading Company"
+   ],
+   "establishment": "2009-03-13",
+   "reviewStatistics": {
+    "rating": "4.5/5",
+    "reviewListUrl": "https://m.made-in-china.com/user/review/company-lvxingmirror/list/"
+   },
+   "onlineTradeAble": true,
+   "companySymbol": {
+    "comId": 616022644,
+    "stars": "0",
+    "intStars": 0
+   },
+   "logoUrl": "//image.made-in-china.com/206f0j00NQItWKfGuagM/QINHUANGDAO-GREEN-STAR-MIRROR-CO-LTD-.jpg",
+   "om": true,
+   "rd": [
+    "OEM",
+    "ODM"
+   ]
+  },
+  "success": true
+ },
+ "leadingFactory": "false",
+ "linkConfig": {
+  "swrHomepageUrl": "https://m.made-in-china.com/company-lvxingmirror/",
+  "swrProdListUrl": "https://m.made-in-china.com/company-lvxingmirror/productlist.html",
+  "swrCompanyInfoUrl": "https://m.made-in-china.com/company-lvxingmirror/info.html",
+  "swrContactUrl": "https://m.made-in-china.com/company-lvxingmirror/contact.html",
+  "swrDiscoverUrl": "https://m.made-in-china.com/company-lvxingmirror/Discover.html",
+  "swrPromotionsUrl": "https://m.made-in-china.com/company-lvxingmirror/selected.html"
+ },
+ "lang": "en",
+ "i18n": {
+  "header": {
+   "Since": "Since",
+   "DiamondMember": "Diamond Member",
+   "AuditedSupplier": "Audited Supplier",
+   "more": "More",
+   "BusinessType": "Business Type",
+   "RDCapacity": "R&D Capacity",
+   "SecuredTrading": "Secured Trading Service",
+   "Rating": "Rating",
+   "ResponseTime": "Response Time",
+   "ResponseRate": "Response Rate",
+   "MainProducts": "Main Products",
+   "YearofEstablishment": "Year of Establishment",
+   "BusinessLevel": "Business Level",
+   "Home": "Home",
+   "Product": "Product",
+   "Company": "Company",
+   "Discover": "Discover",
+   "Live": "Live",
+   "Contact": "Contact",
+   "Categories": "Categories",
+   "Chat": "Chat",
+   "ChatNow": "Chat Now",
+   "SendInquiry": "Send Inquiry",
+   "SignOut": "Sign out",
+   "SignIn": "Sign In",
+   "JoinFree": "Join Free",
+   "Messages": "Messages",
+   "Quotations": "Quotations",
+   "RatingReviews": "Ratings & Reviews",
+   "SourcingRequest": "Sourcing Requests",
+   "Associates": "Associates",
+   "Favorites": "Favorites",
+   "Follow": "Follow",
+   "ContactUs": "Contact Us",
+   "Language": "Language",
+   "PCSite": "PC Site",
+   "Inquiries": "Inquiries",
+   "Chats": "Chats",
+   "SearchSupplier": "Search from this supplier",
+   "ContactwithMade": "Contact with Made-in-China.com",
+   "App": "App"
+  }
+ }
+}

@@ -1,0 +1,73 @@
+{
+  "title": "Focus Captcha",
+  "url": "https://captcha.made-in-china.com/verification.html?srcUrl=https%3A%2F%2Fwww.made-in-china.com%2Fcompanysearch.do%3Fsubaction%3Dhunt%26style%3Db%26mode%3Dand%26code%3D0%26comProvince%3Dnolimit%26order%3D0%26isOpenCorrection%3D1%26word%3Dglass",
+  "doms": {
+    "verifybox": null,
+    "bar_area": {
+      "x": 390.03125,
+      "y": 417.0625,
+      "w": 282,
+      "h": 44
+    },
+    "move_block": {
+      "x": 391.03125,
+      "y": 418.0625,
+      "w": 42,
+      "h": 42
+    },
+    "img_panel": {
+      "x": 390.03125,
+      "y": 272.0625,
+      "w": 280,
+      "h": 140
+    },
+    "img_out": {
+      "x": 390.03125,
+      "y": 272.0625,
+      "w": 500,
+      "h": 145
+    }
+  },
+  "imgs": [],
+  "focusCaptchaKeys": [
+    "$element",
+    "backToken",
+    "moveLeftDistance",
+    "secretKey",
+    "defaults",
+    "options",
+    "status",
+    "isEnd",
+    "setSize",
+    "plusWidth",
+    "plusHeight",
+    "x",
+    "y",
+    "lengthPercent",
+    "htmlDoms",
+    "trail",
+    "currentTrail"
+  ],
+  "setSize": {
+    "img_width": 280,
+    "img_height": 140,
+    "bar_height": "42px",
+    "block_height": "42px"
+  },
+  "options": {
+    "captchaType": "blockPuzzle",
+    "product": "fixed",
+    "baseUrl": "https://captcha.made-in-china.com",
+    "blockSize": {
+      "width": "50px",
+      "height": "42px"
+    },
+    "barSize": {
+      "width": "310px",
+      "height": "42px"
+    }
+  },
+  "secretKey": "F0xuTmWdTpQ8t8xF",
+  "backToken": "f1ec7023fe53404bbe1b1c6063ac6adf",
+  "outer": ""
+}
