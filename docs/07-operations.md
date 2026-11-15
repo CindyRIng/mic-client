@@ -142,7 +142,8 @@ MCP 客户端（如 Claude Code）配置示例：
 | `UPSTREAM_CHANGED` | 上游字段/结构变更 | 保存的原始快照定位差异；更新映射层与契约测试；临时走 HTML 兜底 |
 | `PARSE_ERROR` | DOM/JSON 改版、页面异常 | 打开 `raw_snapshots` 留档；对照 `docs/research` 更新解析规则 |
 | `RATE_LIMITED` (429) | 本地上游队列限速 | 等待 `Retry-After`；降低并发；增大 `rate_min/max_ms` |
-| REST 端口占用 | 8899 被占用 | `ss -lntp | grep 8899`；改 `--port` |
+| REST 端口占用 | 8899 被占用 | `ss -lntp | grep 8899`；改 `--port` 或 `MIC_REST_PORT` |
+| 浏览器打不开 `http://127.0.0.1:8899` | ① `mic serve` 是**前台进程**，必须先启动并保持运行；② 确认监听：`ss -lntp | grep 8899`；③ 用 `127.0.0.1` 而非 `localhost`（后者可能先解析到 IPv6 `::1`，而服务只监听 IPv4）；④ 根路径 `/` 会 302 到 `/docs`；⑤ 后台运行：`nohup mic serve > ~/.mic-client/logs/serve.out 2>&1 &` |
 | SQLite `database is locked` | 多进程写/长事务 | 确保单写进程；`busy_timeout` 已设；必要时重启服务 |
 | MCP 客户端无响应 | stdio 启动失败/路径错误 | 检查客户端配置 command/args；手动执行 `mic doctor`；看 stderr |
 | 中文输出乱码 | 终端编码 | `export LANG=zh_CN.UTF-8`；CLI 默认输出 UTF-8 |

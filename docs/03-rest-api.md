@@ -346,6 +346,7 @@ fetch upstream_first..upstream_last（含首尾），拼接后跳过 ((page-1)*p
 |---|---|---|---|
 | GET | `/openapi.json` | `application/json; charset=utf-8` | OpenAPI 3.1 文档；路径/参数/Schema 与本文 §3–§11 对齐；`info.version` = 包版本 |
 | GET | `/docs` | `text/html; charset=utf-8` | **自包含** HTML 文档页（无外部 CDN/JS/字体），前端 `fetch('/openapi.json')` 渲染；支持参数查看与浏览器内 Try it |
+| GET | `/` | `302 Location: /docs` | 根路径重定向到文档页（便于直接打开 `http://127.0.0.1:8899`） |
 
 规则：
 

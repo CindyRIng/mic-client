@@ -1336,13 +1336,14 @@ nohup mic serve > ~/.mic-client/logs/serve.out 2>&1 &
 [serve] listening on http://127.0.0.1:8899 (pid 4242)
 [serve] data=/home/songqian/.mic-client/data/mic.sqlite profile=default
 [serve] health=http://127.0.0.1:8899/health  log=/home/songqian/.mic-client/logs/mic.log
+[serve] docs=http://127.0.0.1:8899/docs
 [serve] ready. press Ctrl+C to stop
 ```
 
 **`--json` 启动输出示例（stdout 一行）**
 
 ```json
-{"event":"listening","host":"127.0.0.1","port":8899,"pid":4242,"profile":"default","data_dir":"/home/songqian/.mic-client/data","health_url":"http://127.0.0.1:8899/health"}
+{"event":"listening","host":"127.0.0.1","port":8899,"pid":4242,"profile":"default","data_dir":"/home/songqian/.mic-client/data","health_url":"http://127.0.0.1:8899/health","docs_url":"http://127.0.0.1:8899/docs"}
 ```
 
 **退出码**

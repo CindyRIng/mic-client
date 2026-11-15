@@ -37,6 +37,7 @@ export function registerServeCommand(program: Command): void {
             profile: path.basename(ctx.cfg.profile_dir),
             data_dir: ctx.cfg.data_dir,
             health_url: running.healthUrl,
+            docs_url: `http://${running.host}:${running.port}/docs`,
           };
           if (useJson(opts)) {
             process.stdout.write(JSON.stringify(info) + '\n');
@@ -44,6 +45,7 @@ export function registerServeCommand(program: Command): void {
             process.stderr.write(`[serve] listening on http://${running.host}:${running.port} (pid ${process.pid})\n`);
             process.stderr.write(`[serve] data=${ctx.cfg.data_dir} profile=${path.basename(ctx.cfg.profile_dir)}\n`);
             process.stderr.write(`[serve] health=${running.healthUrl}  log=${ctx.cfg.log_dir}\n`);
+            process.stderr.write(`[serve] docs=http://${running.host}:${running.port}/docs\n`);
             process.stderr.write('[serve] ready. press Ctrl+C to stop\n');
           }
           let closing = false;

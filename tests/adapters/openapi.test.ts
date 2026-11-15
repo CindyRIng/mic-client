@@ -117,6 +117,13 @@ describe('REST self-describing docs (ADR-0008 / docs/03 §2.3)', () => {
     expect(html).toContain('Try it');
   });
 
+  it('GET / redirects to /docs (opening the bare base URL shows the docs)', async () => {
+    const server = setup();
+    const res = await server.inject({ method: 'GET', url: '/' });
+    expect(res.statusCode).toBe(302);
+    expect(res.headers['location']).toBe('/docs');
+  });
+
   it('docs endpoints obey the loopback Host guard', async () => {
     const server = setup();
     for (const url of ['/docs', '/openapi.json']) {

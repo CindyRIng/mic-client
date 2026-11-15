@@ -188,7 +188,7 @@ mic version
 
 ```bash
 mic version
-# mic-client 1.0.3
+# mic-client 1.0.4
 # node v22.23.2
 # sqlite schema v1
 # upstream contract checked 2026-11-15
@@ -264,7 +264,13 @@ mic auth                         # 人工兜底：可见浏览器过验证码/�
 ## REST API
 
 ```bash
-mic serve --host 127.0.0.1 --port 8899      # 前台启动，仅回环监听
+mic serve --host 127.0.0.1 --port 8899      # 前台启动，仅回环监听（默认 8899）
+
+# 保持运行后才能访问；后台常驻：
+nohup mic serve > ~/.mic-client/logs/serve.out 2>&1 &
+
+# 打开 http://127.0.0.1:8899 会 302 到 /docs
+curl -fsS http://127.0.0.1:8899/health
 ```
 
 ### 端点
@@ -478,7 +484,7 @@ npx vitest run tests/core tests/company tests/adapters
 
 ## 路线图与已知限制
 
-**状态：M0–M4 已完成，v1.0.3。** 详见 [docs/08-roadmap.md](docs/08-roadmap.md)。
+**状态：M0–M4 已完成，v1.0.4。** 详见 [docs/08-roadmap.md](docs/08-roadmap.md)。
 
 已知限制（有意为之/待验证）：
 

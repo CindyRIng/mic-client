@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
+## [1.0.4] - 2026-11-16
+
+### Added
+- `GET /` now redirects (`302`) to `/docs`, so opening the bare base URL
+  (`http://127.0.0.1:8899`) shows the API documentation instead of a 404 envelope.
+- `mic serve` startup output (human stderr + `--json` event) now includes a `docs_url`;
+  operations manual gained a "browser cannot open 8899" troubleshooting entry
+  (foreground process must be running; use 127.0.0.1 vs localhost/IPv6; nohup/systemd).
+
+### Changed
+- README quick start clarifies that `mic serve` is a foreground process and documents
+  background/persistent running (`nohup`, systemd --user).
+
 ## [1.0.3] - 2026-11-16
 
 ### Changed

@@ -15,7 +15,8 @@
 
 1. 新增**两个辅助端点**（不属于 8 个业务 API，不改变其契约）：
    - `GET /openapi.json`：OpenAPI 3.1 文档（`application/json`，无 envelope），路径/参数/Schema 与 `docs/03-rest-api.md` §3–§11 对齐；
-   - `GET /docs`：**自包含** HTML 文档页（无外部 CDN/字体/JS 依赖），启动时 `fetch('/openapi.json')` 渲染端点列表，支持参数展示、Schema 查看与浏览器内 Try it。
+   - `GET /docs`：**自包含** HTML 文档页（无外部 CDN/字体/JS 依赖），启动时 `fetch('/openapi.json')` 渲染端点列表，支持参数展示、Schema 查看与浏览器内 Try it；
+   - `GET /`：`302` 重定向到 `/docs`（打开服务根地址即可看到文档）。
 2. 两者均受现有回环监听 + Host 校验约束，**无鉴权**，不访问上游、不写缓存、不产生副作用；
 3. OpenAPI 文档由代码内 `buildOpenApiDocument()` 生成（单一事实来源 = 适配层声明的路径/Schema），版本号随包版本；
 4. `/docs` 页脚固定链接到 `docs/03-rest-api.md`（GitHub）与 `/openapi.json`，可导入 Postman/Insomnia/代码生成器；

@@ -359,6 +359,11 @@ export function buildRestServer(ctx: AppContext, options: RestServerOptions = {}
   // -------------------------------------------------------------------------
   // Auxiliary: self-describing docs (docs/03 §2.3, ADR-0008) — not business API
   // -------------------------------------------------------------------------
+  app.get('/', async (_request: FastifyRequest, reply: FastifyReply) => {
+    void reply.header('Cache-Control', 'no-store');
+    return reply.redirect('/docs', 302);
+  });
+
   app.get('/openapi.json', async (request: FastifyRequest, reply: FastifyReply) => {
     void reply.header('X-Request-Id', requestIdOf(request));
     void reply.header('Cache-Control', 'no-store');
