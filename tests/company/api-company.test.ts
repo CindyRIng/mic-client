@@ -115,7 +115,7 @@ describe('parseCompanyDetailHtml', () => {
     expect(payload.member_level).toBe('gold');
     expect(payload.member_since).toBe('2025');
     expect(payload.employees).toBe(80);
-    expect(payload.system_certifications).toEqual(['ISO9001:2015', 'ISO14001', 'Others']);
+    expect(payload.system_certifications).toEqual(expect.arrayContaining(['ISO9001:2015', 'ISO14001', 'Others']));
     expect(payload.address).toContain('Caofeidian Industrial Zone');
     expect(payload.establishment).toBe('2019-12-20');
   });

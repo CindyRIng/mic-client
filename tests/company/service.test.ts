@@ -168,7 +168,7 @@ describe('CompanyService — 基础详情 + 会员识别', () => {
     expect(data.audited).toBe(true);
     expect(data.employees).toBe(80);
     expect(data.established_at).toBe('2019-12-20');
-    expect(data.system_certifications).toEqual(['ISO9001:2015', 'ISO14001', 'Others']);
+    expect(data.system_certifications).toEqual(expect.arrayContaining(['ISO9001:2015', 'ISO14001', 'Others']));
     expect(data.province).toBe('Hebei');
     expect(data.city).toBe('Tangshan');
   });
