@@ -130,13 +130,26 @@ export function validateGlobalOptions(opts: GlobalOptions, commandName: string):
   }
 }
 
-export function contextFromOptions(opts: GlobalOptions): AppContext {
+function deepMerge(target: Record<string, unknown>, source: Record<string, unknown>): Record<string, unknown> {
+  for (const [key, value] of Object.entries(source)) {
+    const current = target[key];
+    if (value && typeof value === 'object' && !Array.isArray(value) && current && typeof current === 'object' && !Array.isArray(current)) {
+      deepMerge(current as Record<string, unknown>, value as Record<string, unknown>);
+    } else {
+      target[key] = value;
+    }
+  }
+  return target;
+}
+
+export function contextFromOptions(opts: GlobalOptions, extraOverrides: Record<string, unknown> = {}): AppContext {
   setOutputMode(opts);
   if (opts.config) process.env.MIC_CONFIG = opts.config;
   const overrides: Record<string, unknown> = {};
   if (opts.cache === false) overrides.cache = { enabled: false };
   if (opts.timeout) overrides.upstream = { timeout_ms: parseDurationToMs(opts.timeout) };
   if (opts.profile) overrides.profile_dir = resolveProfileDir(opts.profile);
+  deepMerge(overrides, extraOverrides);
   const level = opts.verbose ? 'debug' : opts.quiet ? 'error' : undefined;
   return createContext({ configOverrides: overrides, logLevel: level, jsonLogs: !opts.quiet });
 }
@@ -189,8 +202,9 @@ export function fail(e: unknown): never {
 export async function withContext<T>(
   opts: GlobalOptions,
   fn: (ctx: AppContext) => Promise<T> | T,
+  extraOverrides: Record<string, unknown> = {},
 ): Promise<T> {
-  const ctx = contextFromOptions(opts);
+  const ctx = contextFromOptions(opts, extraOverrides);
   try {
     return await fn(ctx);
   } finally {

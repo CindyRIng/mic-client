@@ -1,6 +1,6 @@
 {
   "name": "mic-client",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "private": false,
   "description": "Made-in-China.com local client: REST API / CLI / MCP for supplier search & company profiles, with SQLite cache, region modes and Focus Captcha autosolve",
   "type": "module",

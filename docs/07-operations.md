@@ -88,6 +88,32 @@ nohup ~/cloak-env/bin/cloak-run node dist/cli.js serve > ~/.mic-client/logs/serv
 ~/cloak-env/bin/cloak-run node dist/cli.js mcp
 ```
 
+### 4.1 批量抓取与性能（河北全量实测）
+
+```bash
+# 全量抓取：--pages all 动态到末页（≤100 页）
+mic search --province 河北 --pages all --format ndjson --concurrency 6 > hebei.ndjson
+
+# 只过滤掉广告位（默认 include_ads=true）
+mic search --province 河北 --pages all --format ndjson --concurrency 6 --exclude-ads > hebei-no-ads.ndjson
+
+# 缓存二次读取（同一 MIC_DATA_DIR）
+time mic search --province 河北 --pages all --format ndjson --concurrency 6 > /dev/null
+```
+
+实测（2026-11-16，本机；上游 total=1101 / 56 页 / 39 条广告；网络波动会有 ±10%）：
+
+| 场景 | 耗时 | 说明 |
+|---|---|---|
+| 串行（concurrency=1） | **311s** | ~5.5s/页；基线 |
+| `--concurrency 6`（默认限速 1.5–2.5s） | **147s** | 2.1×；推荐 |
+| `--concurrency 8` | 159s | 收益递减，不建议 |
+| 缓存复读（同数据目录） | **0.12s**（summary） | 56 页全部 `cached=true` |
+| 限速降到 800–1200ms + 并发 6 | **113s** | 仅压测/自用；降低限速会增加风控风险，默认不改 |
+
+> `--concurrency` 只重叠**响应等待**；请求发起间隔仍由限速器控制，访问频率没有提高。
+> 全量抓取建议 `--concurrency 4-6`；长期增量用缓存（TTL 6h）而不是反复全量刷新。
+
 MCP 客户端（如 Claude Code）配置示例：
 
 ```jsonc

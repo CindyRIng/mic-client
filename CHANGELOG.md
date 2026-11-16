@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
+## [1.0.5] - 2026-11-16
+
+### Added
+- **Bulk performance mode** for NDJSON search:
+  - `--concurrency <1-8>` pipelines page fetches: the rate limiter still spaces request *starts*
+    by 1.5–2.5s, but response waits overlap; pages are emitted in order and `summary.items`
+    always matches the emitted `items`. Measured on the full Hebei province (1101 records, 56 pages):
+    **311s serial → 147s with `--concurrency 6` (2.1×)**, 113s with tuned rate (800–1200ms).
+  - `--pages all` now follows the real `total_page` (≤100) instead of the old 10-page cap.
+- NDJSON pages now include ad items by default (`include_ads=true`, consistent with REST/JSON and the
+  `summary.items` count); `--exclude-ads` filters them and emits `ADS_FILTERED`.
+- README and docs/07 gained a performance section with measured numbers and commands; docs/04
+  documents `--concurrency` / dynamic `--pages all`.
+
+### Fixed
+- `summary.items` in NDJSON previously counted unfiltered items while `page` events filtered ads
+  (1101 vs 1062); now both are consistent.
+
 ## [1.0.4] - 2026-11-16
 
 ### Added

@@ -392,7 +392,9 @@ mic [GLOBAL OPTIONS] <command> [<subcommand>] [ARGS] [OPTIONS]
 | `error` | 致命错误（随后进程退出，不再有 summary） | `type, error{code,message,details}, request_id` |
 
 - 行序：`start` →（`warning` 可在任意页前后）→ `page`* → `summary`；出现 `error` 即终止。
-- `--pages` 语法：`1`（单页）、`2-5`（区间，含端点）、`1,3,5`（枚举）、`all`（从 `--page` 或 1 开始直到末页）。`all` 受上限：v0.1 默认最多 10 页（实现常量，02 配置表若定义再接入）、硬上限 100（`total_page` 已 ≤100）；超出上限 → 取前 N 页并输出 `warning: PAGE_LIMIT_REACHED`。
+- `--pages` 语法：`1`（单页）、`2-5`（区间，含端点）、`1,3,5`（枚举）、`all`（从 `--page` 或 1 开始**动态**直到 `total_page`；总页数上限 100，即上游可见上限）；`all` 不再有 10 页限制。
+- `--concurrency <1-8>`（默认 1，仅 NDJSON 多页）：把页抓取做**流水线并发**。限速器仍保证每个上游请求的**发起间隔**（1.5–2.5s）不变，只重叠网络响应等待；输出仍按页号顺序，`summary` 与 `items` 计数一致。实测 56 页全量：串行 ~311s → `--concurrency 6` ~147s（2.1×）。并发越高越接近限速下限，但收益递减（8 并不比 6 快），建议 4–6。
+- `--exclude-ads` 时 NDJSON 按 `include_ads=false` 过滤广告位并发出 `ADS_FILTERED` warning；默认与 REST 一致保留广告（`is_ad=true`）。
 - 终止条件（任一）：达到 `--pages` 指定页数；`page > total_page`；`has_more=false`；上游返回重复页/夹取页（连续两页同一 `page`）；触发 `error`。
 - 兼容性：不支持 `--format ndjson` 的命令 → `INVALID_PARAM`（退出码 2）。
 
@@ -442,7 +444,7 @@ mic search [<keyword>] [--keyword <kw>]
            [--audited | --no-audited] [--management-certification <code|name>]
            [--business-type <enum>] [--annual-revenue <enum>]
            [--rd-capacity <enum>] [--include-ads | --exclude-ads]
-           [--page <n> | --pages <spec>] [--page-size <1-100>]
+           [--page <n> | --pages <spec>] [--page-size <1-100>] [--concurrency <1-8>]
 ```
 
 **参数与选项**
@@ -464,7 +466,8 @@ mic search [<keyword>] [--keyword <kw>]
 | `--include-ads` | flag | 表格默认隐藏 | 否 | 查询参数 `include_ads` 默认 `true`（保留广告位，与 REST 一致）；`--include-ads` 让**表格**也显示 `is_ad=true` 条目 |
 | `--exclude-ads` | flag | 否 | 否 | 请求 `include_ads=false`：core 过滤广告位并给 `ADS_FILTERED`（`items` 重排）；JSON/NDJSON/表格都不再出现广告位（与 REST 同义）。与 `--include-ads` 同给 → `INVALID_PARAM` |
 | `--page <n>` | int | 1 | 否 | 从 1 开始；范围 1–100；> 末页时上游夹取并返回 `page_clamped`（03 §1.7） |
-| `--pages <spec>` | string | — | 否 | **仅** `--format ndjson`：`1`/`2-5`/`1,3,5`/`all`（§2.5.4）；与 `--page` 同用 → `INVALID_PARAM` |
+| `--pages <spec>` | string | — | 否 | **仅** `--format ndjson`：`1`/`2-5`/`1,3,5`/`all`（§2.5.4，`all` 动态到末页，≤100）；与 `--page` 同用 → `INVALID_PARAM` |
+| `--concurrency <n>` | int | 1 | 否 | **仅** NDJSON 多页：1–8；流水线化页抓取（不改变请求发起间隔与顺序）；>1 且非 ndjson → `INVALID_PARAM`；越界 → `OUT_OF_RANGE` |
 | `--page-size <n>` | int | 20 | 否 | 1–100；≠20 时按窗口拼接上游 20 条页并裁剪，`warnings` 含 `PAGE_SIZE_NOT_NATIVE`（03 §1.7） |
 
 **规则**
@@ -512,6 +515,7 @@ mic search --keyword glass --exclude-ads --json
 
 # 7) NDJSON 流式翻 1–3 页（供 jq 实时消费）
 mic search --keyword hebei --province Hebei --pages 1-3 --format ndjson
+mic search --province 河北 --pages all --format ndjson --concurrency 6   # 全量批量（流水线）
 
 # 8) 跳过缓存强制刷新
 mic search --keyword glass --refresh --json
@@ -2704,7 +2708,7 @@ flowchart LR
 
 | 命令 | 关键选项 | 可复制示例 | 退出码 |
 |---|---|---|---|
-| `mic search` | `--keyword/--province/--city/--region-mode/--membership-tier/--audited/--no-audited/--management-certification/--business-type/--annual-revenue/--rd-capacity/--include-ads/--exclude-ads/--page/--pages/--page-size` | `mic search --keyword glass --province Hebei --json` | 0/2/4/5/6/1 |
+| `mic search` | `--keyword/--province/--city/--region-mode/--membership-tier/--audited/--no-audited/--management-certification/--business-type/--annual-revenue/--rd-capacity/--include-ads/--exclude-ads/--page/--pages/--page-size/--concurrency` | `mic search --keyword glass --province Hebei --json` | 0/2/4/5/6/1 |
 | `mic company` | `--account/--com-id/--encode-com-id/--include` | `mic company xingchenglass --include all --json` | 0/2/3/4/5/6/1 |
 | `mic regions` | `--province/--refresh` | `mic regions --province Hebei` | 0/2/1 |
 | `mic cache stats` | `--scope` | `mic cache stats --scope detail --json` | 0/2/1 |
@@ -2874,7 +2878,7 @@ flowchart LR
 | `NON_EXHAUSTIVE` | 结果非穷尽（封顶/本地过滤早停/预算用尽） | search | 页脚「非穷尽」；NDJSON summary 标 partial |
 | `PAGE_CLAMPED` | 请求页超过末页，按末页窗口返回 | search | 页脚/JSON 原样 |
 | `PAGE_SIZE_NOT_NATIVE` | page_size 非上游原生 20，拼接/裁剪 | search | 原样展示（性能提示） |
-| `PAGE_LIMIT_REACHED` | CLI 批量翻页达到上限（`--pages`） | **仅 CLI**（NDJSON `warning` 事件/stderr） | REST 不产生；JSON envelope 不出现 |
+| `PAGE_LIMIT_REACHED` | CLI 批量翻页达到上限（历史：`--pages all` 曾有 10 页上限；v1.0.5 起 `all` 到末页，通常不再产生） | **仅 CLI**（NDJSON `warning` 事件/stderr） | REST 不产生；JSON envelope 不出现 |
 | `CLIENT_SIDE_FILTER` | 客户端本地过滤生效（如 `audited`） | search | 原样展示 |
 | `CITY_FILTERED_LOCALLY` | 城市按 `item.city` 客户端过滤 | search | 原样展示（覆盖度） |
 | `CITY_FILTER_EMPTY` | 城市过滤后 0 条（仍 200/退出码 0） | search | 提示换城市/省份 |

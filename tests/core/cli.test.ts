@@ -161,6 +161,20 @@ describe('CLI: --pages / --format ndjson guards (TC-44/NDJSON)', () => {
     expect(r.stderr).toContain('INVALID_PARAM');
     expect(r.stderr).toContain('INVALID_ENUM');
   });
+
+  it('--concurrency without --format ndjson → exit 2 INVALID_PARAM (no network)', async () => {
+    const r = await runCli(['search', '--province', 'Hebei', '--concurrency', '3', '--json']);
+    expect(r.code).toBe(2);
+    expect(r.stderr).toContain('INVALID_PARAM');
+    expect(r.stderr).toContain('--concurrency requires --format ndjson');
+  });
+
+  it('--concurrency out of range → exit 2 OUT_OF_RANGE (no network)', async () => {
+    const r = await runCli(['search', '--province', 'Hebei', '--format', 'ndjson', '--pages', '1', '--concurrency', '9']);
+    expect(r.code).toBe(2);
+    expect(r.stderr).toContain('INVALID_PARAM');
+    expect(r.stderr).toContain('OUT_OF_RANGE');
+  });
 });
 
 describe('CLI: search validation (no network) (TC-45)', () => {

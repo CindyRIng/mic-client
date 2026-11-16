@@ -14,7 +14,7 @@
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
   <img alt="Node" src="https://img.shields.io/badge/node-%3E%3D22-339933">
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5.x-3178c6">
-  <img alt="Tests" src="https://img.shields.io/badge/tests-248%20passed-brightgreen">
+  <img alt="Tests" src="https://img.shields.io/badge/tests-252%20passed-brightgreen">
   <img alt="MCP" src="https://img.shields.io/badge/MCP-stdio-7c3aed">
   <img alt="REST" src="https://img.shields.io/badge/REST-127.0.0.1%3A8899-0ea5e9">
 </p>
@@ -74,7 +74,8 @@ Made-in-China（made-in-china.com，中国制造网）是外贸供应商调研�
 | 🖥️ 三入口 | CLI（10 个子命令）、REST（8 个端点）、MCP（4 tools + 2 resources），共用同一 core |
 | 🛡️ 风控处理 | 1.5–2.5s 限速抖动、302 重试、Focus Captcha 自动通过、`mic auth` 人工兜底 |
 | 📚 自描述文档 | `mic serve` 后浏览器打开 `/docs`：端点/参数/Schema + Try it；`/openapi.json` 可导入 Postman/代码生成器（无外部 CDN，[ADR-0008](docs/decisions/0008-rest-self-describing-docs.md)） |
-| 🧪 可测试 | 248 个自动化测试 + golden fixtures + `live-smoke` / `mcp-smoke` 脚本 |
+| ⚡ 批量与性能 | NDJSON 流式全量导出 + `--concurrency` 流水线并发（河北 1101 条：311s → 147s，2.1×）；缓存二次读取 ~0.1s |
+| 🧪 可测试 | 252 个自动化测试 + golden fixtures + `live-smoke` / `mcp-smoke` 脚本 |
 
 ## 架构
 
@@ -157,7 +158,7 @@ git clone https://github.com/CindyRIng/mic-client.git
 cd mic-client
 npm ci            # 或 npm install
 npm run build     # tsc → dist/（自动给 dist/cli.js 加执行位）
-npm test          # 248 tests
+npm test          # 252 tests
 npm link          # 安装 `mic` 命令（薄启动脚本 bin/mic）
 mic version       # 验证命令可用
 ```
@@ -188,7 +189,7 @@ mic version
 
 ```bash
 mic version
-# mic-client 1.0.4
+# mic-client 1.0.5
 # node v22.23.2
 # sqlite schema v1
 # upstream contract checked 2026-11-15
@@ -387,6 +388,36 @@ mic mcp --print-config     # 打印可直接粘贴的 MCP 客户端配置
 - **限速**：串行 + 1.5–2.5s 随机抖动；队列等待超限返回 `429 RATE_LIMITED` + `Retry-After`。
 - **非穷尽保护**：上游 `total>2000` 显示 "2,000+"（`total_capped=true`）；本地过滤扫描预算用尽 → `total_is_lower_bound=true` + `NON_EXHAUSTIVE`，文档/接口明确「样本非穷尽」。
 
+## 性能实测与调优（河北全量）
+
+**数据规模**：河北省 `total=1101`（56 页 × 20 条，含 39 条广告；去重后 1101 个账号、非广告 1062）。测试时间 2026-11-16，本机真实上游，网络波动 ±10%。
+
+```bash
+# 全量导出（NDJSON：start → page* → summary，可 jq 流式处理）
+mic search --province 河北 --pages all --format ndjson --concurrency 6 > hebei.ndjson
+
+# 只要非广告供应商
+mic search --province 河北 --pages all --format ndjson --concurrency 6 --exclude-ads > hebei-no-ads.ndjson
+```
+
+| 场景 | 耗时 | 吞吐 | 说明 |
+|---|---|---|---|
+| 冷启动·串行（默认） | **311s** | ~3.5 条/s | 基线，56 次上游请求，限速 1.5–2.5s |
+| 冷启动·`--concurrency 6` | **147s** | ~7.5 条/s | **推荐**，2.1×；页序不变、请求发起间隔不变 |
+| 冷启动·`--concurrency 8` | 159s | — | 收益递减，不建议 |
+| 冷启动·并发 6 + 限速 800–1200ms | **113s** | ~9.7 条/s | 压测/自用；默认不降，降低限速会增加风控风险 |
+| 缓存复读（同 `MIC_DATA_DIR`） | **0.12s**（summary） | 1101 条全额 | 56 页全部 `cached=true`，第二次起近零成本 |
+
+**优化原理**：
+
+1. **JSON 优先**：每页 1 次上游 JSON 请求，不渲染 HTML / 不起浏览器；
+2. **流水线并发**：限速器仍保证请求**发起间隔**（1.5–2.5s）不变，`--concurrency` 只重叠网络响应等待，因此不提高请求频率；56 页耗时从 311s → 147s；
+3. **缓存优先**：搜索页 TTL 6h；同一查询第二次读取 56 页仅 ~0.1s；
+4. **动态 `--pages all`**：直到真实 `total_page`（≤100），不再有 10 页上限；
+5. **NDJSON 流式**：边抓边输出，内存占用不随页数增长，可接 `jq`/入库。
+
+> 非穷尽说明：上游单查询 `total > 2000` 会显示 `"2,000+"`；河北 total=1101 未触顶，因此可以完整拿全。若以后超过 2000，需要按城市/类目拆分查询再合并（接口会明确标记 `total_capped`/`total_is_lower_bound`）。
+
 ## 会员等级与认证
 
 | tier | 页面/接口依据 | 说明 |
@@ -466,7 +497,7 @@ mic-client/
 ```bash
 npm run typecheck     # tsc --noEmit
 npm run build         # 编译到 dist/
-npm test              # 248 tests（vitest）
+npm test              # 252 tests（vitest）
 npx vitest run tests/core tests/company tests/adapters
 ```
 
@@ -484,7 +515,7 @@ npx vitest run tests/core tests/company tests/adapters
 
 ## 路线图与已知限制
 
-**状态：M0–M4 已完成，v1.0.4。** 详见 [docs/08-roadmap.md](docs/08-roadmap.md)。
+**状态：M0–M4 已完成，v1.0.5。** 详见 [docs/08-roadmap.md](docs/08-roadmap.md)。
 
 已知限制（有意为之/待验证）：
 
