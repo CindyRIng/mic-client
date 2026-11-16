@@ -755,6 +755,8 @@ export interface BatchPageResult {
   error?: string;
   ms: number;
   captcha_attempts: number;
+  /** true when the mobile subdomain failed and the desktop showroom URL was used */
+  fallback?: boolean;
 }
 
 export interface BatchFetchOptions {
@@ -789,24 +791,39 @@ export async function fetchCompanyHtmlBatch(
           if (!task) break;
           const started = Date.now();
           let captchas = 0;
+          let fallback = false;
           try {
-            await page.goto(task.url, { waitUntil: 'commit', timeout: 8000 }).catch(() => undefined);
-            let html = '';
-            while (Date.now() - started < perUrlTimeoutMs) {
-              await sleep(350);
-              if (await isCaptchaPage(page).catch(() => false)) {
-                captchas++;
-                if (captchas <= 2) {
-                  await solveFocusCaptcha(page, cfg, logger).catch(() => undefined);
-                  await sleep(1200);
+            const render = async (targetUrl: string, deadline: number): Promise<string> => {
+              await page.goto(targetUrl, { waitUntil: 'commit', timeout: 8000 }).catch(() => undefined);
+              let html = '';
+              while (Date.now() < deadline) {
+                await sleep(350);
+                if (page.url().startsWith('chrome-error://')) return '';
+                if (await isCaptchaPage(page).catch(() => false)) {
+                  captchas++;
+                  if (captchas <= 2) {
+                    await solveFocusCaptcha(page, cfg, logger).catch(() => undefined);
+                    await sleep(1200);
+                  }
+                  continue;
                 }
-                continue;
+                html = (await readStableHtml(page, logger, 2)) ?? '';
+                if (html.length > 2000 && (html.includes('ssrData') || /Main Products\s*:|showroom\//i.test(html))) return html;
+                await sleep(350);
               }
-              html = (await readStableHtml(page, logger, 2)) ?? '';
-              if (html.length > 2000 && (html.includes('ssrData') || /Main Products\s*:|showroom\//i.test(html))) break;
-              await sleep(350);
+              return html;
+            };
+            let html = await render(task.url, started + perUrlTimeoutMs);
+            // Broken/poisoned mobile subdomains (e.g. sausageclips) resolve to chrome-error;
+            // the desktop showroom page still works and is parseable.
+            if ((!html || page.url().startsWith('chrome-error://')) && /^https:\/\/m\.made-in-china\.com\/company-([^/]+)/.test(task.url)) {
+              const account = /^https:\/\/m\.made-in-china\.com\/company-([^/]+)/.exec(task.url)?.[1];
+              if (account) {
+                fallback = true;
+                html = await render(`https://www.made-in-china.com/showroom/${account}`, Date.now() + 20000);
+              }
             }
-            if (html.length > 2000) {
+            if (html.length > 2000 && !page.url().startsWith('chrome-error://')) {
               results[task.i] = {
                 url: task.url,
                 ok: true,
@@ -814,6 +831,7 @@ export async function fetchCompanyHtmlBatch(
                 finalUrl: page.url(),
                 ms: Date.now() - started,
                 captcha_attempts: captchas,
+                fallback,
               };
             } else {
               results[task.i] = {
@@ -823,6 +841,7 @@ export async function fetchCompanyHtmlBatch(
                 finalUrl: page.url(),
                 ms: Date.now() - started,
                 captcha_attempts: captchas,
+                fallback,
               };
             }
           } catch (e) {
@@ -832,6 +851,7 @@ export async function fetchCompanyHtmlBatch(
               error: e instanceof AppError ? e.code : String((e as Error)?.message ?? e).slice(0, 120),
               ms: Date.now() - started,
               captcha_attempts: captchas,
+              fallback,
             };
           }
         }

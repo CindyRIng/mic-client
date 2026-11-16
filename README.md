@@ -75,7 +75,7 @@ Made-in-China（made-in-china.com，中国制造网）是外贸供应商调研�
 | 🛡️ 风控处理 | 1.5–2.5s 限速抖动、302 重试、Focus Captcha 自动通过、`mic auth` 人工兜底 |
 | 📚 自描述文档 | `mic serve` 后浏览器打开 `/docs`：端点/参数/Schema + Try it；`/openapi.json` 可导入 Postman/代码生成器（无外部 CDN，[ADR-0008](docs/decisions/0008-rest-self-describing-docs.md)） |
 | ⚡ 批量与性能 | NDJSON 流式 + `--concurrency` 流水线（单查询 2.1×）；`enumerate-province.mjs` 按地级市拆分拿全（河北：1101 省关键词 → **5008 家**并集）；缓存复读 ~0.1s |
-| 🏢 批量详情 | 浏览器直取 + 资源拦截 + 桌面 showroom 兜底（免费会员 66%）；200 家实测 **200/200**、1.19s/家；5008 家约 1.65h，缓存续跑 |
+| 🏢 批量详情 | 浏览器直取 + 资源拦截 + 桌面 showroom 兜底；河北全量 **5008/5008 成功、0 失败**、全部落缓存（mobile 31% / desktop 69%），断点续跑 |
 | 🧪 可测试 | 252 个自动化测试 + golden fixtures + `live-smoke` / `mcp-smoke` 脚本 |
 
 ## 架构
@@ -190,7 +190,7 @@ mic version
 
 ```bash
 mic version
-# mic-client 1.0.7
+# mic-client 1.0.8
 # node v22.23.2
 # sqlite schema v1
 # upstream contract checked 2026-11-15
@@ -463,7 +463,7 @@ node scripts/e2e/enumerate-province.mjs --province Hebei --concurrency 6
 
 > 非穷尽说明：上游单查询 `total > 2000` 会显示 `"2,000+"`；河北各查询均 <2000，因此可完整拿全。若某城市超过 2000，需要继续按区县/类目拆分。
 
-### 4. 批量公司详情（5008 家）
+### 4. 批量公司详情（5008 家，已完成）
 
 ```bash
 node scripts/e2e/fetch-company-details.mjs \
@@ -471,25 +471,24 @@ node scripts/e2e/fetch-company-details.mjs \
   --tabs 2 --retries 1
 ```
 
-**问题与修复**：公司详情 HTTP 通道被 EdgeOne 稳定挑战；约 **66% 免费会员**没有移动站 `ssrData`，会 301 到桌面 showroom。已实现：
-- 桌面 showroom 解析兜底（公司名/地址/Account Registered in→since_year/主营/认证/会员与 AS 徽章/encodeComId）；
-- 移动页 `ssrData` 缺 `comName/mainProducts` 时回退 `<title>`/正文标签；
-- 浏览器批量：资源拦截（图片/字体/CSS/统计，Captcha 放行）+ 页面复用 + `waitUntil:'commit'` + 可选 1–3 tabs；
-- `CompanyService.get({ prefetched_html })` 复用解析/会员合并/SQLite 缓存/availability；默认 `include=none`。
-- 修复 `page.content()` 导航竞态、`company_id=''` 唯一键冲突。
+**问题与修复**：详情 HTTP 通道被 EdgeOne 稳定挑战；约 **69% 免费会员**没有移动站 `ssrData`，会 301 到桌面 showroom；个别移动子域 DNS 异常（`sausageclips`）需回退 showroom。已实现桌面 showroom 解析、移动页 partial-ssrData 回退、浏览器批量（资源拦截 + 页面复用 + tabs）、`prefetched_html` 复用服务层，以及重复 `company_id`/`encode_com_id` 的缓存保护。
 
-**实测**（2026-11-16，真实上游）：
+**最终全量结果**（2026-11-16，真实上游）：
 
-| 样本/配置 | 结果 |
+| 指标 | 结果 |
 |---|---|
-| 40 家，tabs=1 | 40/40，1.82s/家 |
-| 40 家，tabs=2 | 40/40，0.99s/家 |
-| **200 家随机，tabs=2** | **200/200**，238s，**1.19s/家** |
-| 缓存复跑 | 0s（全部跳过） |
-| 全量 5008 预估 | **约 99 分钟**（tabs=2） |
+| 河北并集账号 | 5008 |
+| 详情成功 | **5008 / 5008（0 失败）** |
+| 落缓存 | 5008 |
+| 页面类型 | mobile ssrData **1554**（31%）、desktop showroom **3454**（69%） |
+| 会员 | diamond 1718、gold 410、unknown 2879、free 1 |
+| 字段完整度 | `main_products` 5007、`established_at` 968、`employees` 884、`audited=true` 2079 |
+| 单条抓取均值 | 2.32s（中位 2.35s，p90 3.56s；混合桌面页/验证码） |
+| 实际耗时 | 主任务约 2h28m（被外部 timeout 截断在 4800 条）+ 同缓存续跑约 5 分钟 = 约 **2h33m**；缓存复跑近零成本 |
 
-样本构成：移动站 ssrData 34%、桌面 showroom 66%；`main_products` 197/200、`established_at` 45/200、`employees` 40/200（桌面页不公开的字段显式标 `not_provided_by_supplier`）。
-输出 `summary.json`/`results.ndjson`/`failures.json`，同 `--out` 重跑即断点续跑；SGS/响应率/联系人/评价增强默认不抓（`include=none`）。
+输出：`/tmp/hebei-details-final.ndjson`（5008 行账号级明细）、`/tmp/hebei-details-summary.json`（汇总）；脚本支持同 `--out`/`--data-dir` 断点续跑。
+
+桌面页不公开 **员工数/成立日期**：这两项为 `null` 并标 `availability=not_provided_by_supplier`，不伪造。
 
 ## 会员等级与认证
 
@@ -588,7 +587,7 @@ npx vitest run tests/core tests/company tests/adapters
 
 ## 路线图与已知限制
 
-**状态：M0–M4 已完成，v1.0.7。** 详见 [docs/08-roadmap.md](docs/08-roadmap.md)。
+**状态：M0–M4 已完成，v1.0.8。** 详见 [docs/08-roadmap.md](docs/08-roadmap.md)。
 
 已知限制（有意为之/待验证）：
 

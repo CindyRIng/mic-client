@@ -1104,6 +1104,31 @@ export class CompanyService {
     const detailExpires = now + this.cfg.cache.ttl_detail_s;
     const availability = this.baseAvailability(detail);
     const canonicalAccount = payload.account || account;
+    // Some upstream accounts share the same numeric comId (ads/aliases); companies.company_id is UNIQUE,
+    // so a conflicting owner must not abort the parent row (children would then fail FK constraints).
+    let numericCompanyId = payload.company_id && Number.isFinite(Number(payload.company_id)) ? Number(payload.company_id) : null;
+    if (numericCompanyId !== null) {
+      try {
+        const owner = this.cache.db.prepare('SELECT account FROM companies WHERE company_id = ?').get(numericCompanyId) as
+          | { account: string }
+          | undefined;
+        if (owner && owner.account !== canonicalAccount) numericCompanyId = null;
+      } catch {
+        /* ignore */
+      }
+    }
+    // encode_com_id is also UNIQUE; aliases/ads can share it across accounts.
+    let encodeComId = payload.encode_com_id;
+    if (encodeComId) {
+      try {
+        const owner = this.cache.db.prepare('SELECT account FROM companies WHERE encode_com_id = ?').get(encodeComId) as
+          | { account: string }
+          | undefined;
+        if (owner && owner.account !== canonicalAccount) encodeComId = null;
+      } catch {
+        /* ignore */
+      }
+    }
     const region = parseAddressRegion(detail.address);
     const rawItem = {
       detail_only: true,
@@ -1136,8 +1161,8 @@ export class CompanyService {
         )
         .run(
           canonicalAccount,
-          payload.company_id && Number.isFinite(Number(payload.company_id)) ? Number(payload.company_id) : null,
-          payload.encode_com_id,
+          numericCompanyId,
+          encodeComId,
           detail.company_name,
           region.province,
           region.city,

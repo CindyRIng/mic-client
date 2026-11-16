@@ -40,3 +40,5 @@
 - 200 家随机样本（tabs=2）成功 199/200（1 家 partial ssrData，已修复后重试成功），平均约 1.3s/家。
 - 修复项：`page.content` 导航竞态、桌面解析、`company_id=''` 唯一键、`domcontentloaded` 卡顿、partial ssrData。
 - 测试：`tests/company/desktop-fallback.test.ts`。
+- **全量落地（2026-11-16）**：河北 5008 家 — 成功 5008/5008、0 失败、5008 条落缓存；mobile 1554（31%）、desktop 3454（69%）；会员 diamond 1718 / gold 410 / unknown 2879 / free 1；main_products 5007、established_at 968、employees 884、audited=true 2079；单条均值 2.32s，总耗时约 2h33m（含一次 timeout 后续跑）。
+- 追加修复：移动子域 DNS 异常（`sausageclips`）回退 showroom；重复 `company_id`/`encode_com_id` 不再触犯 UNIQUE 约束（冲突时落 NULL）。

@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
+## [1.0.8] - 2026-11-16
+
+### Added / Fixed
+- **Showroom fallback for broken mobile subdomains**: when the mobile subdomain resolves to
+  `chrome-error://` (e.g. `sausageclips`), the batch browser fetcher retries
+  `https://www.made-in-china.com/showroom/<account>` and parses the desktop page.
+- **Duplicate-id cache guard**: accounts sharing the same numeric `company_id` or `encode_com_id`
+  previously hit UNIQUE constraint errors and child-table FOREIGN KEY failures; a conflicting id is
+  now written as `NULL` for that account so the parent/children always persist.
+- Final full Hebei detail run completed: **5008 / 5008 successful, 0 failures, 5008 cached details**
+  (mobile 1554 / desktop showroom 3454; diamond 1718 / gold 410 / unknown 2879 / free 1;
+  main_products 5007, established_at 968, employees 884, audited=true 2079).
+  Total wall ~2h33m including a resumed run after the 2.5h external timeout; avg 2.32s/company.
+- README/docs/ADR evidence updated with final full-run coverage and availability numbers.
+
 ## [1.0.7] - 2026-11-16
 
 ### Added
