@@ -568,7 +568,7 @@ curl -s 'http://127.0.0.1:8899/api/version'
 
 - 数据来源（05 定义完整字典与生成流程；字段 `name` 为展示名、`api_value` 为上游 `province` 参数值，三项特殊值二者不同，见 05 §5.2）：
   - 省：上游 refine `province` facet 31 项 + SEO 过滤面板 `CP_` 的 32 项（多 `Qinghai`，实测 `province=Qinghai` 合法）→ 客户端字典 32 项；`source` 标注来源，`verified_at` 为字典生成时间。
-  - 市：首期**已核验**仅河北 10 城（SEO facet → `CC_Hebei_<City>` 链接，附 count 提示）；其余省份城市字典按 05 的生成策略补全并标 `verified=false`/`cities_complete=false`。
+  - 市：首期**已核验**河北 11 城（其中 10 城来自 SEO facet → `CC_Hebei_<City>` 链接并附 count 提示；Chengde 于 2026-11-16 经 JSON 关键词补验）；其余省份城市字典按 05 的生成策略补全并标 `verified=false`/`cities_complete=false`。
 - 缓存：本地物化字典（30d），`meta.cached=true`、`source="cache"`；不访问上游。
 
 **请求示例**
@@ -592,7 +592,7 @@ curl -sG 'http://127.0.0.1:8899/api/regions' --data-urlencode 'province=河北'
       { "name": "Shandong", "name_zh": "山东", "api_value": "Shandong", "city_count": null, "cities_complete": false, "source": "refine", "verified_at": "2026-11-15T22:47:00+08:00" },
       { "name": "Zhejiang", "name_zh": "浙江", "api_value": "Zhejiang", "city_count": null, "cities_complete": false, "source": "refine", "verified_at": "2026-11-15T22:47:00+08:00" },
       { "name": "Jiangsu", "name_zh": "江苏", "api_value": "Jiangsu", "city_count": null, "cities_complete": false, "source": "refine", "verified_at": "2026-11-15T22:47:00+08:00" },
-      { "name": "Hebei", "name_zh": "河北", "api_value": "Hebei", "city_count": 10, "cities_complete": true, "source": "seo_facet", "verified_at": "2026-11-15T22:47:00+08:00" },
+      { "name": "Hebei", "name_zh": "河北", "api_value": "Hebei", "city_count": 11, "cities_complete": true, "source": "seo_facet", "verified_at": "2026-11-15T22:47:00+08:00" },
       { "name": "Fujian", "name_zh": "福建", "api_value": "Fujian", "city_count": null, "cities_complete": false, "source": "refine", "verified_at": "2026-11-15T22:47:00+08:00" },
       { "name": "Henan", "name_zh": "河南", "api_value": "Henan", "city_count": null, "cities_complete": false, "source": "refine", "verified_at": "2026-11-15T22:47:00+08:00" },
       { "name": "Shanghai", "name_zh": "上海", "api_value": "Shanghai", "city_count": null, "cities_complete": false, "source": "refine", "verified_at": "2026-11-15T22:47:00+08:00" },
@@ -643,7 +643,7 @@ curl -sG 'http://127.0.0.1:8899/api/regions' --data-urlencode 'province=河北'
       "name": "Hebei",
       "name_zh": "河北",
       "api_value": "Hebei",
-      "city_count": 10,
+      "city_count": 11,
       "cities_complete": true,
       "source": "seo_facet",
       "verified_at": "2026-11-15T22:47:00+08:00"
@@ -691,7 +691,7 @@ curl -sG 'http://127.0.0.1:8899/api/regions' --data-urlencode 'province=河北'
 | `cities[].name_zh` | string | ✅ | 中文名 |
 | `cities[].province` | string | ✅ | 所属省英文名 |
 | `cities[].source` | enum | ✅ | 来源 |
-| `cities[].verified` | boolean | ✅ | 是否实测核验（河北 10 城 `true`） |
+| `cities[].verified` | boolean | ✅ | 是否实测核验（河北 11 城 `true`） |
 | `cities[].count_hint` | integer\|null | ✅ | 参考结果数（SEO 口径，可能为 `null`） |
 
 **错误码**：`INVALID_PARAM`（`UNKNOWN_PROVINCE`：`province` 不在字典；`details.allowed_provinces` 给出可用英文省名数组）、`302 风控`不适用（本端点不访问上游）。**缓存行为**：读本地物化字典；`refresh=true` 仅触发本地字典校验/回填（不入上游队列），响应头不变。

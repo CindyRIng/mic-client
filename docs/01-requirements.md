@@ -156,7 +156,7 @@ flowchart TB
 | I-03 | 结果列表 | 公司名/account/地区/主营/会员等级/认证/星级/认证清单/经营模式/推荐产品摘要等（FR-04） |
 | I-04 | 公司详情 | 入驻年（memberSince）、成立时间、主营、员工数、地址、认证文本、评分、星级、会员等级、Audited、审核机构/编号/章节、响应率、公开联系人姓名/部门/职位（分期交付） |
 | I-05 | 会员等级识别 | diamond/gold/free/unknown + audited 布尔 + evidence + confidence（FR-06） |
-| I-06 | 地区字典 | 32 省英文/中文/上游取值（31 省 refine + Qinghai）；已实测城市字典（河北 10 城 + 样本城市） |
+| I-06 | 地区字典 | 32 省英文/中文/上游取值（31 省 refine + Qinghai）；已实测城市字典（河北 11 城 + 样本城市） |
 | I-07 | 本地缓存 | SQLite（WAL）+ TTL + refresh + stale 回退 + single-flight + 统计 |
 | I-08 | 三入口 | REST（127.0.0.1:8899）、CLI（`mic`）、MCP（stdio，4 个只读 tool） |
 | I-09 | 会话与风控 | cookie jar、302/挑战检测、Focus Captcha 自动通过、`mic auth` 人工兜底、限速 |
@@ -450,8 +450,8 @@ flowchart TD
 |---|---|
 | 输入 | 用户省/市（中文或英文）；`GET /api/regions?province=`；refine/SEO 字典数据 |
 | 输出 | `Region` 字典：32 省 + 城市列表（含中英名、上游取值、SEO code） |
-| 依赖 | 上游 refine（31 省）+ SEO 过滤面板（32 省含 Qinghai）→ 本地字典 32 项（05 §5）；河北 10 城 count；列表 `city` 值；缓存 FR-08 |
-| 优先级 | P0：省字典（31）；P1：已实测城市字典（河北 10 城 + 样本城市）；P2：全量城市 |
+| 依赖 | 上游 refine（31 省）+ SEO 过滤面板（32 省含 Qinghai）→ 本地字典 32 项（05 §5）；河北 10 城 SEO count + Chengde 关键词补验；列表 `city` 值；缓存 FR-08 |
+| 优先级 | P0：省字典（31）；P1：已实测城市字典（河北 11 城 + 样本城市）；P2：全量城市 |
 | 验收标准 | AC-31、AC-32、AC-33 |
 
 **32 省清单（上游 `province` / SEO `CP_` 合法值 + 中文；与 05 §5 一致）**
@@ -481,7 +481,7 @@ flowchart TD
 
 - **R1（输入归一）**：接受中文/英文、大小写混排、前后空格；中文按上表映射；英文按字典匹配（大小写不敏感）；空串按未提供。
 - **R2（省校验）**：未知名（含中文未映射名）→ `INVALID_PARAM`；不得透传给上游（避免假空结果）。
-- **R3（城市字典）**：M1 城市字典以实测数据为准——河北 10 城（Shijiazhuang/Hengshui/Cangzhou/Xingtai/Baoding/Langfang/Handan/Tangshan/Qinhuangdao/Zhangjiakou）+ 采样中出现城市（Langfang 等）；每个城市含英文名、中文名、所属省、SEO code（`C1--CP_<Prov>--CC_<Prov>_<City>`）。**全量城市字典生成方案与覆盖率待验证（OQ-02）**。
+- **R3（城市字典）**：M1 城市字典以实测数据为准——河北 11 城（Shijiazhuang/Hengshui/Cangzhou/Xingtai/Baoding/Langfang/Handan/Tangshan/Qinhuangdao/Zhangjiakou/Chengde）+ 采样中出现城市（Langfang 等）；每个城市含英文名、中文名、所属省、SEO code（`C1--CP_<Prov>--CC_<Prov>_<City>`）。**全量城市字典生成方案与覆盖率待验证（OQ-02）**。
 - **R4（城市透传）**：用户给的城市不在字典但为英文 → 透传为客户端过滤目标并 warning `CITY_NOT_IN_DICTIONARY`（不阻断）；中文且不在字典 → `INVALID_PARAM`。
 - **R5（地区模式映射）**：地区模式派生 keyword 用英文小写（省名→`hebei`，市名→`langfang`）；可选多词 `"hebei shijiazhuang"`（实测 AND 匹配）作为 P2 增强。
 - **R6（regions 输出）**：`GET /api/regions` 返回 32 省（含 Qinghai）；`?province=` 返回该省城市列表；数据来源标注 `source`（`upstream|static|cache`）；缓存 30d。
@@ -1071,7 +1071,7 @@ flowchart TD
 | AC-29 | FR-06 | KA/SKA 不进入 tier：数据模型枚举仅 4 值；`external_customer_tier=null`（抓取阶段恒空）；`explain_membership` 说明 KA/SKA 为阿里口径 | P0 | A |
 | AC-30 | FR-06 | `capability_stars` 独立：lvxingmirror=0（单灰星）不映射 tier；0–5 范围校验 | P1 | A |
 | AC-31 | FR-07 | 32 省字典完整（英文/中文，含 Qinghai）；`province=河北`→Hebei；`province=Qinghai` 合法（0 结果）；非法省 → `INVALID_PARAM` | P0 | A |
-| AC-32 | FR-07 | 河北 10 城中英映射（Shijiazhuang…Zhangjiakou）；`city=廊坊`→Langfang；字典外英文城市透传 + `CITY_NOT_IN_DICTIONARY`；字典外中文城市 → `INVALID_PARAM` | P0 | A |
+| AC-32 | FR-07 | 河北 11 城中英映射（Shijiazhuang…Zhangjiakou/Chengde）；`city=廊坊`→Langfang；字典外英文城市透传 + `CITY_NOT_IN_DICTIONARY`；字典外中文城市 → `INVALID_PARAM` | P0 | A |
 | AC-33 | FR-07 | `GET /api/regions` 返回 32 省（含 Qinghai）；`?province=河北` 返回河北城市列表；TTL 30d 缓存生效 | P1 | A |
 | AC-34 | FR-08 | 同查询第 2 次 `cached=true`、`source=cache`，且上游请求计数不增加（mock/日志） | P0 | A |
 | AC-35 | FR-08 | 缓存过期 + 上游失败 → `stale=true`（派生状态 stale）、warning `STALE_DATA`、`fetched_at` 为旧值；无缓存 → 返回错误 | P0 | A |
@@ -1135,7 +1135,7 @@ flowchart TD
 | ID | 问题 | 影响 | 建议 | 需谁决策 |
 |---|---|---|---|---|
 | OQ-01 | 中文输入行为已按 ADR-0004 定为「地区词映射 + 无法映射 → `INVALID_PARAM`」；仍待定：中文城市/地区词典覆盖范围，以及是否需要内置中英对照/联想辅助（不改变错误语义） | 中文用户体验 | M1 先支持已实测城市中文名；后续补词典与提示 | 产品/Lead |
-| OQ-02 | 城市字典覆盖：M1 只保证河北 10 城+样本城市，还是先做 SEO 全量城市字典（32 省×N 城）？ | 地区搜索可用性 | M1 先覆盖河北+常见外贸城市；全量字典单列任务（爬 SEO facet + 校验） | 产品/Lead |
+| OQ-02 | 城市字典覆盖：M1 保证河北 11 城+样本城市，还是先做 SEO 全量城市字典（32 省×N 城）？ | 地区搜索可用性 | M1 先覆盖河北+常见外贸城市；全量字典单列任务（爬 SEO facet + 校验） | 产品/Lead |
 | OQ-03 | `page_size>20` 的拼接/裁剪实现与成本（多次上游请求、受限速影响）如何验收？ | 性能/实现 | 03 已定 1–100 与 `PAGE_SIZE_NOT_NATIVE`；性能基线仅 20，其余口径由 06 性能用例记录（待实测） | 03/06 |
 | OQ-04 | `free` tier 是否对外展示（新版列表页去除等级标识，误判风险）？ | 数据可信度 | 默认 `unknown`；仅详情确认无徽章时 `free`（medium）；是否展示待产品定 | 产品 |
 | OQ-05 | 增强字段范围：M2 是否包含 SGS 章节+响应率，联系人/评价是否 P2？ | 详情完整度/请求量 | M2：SGS+响应率；联系人 P2；评价明细接口未逆向（P2） | 产品/Lead |

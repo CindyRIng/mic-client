@@ -90,29 +90,37 @@ nohup ~/cloak-env/bin/cloak-run node dist/cli.js serve > ~/.mic-client/logs/serv
 
 ### 4.1 批量抓取与性能（河北全量实测）
 
+> 关键事实：省关键词 `hebei` 只匹配资料中提及“河北”的供应商（河北 total=1101，**不是全量**）。
+> 完整枚举 = **省 + 11 个地级市关键词**（每个带 `--province Hebei` 服务端过滤）并集去重。
+
 ```bash
-# 全量抓取：--pages all 动态到末页（≤100 页）
+# 一键完整枚举（写入 summary.json + union.ndjson）
+node scripts/e2e/enumerate-province.mjs --province Hebei --concurrency 6 --out /tmp/hebei-enum
+
+# 单查询（省关键词）批量导出
 mic search --province 河北 --pages all --format ndjson --concurrency 6 > hebei.ndjson
-
-# 只过滤掉广告位（默认 include_ads=true）
-mic search --province 河北 --pages all --format ndjson --concurrency 6 --exclude-ads > hebei-no-ads.ndjson
-
-# 缓存二次读取（同一 MIC_DATA_DIR）
-time mic search --province 河北 --pages all --format ndjson --concurrency 6 > /dev/null
 ```
 
-实测（2026-11-16，本机；上游 total=1101 / 56 页 / 39 条广告；网络波动会有 ±10%）：
+实测（2026-11-16，真实上游；数字随上游变动）：
 
-| 场景 | 耗时 | 说明 |
-|---|---|---|
-| 串行（concurrency=1） | **311s** | ~5.5s/页；基线 |
-| `--concurrency 6`（默认限速 1.5–2.5s） | **147s** | 2.1×；推荐 |
-| `--concurrency 8` | 159s | 收益递减，不建议 |
-| 缓存复读（同数据目录） | **0.12s**（summary） | 56 页全部 `cached=true` |
-| 限速降到 800–1200ms + 并发 6 | **113s** | 仅压测/自用；降低限速会增加风控风险，默认不改 |
+| 指标 | 数值 |
+|---|---|
+| 省关键词 total / 页数 | 1101 / 56 |
+| 11 城查询 total 合计 | 4403 / 227 页 |
+| **并集去重账号** | **5008**（非广告 4954；广告账号 54） |
+| 省查询独有账号 | 605 |
+| 被多个关键词命中的账号 | 496 |
+| 城市查询冷启动耗时（并发 6） | ~557s |
+| 完整冷启动（省 + 11 城） | 约 12 分钟 |
+| 全套缓存复读 | ~0.2s |
 
-> `--concurrency` 只重叠**响应等待**；请求发起间隔仍由限速器控制，访问频率没有提高。
-> 全量抓取建议 `--concurrency 4-6`；长期增量用缓存（TTL 6h）而不是反复全量刷新。
+城市分布：Shijiazhuang 1526、Cangzhou 723、Xingtai 593、Baoding 536、Hengshui 508、
+Tangshan 317、Handan 289、Langfang 270、Qinhuangdao 192、Zhangjiakou 27、Chengde 27。
+
+**性能开关**：
+- `--concurrency 4-6`：流水线重叠响应等待，请求发起间隔仍为 1.5–2.5s（默认；不建议 >6，收益递减）。
+- `MIC_RATE_MIN_MS=800 MIC_RATE_MAX_MS=1200`：可把全量压到约 9–10 分钟，但降低间隔会增加风控风险，默认不改。
+- 缓存优先：同 `MIC_DATA_DIR` 复跑近零成本；长期增量用 TTL（6h）而不是反复全量。
 
 MCP 客户端（如 Claude Code）配置示例：
 

@@ -59,7 +59,7 @@ ok('get_company (live/cached)', companyEnvelope.ok === true && (cdata.membership
 const hebeiRegion = await client.callTool({ name: 'list_regions', arguments: { province: '河北' } });
 const hebeiEnvelope = JSON.parse(hebeiRegion.content[0].text);
 const hebeiData = hebeiEnvelope.data ?? hebeiEnvelope;
-ok('list_regions province', hebeiData.province?.name === 'Hebei' && (hebeiData.cities || []).length === 10, `cities=${(hebeiData.cities || []).length}`);
+ok('list_regions province', hebeiData.province?.name === 'Hebei' && (hebeiData.cities || []).length === 11, `cities=${(hebeiData.cities || []).length}`);
 
 const resList = await client.listResources();
 const readRegions = await client.readResource({ uri: 'mic://regions' });

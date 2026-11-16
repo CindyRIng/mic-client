@@ -20,7 +20,7 @@ export interface ProvinceSeed {
 export const REGIONS_SEED: { version: number; source: string; note: string; provinces: ProvinceSeed[] } = {
   "version": 1,
   "source": "docs/05-data-and-cache.md §5.2/§5.3 + recon/artifacts/api/filters/province-list.json",
-  "note": "32 provinces; only Hebei has verified city dictionary (cities_complete=true). api_value is the m-site province param.",
+  "note": "32 provinces; only Hebei has verified city dictionary (cities_complete=true, 11 cities; Chengde verified via JSON keyword 2026-11-16). api_value is the m-site province param.",
   "provinces": [
     {
       "name": "Guangdong",
@@ -129,6 +129,11 @@ export const REGIONS_SEED: { version: number; source: string; note: string; prov
           "name_zh": "张家口",
           "seo_cc": "CC_Hebei_Zhangjiakou",
           "count_hint": 1
+        },
+        {
+          "name": "Chengde",
+          "name_zh": "承德",
+          "seo_cc": "CC_Hebei_Chengde"
         }
       ],
       "aliases": []

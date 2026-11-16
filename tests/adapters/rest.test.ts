@@ -135,7 +135,7 @@ describe('REST adapter — contract basics (docs/03)', () => {
     expect(detail.statusCode).toBe(200);
     const detailBody = detail.json();
     expect(detailBody.data.province.name).toBe('Hebei');
-    expect(detailBody.data.cities.length).toBe(10);
+    expect(detailBody.data.cities.length).toBe(11);
     expect(detailBody.data.cities[0].province).toBe('Hebei');
 
     const unknown = await app!.inject({ method: 'GET', url: '/api/regions?province=Nowhere' });

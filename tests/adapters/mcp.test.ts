@@ -137,7 +137,7 @@ describe('MCP adapter — tools & schemas (docs/04 §3.4)', () => {
     const hebei = await callTool('list_regions', { province: '河北' });
     const detail = hebei.payload['data'] as { province: { name: string }; cities: unknown[] };
     expect(detail.province.name).toBe('Hebei');
-    expect(detail.cities).toHaveLength(10);
+    expect(detail.cities).toHaveLength(11);
   });
 
   it('explain_membership returns tiers + KA/SKA clarification (no network)', async () => {

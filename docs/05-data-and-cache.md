@@ -367,7 +367,7 @@ flowchart LR
 | `name_zh` | `name_zh` | string | 是 | seed/本地映射 | 中文输入识别 |
 | `province` | 由 `province_id` JOIN 得到 | string | 是 | 派生 | 所属省英文名 |
 | `source` | `source` | enum<seo_facet,static,derive> | 是 | 派生 | — |
-| `verified` | `verified` | boolean | 是 | 派生 | 是否实测核验（河北 10 城 true） |
+| `verified` | `verified` | boolean | 是 | 派生 | 是否实测核验（河北 11 城 true） |
 | `count_hint` | `count_hint` | integer\|null | 是 | SEO facet count（seed 关键词下） | 仅热度参考 |
 | （内部）`seo_code` / `aliases_json` / `verified_at` | 同左 | — | — | 派生/seed | 校验/别名 |
 
@@ -692,7 +692,7 @@ free（保守）：页面完整加载 且 无会员徽章 且 无 AS 且 无 mem
 
 ### 5.3 城市字典：来源、生成与校验
 
-**河北已验证样本（10 城，SEO 面板 `glass` seed，03 §5 同源）**
+**河北已验证样本（11 城；前 10 城来自 SEO 面板 `glass` seed，Chengde 于 2026-11-16 经 JSON 关键词补验）**
 
 | 城市 | 中文 | SEO 代码 | count_hint |
 |---|---|---|---|
@@ -706,6 +706,7 @@ free（保守）：页面完整加载 且 无会员徽章 且 无 AS 且 无 mem
 | Tangshan | 唐山 | `C1--CP_Hebei--CC_Hebei_Tangshan` | 14 |
 | Qinhuangdao | 秦皇岛 | `C1--CP_Hebei--CC_Hebei_Qinhuangdao` | 13 |
 | Zhangjiakou | 张家口 | `C1--CP_Hebei--CC_Hebei_Zhangjiakou` | 1 |
+| Chengde | 承德 | `C1--CP_Hebei--CC_Hebei_Chengde` | -（2026-11-16 JSON 关键词补验，SEO count 未采集） |
 
 **生成与校验流程**
 

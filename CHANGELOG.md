@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
+## [1.0.6] - 2026-11-16
+
+### Added
+- **Hebei city dictionary completed**: `Chengde` (承德) added as the 11th verified prefecture-level city,
+  so `mic regions --province 河北` / `search --city 承德` / `list_regions` now expose all 11 cities.
+- `scripts/e2e/enumerate-province.mjs`: province full-coverage enumerator — sweeps the province keyword
+  plus every city keyword (with server-side province filter), unions + dedupes accounts, writes
+  `summary.json` / `union.ndjson`. Cache-first on rerun.
+- README/docs performance sections updated with the real Hebei numbers.
+
+### Measured (2026-11-16, real upstream)
+- Province keyword `hebei`: **1101** (56 pages) — *not* the full province: the JSON search requires a
+  `word` and only matches profiles mentioning it.
+- 11 prefecture-city keywords: totals **4403** (227 pages).
+- **Union after dedupe: 5008 unique suppliers** (4954 non-ad, 54 ad accounts); 605 only in the
+  province query, 496 matched multiple city keywords.
+- City distribution: Shijiazhuang 1526, Cangzhou 723, Xingtai 593, Baoding 536, Hengshui 508,
+  Tangshan 317, Handan 289, Langfang 270, Qinhuangdao 192, Zhangjiakou 27, Chengde 27.
+- Time: city queries ~557s cold with `--concurrency 6`; full cold ≈12 min; all-cached replay ~0.2s.
+
+### Changed
+- CLI/README/docs examples clarify that single-province "all companies" needs city-keyword splitting;
+  `--pages all` / `--concurrency` behavior unchanged.
+
 ## [1.0.5] - 2026-11-16
 
 ### Added

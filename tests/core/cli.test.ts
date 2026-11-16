@@ -94,7 +94,7 @@ describe('CLI: regions (TC-42/AC-33)', () => {
     const provinces = (out['data'] as { provinces: Array<Record<string, unknown>> }).provinces;
     expect(provinces).toHaveLength(32);
     const hebei = provinces.find((p) => p['name'] === 'Hebei')!;
-    expect(hebei['city_count']).toBe(10);
+    expect(hebei['city_count']).toBe(11);
     expect(hebei['cities_complete']).toBe(true);
   });
 
@@ -107,8 +107,8 @@ describe('CLI: regions (TC-42/AC-33)', () => {
       cities: Array<{ name: string; province: string }>;
     };
     expect(data.province.name).toBe('Hebei');
-    expect(data.province.city_count).toBe(10);
-    expect(data.cities).toHaveLength(10);
+    expect(data.province.city_count).toBe(11);
+    expect(data.cities).toHaveLength(11);
     expect(data.cities.every((c) => c.province === 'Hebei')).toBe(true);
   });
 

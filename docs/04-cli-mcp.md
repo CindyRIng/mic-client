@@ -515,7 +515,12 @@ mic search --keyword glass --exclude-ads --json
 
 # 7) NDJSON 流式翻 1–3 页（供 jq 实时消费）
 mic search --keyword hebei --province Hebei --pages 1-3 --format ndjson
-mic search --province 河北 --pages all --format ndjson --concurrency 6   # 全量批量（流水线）
+mic search --province 河北 --pages all --format ndjson --concurrency 6   # 省级关键词全量（河北 1101）
+
+# 7b) 单省/单地区“全量企业”：省份关键词只覆盖资料中提及省名的供应商（河北=1101）。
+#     要拿全需按地级市关键词拆分（每个都带 --province 服务端过滤）再并集去重：
+node scripts/e2e/enumerate-province.mjs --province Hebei --concurrency 6
+# 实测河北 11 城：查询 totals 合计 4403，并集去重 5008 家（非广告 4954）
 
 # 8) 跳过缓存强制刷新
 mic search --keyword glass --refresh --json
@@ -934,7 +939,7 @@ mic regions [--province <省>] [--refresh]
 
 **规则**
 
-- **G1 字典范围（03 §5；05 定稿）**：省 = 上游 refine `province` facet 31 项 + SEO facet `CP_` 32 项（多 `Qinghai`，实测 `province=Qinghai` 合法）→ 客户端字典 **32 项**；市 = 首期已核验河北 10 城（`seo_facet`，带 count 提示），其余省份 `cities_complete=false`，未核验城市按 03 §7.3 透传 + warning 处理。
+- **G1 字典范围（03 §5；05 定稿）**：省 = 上游 refine `province` facet 31 项 + SEO facet `CP_` 32 项（多 `Qinghai`，实测 `province=Qinghai` 合法）→ 客户端字典 **32 项**；市 = 首期已核验河北 11 城（10 城来自 `seo_facet` 带 count 提示；Chengde 经 JSON 关键词补验），其余省份 `cities_complete=false`，未核验城市按 03 §7.3 透传 + warning 处理。
 - **G2 缓存**：本地物化字典 30d；`meta.cached=true`、`source="cache"`；本命令**不访问上游**（03 §5），因此不会出现 `UPSTREAM_UNAVAILABLE`/验证码错误。
 - **G3 城市不能服务端过滤**：输出城市仅用于 `mic search --city` 的客户端过滤与地区词派生（ADR-0003）。
 - **G4 失败**：字典损坏/无法物化 → `CONFIG_ERROR`（退出码 1）或 `INTERNAL_ERROR`；未知省 → `INVALID_PARAM`（退出码 2）。

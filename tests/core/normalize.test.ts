@@ -139,7 +139,7 @@ describe('normalize: region validation (TC-05/TC-08)', () => {
       'INVALID_PARAM',
       'UNKNOWN_CITY',
     );
-    expect((err.details?.['allowed_cities'] as string[]).length).toBe(10);
+    expect((err.details?.['allowed_cities'] as string[]).length).toBe(11);
   });
 
   it('unknown city in an incomplete province is passed through (region mode)', () => {

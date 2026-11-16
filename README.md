@@ -65,7 +65,7 @@ Made-in-China（made-in-china.com，中国制造网）是外贸供应商调研�
 
 | 能力 | 说明 |
 |---|---|
-| 🔍 工厂搜索 | 关键词 / 地区（省、市）/ 组合三种模式；32 省字典 + 河北 10 城；中文地区自动映射 |
+| 🔍 工厂搜索 | 关键词 / 地区（省、市）/ 组合三种模式；32 省字典 + 河北 11 城；中文地区自动映射 |
 | 🧮 结构化过滤 | 会员等级（diamond/gold）、认证供应商、经营模式、年营收、研发能力、管理体系认证、类目代码 |
 | 📄 结果列表 | 公司名、账号、地区、主营、会员等级、认证、星级、员工数/厂房/营收、广告标记 `is_ad` |
 | 🏢 公司详情 | 成立日期、**入驻/会员起始年 `since_year`**、主营、员工数、地址、厂房、营收、认证体系、评分、响应率、联系人、审核章节 |
@@ -74,7 +74,7 @@ Made-in-China（made-in-china.com，中国制造网）是外贸供应商调研�
 | 🖥️ 三入口 | CLI（10 个子命令）、REST（8 个端点）、MCP（4 tools + 2 resources），共用同一 core |
 | 🛡️ 风控处理 | 1.5–2.5s 限速抖动、302 重试、Focus Captcha 自动通过、`mic auth` 人工兜底 |
 | 📚 自描述文档 | `mic serve` 后浏览器打开 `/docs`：端点/参数/Schema + Try it；`/openapi.json` 可导入 Postman/代码生成器（无外部 CDN，[ADR-0008](docs/decisions/0008-rest-self-describing-docs.md)） |
-| ⚡ 批量与性能 | NDJSON 流式全量导出 + `--concurrency` 流水线并发（河北 1101 条：311s → 147s，2.1×）；缓存二次读取 ~0.1s |
+| ⚡ 批量与性能 | NDJSON 流式 + `--concurrency` 流水线（单查询 2.1×）；`enumerate-province.mjs` 按地级市拆分拿全（河北：1101 省关键词 → **5008 家**并集）；缓存复读 ~0.1s |
 | 🧪 可测试 | 252 个自动化测试 + golden fixtures + `live-smoke` / `mcp-smoke` 脚本 |
 
 ## 架构
@@ -189,7 +189,7 @@ mic version
 
 ```bash
 mic version
-# mic-client 1.0.5
+# mic-client 1.0.6
 # node v22.23.2
 # sqlite schema v1
 # upstream contract checked 2026-11-15
@@ -390,33 +390,77 @@ mic mcp --print-config     # 打印可直接粘贴的 MCP 客户端配置
 
 ## 性能实测与调优（河北全量）
 
-**数据规模**：河北省 `total=1101`（56 页 × 20 条，含 39 条广告；去重后 1101 个账号、非广告 1062）。测试时间 2026-11-16，本机真实上游，网络波动 ±10%。
+### 1. 单查询（省关键词 `hebei`，56 页）
 
-```bash
-# 全量导出（NDJSON：start → page* → summary，可 jq 流式处理）
-mic search --province 河北 --pages all --format ndjson --concurrency 6 > hebei.ndjson
-
-# 只要非广告供应商
-mic search --province 河北 --pages all --format ndjson --concurrency 6 --exclude-ads > hebei-no-ads.ndjson
-```
+河北省 `total=1101`，56 页 × 20 条；含 39 条广告，去重后 1101 个账号（非广告 1062）。
 
 | 场景 | 耗时 | 吞吐 | 说明 |
 |---|---|---|---|
 | 冷启动·串行（默认） | **311s** | ~3.5 条/s | 基线，56 次上游请求，限速 1.5–2.5s |
-| 冷启动·`--concurrency 6` | **147s** | ~7.5 条/s | **推荐**，2.1×；页序不变、请求发起间隔不变 |
+| 冷启动·`--concurrency 6` | **147s** | ~7.5 条/s | 推荐，2.1×；页序不变、请求发起间隔不变 |
 | 冷启动·`--concurrency 8` | 159s | — | 收益递减，不建议 |
 | 冷启动·并发 6 + 限速 800–1200ms | **113s** | ~9.7 条/s | 压测/自用；默认不降，降低限速会增加风控风险 |
-| 缓存复读（同 `MIC_DATA_DIR`） | **0.12s**（summary） | 1101 条全额 | 56 页全部 `cached=true`，第二次起近零成本 |
+| 缓存复读（同 `MIC_DATA_DIR`） | **0.1–0.5s** | 1101 条全额 | 56 页全部 `cached=true` |
 
-**优化原理**：
+```bash
+# 单查询全量（省关键词）
+mic search --province 河北 --pages all --format ndjson --concurrency 6 > hebei.ndjson
+```
+
+### 2. 全量覆盖（省 + 11 个地级市关键词，推荐）
+
+> **重要**：上游 JSON 搜索必须有 `word`，省关键词 `hebei` 只匹配资料里**提及省名**的供应商，因此 1101 **不是河北全量**。
+> 按 11 个地级市关键词（每个都带 `province=Hebei` 服务端过滤）拆分，再并集去重，才是完整覆盖。
+
+```bash
+node scripts/e2e/enumerate-province.mjs --province Hebei --concurrency 6
+# 输出 <out>/summary.json + union.ndjson（账号级明细）
+```
+
+实测（2026-11-16，真实上游；数字随上游变动）：
+
+| 查询 | total | 页数 |
+|---|---|---|
+| **省关键词** `hebei` | 1101 | 56 |
+| Shijiazhuang | 1437 | 72 |
+| Cangzhou | 622 | 32 |
+| Xingtai | 503 | 26 |
+| Baoding | 472 | 24 |
+| Hengshui | 319 | 16 |
+| Tangshan | 301 | 16 |
+| Handan | 261 | 14 |
+| Langfang | 245 | 13 |
+| Qinhuangdao | 191 | 10 |
+| Zhangjiakou | 26 | 2 |
+| Chengde（2026-11-16 补入字典） | 26 | 2 |
+| **11 城合计** | **4403** | **227** |
+
+**并集去重结果：5008 家唯一供应商**（其中广告账号 54、非广告 **4954**）；
+省关键词额外补到 605 家、496 家被多个城市关键词同时命中；11 城分布：
+
+| 城市 | 数量 | 城市 | 数量 |
+|---|---|---|---|
+| Shijiazhuang | 1526 | Hengshui | 508 |
+| Cangzhou | 723 | Baoding | 536 |
+| Xingtai | 593 | Tangshan | 317 |
+| Handan | 289 | Langfang | 270 |
+| Qinhuangdao | 192 | Zhangjiakou | 27 |
+| Chengde | 27 | | |
+
+**耗时**：城市查询 227 页冷启动 **~557s**（`--concurrency 6`）；加上省扫描 147s，完整冷启动约 **12 分钟**；
+全套查询缓存复读 **0.2s**（`scripts/e2e/enumerate-province.mjs` 实测 summary 215ms）。
+需要更快可用限速 800–1200ms（约 9–10 分钟），但会增加风控风险，默认不改。
+
+### 3. 优化原理
 
 1. **JSON 优先**：每页 1 次上游 JSON 请求，不渲染 HTML / 不起浏览器；
-2. **流水线并发**：限速器仍保证请求**发起间隔**（1.5–2.5s）不变，`--concurrency` 只重叠网络响应等待，因此不提高请求频率；56 页耗时从 311s → 147s；
+2. **流水线并发**：限速器仍保证请求**发起间隔**（1.5–2.5s）不变，`--concurrency` 只重叠网络响应等待，不提高请求频率；
 3. **缓存优先**：搜索页 TTL 6h；同一查询第二次读取 56 页仅 ~0.1s；
 4. **动态 `--pages all`**：直到真实 `total_page`（≤100），不再有 10 页上限；
-5. **NDJSON 流式**：边抓边输出，内存占用不随页数增长，可接 `jq`/入库。
+5. **NDJSON 流式**：边抓边输出，内存不随页数增长，可接 `jq`/入库；
+6. **城市拆分**：单省全量必须按地级市关键词拆分（省关键词是子集），脚本自动完成并集去重。
 
-> 非穷尽说明：上游单查询 `total > 2000` 会显示 `"2,000+"`；河北 total=1101 未触顶，因此可以完整拿全。若以后超过 2000，需要按城市/类目拆分查询再合并（接口会明确标记 `total_capped`/`total_is_lower_bound`）。
+> 非穷尽说明：上游单查询 `total > 2000` 会显示 `"2,000+"`；河北各查询均 <2000，因此可完整拿全。若某城市超过 2000，需要继续按区县/类目拆分。
 
 ## 会员等级与认证
 
@@ -467,7 +511,7 @@ mic-client/
 │   └── index.ts
 ├── data/regions.json               # 省/市字典数据
 ├── tests/                          # 244 tests + golden fixtures
-├── scripts/e2e/{live-smoke,mcp-smoke}.mjs
+├── scripts/e2e/{live-smoke,mcp-smoke,enumerate-province}.mjs
 ├── docs/                           # 需求/架构/API/CLI-MCP/数据/测试/运维/路线图
 │   ├── 01-requirements.md … 08-roadmap.md
 │   ├── research/                   # 上游接口/会员/匿名边界/验证码调研与证据
@@ -515,12 +559,12 @@ npx vitest run tests/core tests/company tests/adapters
 
 ## 路线图与已知限制
 
-**状态：M0–M4 已完成，v1.0.5。** 详见 [docs/08-roadmap.md](docs/08-roadmap.md)。
+**状态：M0–M4 已完成，v1.0.6。** 详见 [docs/08-roadmap.md](docs/08-roadmap.md)。
 
 已知限制（有意为之/待验证）：
 
 - 上游 `total` 超过 2000 封顶、`page` 上限 100：结果为**样本非穷尽**（接口已显式标注）。
-- 城市字典目前只核验了河北 10 城；其它省城市可透传（`cities_complete=false` + `CITY_NOT_IN_DICTIONARY` warning）。
+- 城市字典目前只核验了河北 11 城（含 2026-11-16 补验的承德）；其它省城市可透传（`cities_complete=false` + `CITY_NOT_IN_DICTIONARY` warning）。
 - 电话/邮箱等联系通道平台不公开，字段恒 `null`（不是 bug）。
 - 登录态差异未逐字段验证（`mic auth` 可登录后复测）；审核报告全文/PDF 平台不公开。
 - 无头浏览器下验证码自动通过依赖上游实现细节，升级可能失效 → 保留 `mic auth` 人工兜底。

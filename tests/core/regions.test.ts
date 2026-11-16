@@ -33,6 +33,7 @@ describe('region dictionary (TC-06 / AC-31..AC-33)', () => {
       'Tangshan',
       'Qinhuangdao',
       'Zhangjiakou',
+      'Chengde',
     ]);
     expect(hebei.cities!.find((c) => c!.name === 'Langfang')!.name_zh).toBe('廊坊');
   });
