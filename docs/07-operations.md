@@ -117,6 +117,33 @@ mic search --province 河北 --pages all --format ndjson --concurrency 6 > hebei
 城市分布：Shijiazhuang 1526、Cangzhou 723、Xingtai 593、Baoding 536、Hengshui 508、
 Tangshan 317、Handan 289、Langfang 270、Qinhuangdao 192、Zhangjiakou 27、Chengde 27。
 
+### 4.2 批量公司详情（5008 家）
+
+```bash
+# 基于枚举结果（union.ndjson）批量抓详情；可断点续跑（跳过 24h 内缓存）
+node scripts/e2e/fetch-company-details.mjs \
+  --input /tmp/hebei-enum2/union.ndjson --out /tmp/details-all \
+  --tabs 2 --retries 1
+```
+
+实现要点（ADR-0009）：公司详情 HTTP 通道被 EdgeOne 稳定挑战，因此批量直接走浏览器：资源拦截（图片/字体/CSS/统计，Captcha 资源放行）+ 已验证 context + 页面复用 + `waitUntil:'commit'`；渲染后的 HTML 交给 `CompanyService.get({ prefetched_html })`，复用解析/会员合并/缓存/availability。默认 `include=none`（不含 SGS/响应率/联系人/评价的四类增强）。
+
+实测（2026-11-16，真实上游）：
+
+| 场景 | 结果 |
+|---|---|
+| 40 家随机样本（tabs=1） | **40/40 成功**，1.82s/家 |
+| 40 家随机样本（tabs=2） | 40/40 成功，0.99s/家 |
+| 40 家随机样本（tabs=3） | 40/40 成功，0.83s/家（不建议长跑） |
+| **200 家随机样本（tabs=2）** | **200/200 成功**，238s，1.19s/家，ETA 5008 ≈ **99 分钟** |
+| 缓存复跑 | 0s（`cached_skipped=selected`） |
+
+样本构成：移动站 ssrData 68/200（34%）、桌面 showroom 132/200（66%，免费会员）。
+字段完整度：`main_products` 197/200、`established_at` 45/200、`employees` 40/200（桌面页不公开员工数/成立日期，记为 `availability.not_provided_by_supplier`）。
+会员：diamond 82、gold 11、unknown 107（部分 unknown 在桌面页有徽章但列表侧无 csLevel）。
+
+> 长跑建议 `--tabs 2`（3 会更高并发/风控风险）；失败自动重试一次；输出 `summary.json`/`results.ndjson`/`failures.json`，重新运行同一 `--out` 即续跑。
+
 **性能开关**：
 - `--concurrency 4-6`：流水线重叠响应等待，请求发起间隔仍为 1.5–2.5s（默认；不建议 >6，收益递减）。
 - `MIC_RATE_MIN_MS=800 MIC_RATE_MAX_MS=1200`：可把全量压到约 9–10 分钟，但降低间隔会增加风控风险，默认不改。

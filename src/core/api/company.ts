@@ -255,6 +255,16 @@ export interface CompanyBodyFields {
   employee_text: string | null;
   establishment: string | null;
   system_certifications: string[];
+  main_products: string[];
+  business_types: string[];
+}
+
+function splitCommaList(v: string | null): string[] {
+  if (!v) return [];
+  return v
+    .split(/[,，;；]/)
+    .map((x) => x.replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
 }
 
 /** 从 info.html 正文提取员工数/地址/认证体系/成立年（research/upstream-api.md §3.4）。 */
@@ -270,6 +280,8 @@ export function extractBodyFields(html: string): CompanyBodyFields {
     'Mgmt. Certification',
     'Certifications',
   ]);
+  const mainProductsRaw = findLabeledValue(text, ['Main Products']);
+  const businessTypesRaw = findLabeledValue(text, ['Business Type']);
   const establishmentRaw = findLabeledValue(text, ['Year of Establishment']);
   const structuredCerts = splitCertifications(certRaw ? cutAtNextLabel(certRaw) : null);
   const textCerts = extractCertificationsFromText(text);
@@ -287,6 +299,8 @@ export function extractBodyFields(html: string): CompanyBodyFields {
     employee_text: employeeText,
     establishment: normalizeEstablishment(establishmentRaw),
     system_certifications: merged.slice(0, 15),
+    main_products: splitCommaList(mainProductsRaw ? cutAtNextLabel(mainProductsRaw) : null).slice(0, 50),
+    business_types: splitCommaList(businessTypesRaw ? cutAtNextLabel(businessTypesRaw) : null).slice(0, 20),
   };
 }
 
@@ -359,9 +373,21 @@ function starsFromSymbol(symbol: Record<string, unknown> | null): number | null 
   return null;
 }
 
+function companyNameFromHtml(html: string): string | null {
+  const title = /<title[^>]*>([\s\S]*?)<\/title>/i.exec(html)?.[1];
+  if (title) {
+    let name = stripTags(title).split('|')[0]?.trim() ?? '';
+    if (name.includes(' - ')) name = name.split(' - ').pop()?.trim() ?? name;
+    if (name) return name;
+  }
+  const h1 = /<h1[^>]*>([\s\S]*?)<\/h1>/i.exec(html)?.[1];
+  return h1 ? stripTags(h1) || null : null;
+}
+
 /**
  * 解析 `info.html` → `CompanyDetailPayload`。
- * 契约校验（docs/05 §4.7）：ssrData 必须存在，`companyInfo.code===0` 且 `content.comName` 非空。
+ * ssrData 必须存在且 `companyInfo.code===0`；部分页面的 `content.comName`/`mainProducts`
+ * 为空（实测 transoceanmetal），此时回退到 `<title>` 与正文标签，避免整条详情失败。
  */
 export function parseCompanyDetailHtml(
   html: string,
@@ -388,13 +414,13 @@ export function parseCompanyDetailHtml(
       err: strOrNull(companyInfo['err']),
     });
   }
-  const companyName = strOrNull(content['comName']);
-  if (!companyName) {
-    throw new AppError('UPSTREAM_CHANGED', 'ssrData.companyInfo.content.comName is empty', {
-      reason: 'COMPANY_NAME_MISSING',
-    });
-  }
   const body = extractBodyFields(html);
+  const companyName =
+    strOrNull(content['comName']) ??
+    strOrNull(content['companyName']) ??
+    companyNameFromHtml(html) ??
+    requestedAccount ??
+    '';
   const account =
     strOrNull(ssr['logUsername']) ??
     (requestedAccount ? requestedAccount.trim().toLowerCase() : null) ??
@@ -431,8 +457,8 @@ export function parseCompanyDetailHtml(
     is_diamond_member: boolOrNull(ssr['isDiamondMember']),
     sgs_member: boolOrNull(content['sgsMember']),
     audit_logo: auditLogo,
-    main_products: strArray(content['mainProducts']),
-    business_types: strArray(content['businessTypes']),
+    main_products: strArray(content['mainProducts']).length ? strArray(content['mainProducts']) : body.main_products,
+    business_types: strArray(content['businessTypes']).length ? strArray(content['businessTypes']) : body.business_types,
     establishment: ssrEstablishment ?? body.establishment,
     body_establishment: body.establishment,
     rating_display: rating,
@@ -451,6 +477,133 @@ export function parseCompanyDetailHtml(
     ssr_raw: ssr,
     source,
   };
+}
+
+/** 免费会员没有移动站详情：`info.html` 会 301 到桌面 showroom/子域名页（无 ssrData）。 */
+export function isDesktopCompanyHtml(html: string): boolean {
+  if (html.includes('ssrData')) return false;
+  return /made-in-china\.com\/showroom\//i.test(html) || /class="[^"]*(?:showroom|company-home)/i.test(html) || /Main Products\s*:/i.test(html);
+}
+
+function stripTags(s: string): string {
+  return decodeEntities(s.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * Parse the desktop showroom page used by free members (no mobile ssrData).
+ * Available fields: company name, address, account-registered year, business type,
+ * main products, management-system certifications, membership/audited badges,
+ * encodeComId. Employee count / established date are not published on this page
+ * and stay null (surfaced via `availability`).
+ */
+export function parseDesktopCompanyHtml(
+  html: string,
+  requestedAccount?: string,
+  source: 'json' | 'html' | 'browser' = 'html',
+  sourceUrl: string | null = null,
+): CompanyDetailPayload {
+  const h1 = /<h1[^>]*>([\s\S]*?)<\/h1>/i.exec(html);
+  const title = /<title[^>]*>([\s\S]*?)<\/title>/i.exec(html);
+  const account =
+    requestedAccount ?? parseAccountFromUrl(sourceUrl ?? '') ?? null;
+  if (!h1 && !title) {
+    throw new AppError('UPSTREAM_CHANGED', 'desktop company page has neither h1 nor title', {
+      reason: 'DESKTOP_COMPANY_PAGE_INVALID',
+      bytes: html.length,
+    });
+  }
+  const name = stripTags((h1?.[1] ?? title?.[1] ?? '').split(' - ')[0] ?? '').trim();
+  const start = h1 ? html.indexOf(h1[0]) : 0;
+  const windowHtml = html.slice(Math.max(0, start), Math.max(0, start) + 26000);
+  const text = htmlToText(windowHtml);
+  const windowLabels = [
+    'Address',
+    'Account Registered in',
+    'Business Range',
+    'Management System Certification',
+    'Business Type',
+    'Main Products',
+    'More',
+    'Company Introduction',
+    'Production Capacity',
+  ];
+  const labelValue = (label: string, next: string[]): string | null => {
+    const re = new RegExp(`(?:^|\\s)${label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*:`, 'i');
+    const m = re.exec(text);
+    if (!m) return null;
+    const from = m.index + m[0].length;
+    let to = text.length;
+    for (const n of next) {
+      const i = text.indexOf(n, from);
+      if (i >= 0 && i < to) to = i;
+    }
+    const v = text.slice(from, to).replace(/\s+/g, ' ').trim();
+    return v || null;
+  };
+  const address = labelValue('Address', ['Account Registered in', 'Business Range', ...windowLabels.filter((x) => x !== 'Address')]);
+  const registered = labelValue('Account Registered in', ['Business Range', 'Management System Certification', 'Business Type', 'Main Products', 'More']);
+  const certRaw = labelValue('Management System Certification', ['Business Type', 'Main Products', 'More', 'Company Introduction']);
+  const businessRaw = labelValue('Business Type', ['Main Products', 'More', 'Company Introduction']);
+  const productsRaw = labelValue('Main Products', ['More', 'Company Introduction', 'Production Capacity']);
+  const registeredYear = registered ? /((?:19|20)\d{2})/.exec(registered)?.[1] ?? null : null;
+
+  const h1Block = text.slice(0, Math.min(text.length, 2500));
+  const memberLevel = /Diamond\s+Member/i.test(h1Block) ? 'diamond' : /Gold\s+Member/i.test(h1Block) ? 'gold' : null;
+  const audited = /Audited\s+Supplier/i.test(h1Block) ? true : null;
+  const encodeMatch = /<input[^>]*name=["']comId["'][^>]*value=["']([^"']+)["']/i.exec(html) ?? /value=["']([^"']+)["'][^>]*name=["']comId["']/i.exec(html);
+  const encodeComId = encodeMatch?.[1] ? decodeEntities(encodeMatch[1]) : null;
+  const splitComma = (v: string | null): string[] =>
+    v ? v.split(/[,，;；]/).map((x) => x.replace(/\s+/g, ' ').trim()).filter(Boolean).slice(0, 50) : [];
+
+  return {
+    account: account ?? requestedAccount ?? '',
+    company_id: '',
+    encode_com_id: encodeComId,
+    company_name: name,
+    member_level: memberLevel,
+    member_since: registeredYear,
+    is_diamond_member: memberLevel === 'diamond' ? true : null,
+    sgs_member: audited,
+    audit_logo: null,
+    main_products: splitComma(productsRaw),
+    business_types: splitComma(businessRaw),
+    establishment: null,
+    body_establishment: null,
+    rating_display: null,
+    review_list_url: null,
+    stars: null,
+    rd: [],
+    online_trade_able: null,
+    leading_factory: null,
+    logo_url: null,
+    company_url: sourceUrl,
+    company_info_url: account ? `https://m.made-in-china.com/company-${account}/info.html` : null,
+    address,
+    employees: null,
+    employee_text: null,
+    system_certifications: splitComma(certRaw),
+    ssr_raw: null,
+    source,
+  };
+}
+
+/** Parse mobile ssrData first; fall back to desktop showroom HTML (free members). */
+export function parseAnyCompanyHtml(
+  html: string,
+  requestedAccount?: string,
+  source: 'json' | 'html' | 'browser' = 'json',
+  sourceUrl: string | null = null,
+): CompanyDetailPayload {
+  if (html.includes('ssrData')) {
+    return parseCompanyDetailHtml(html, requestedAccount, source);
+  }
+  if (isDesktopCompanyHtml(html)) {
+    return parseDesktopCompanyHtml(html, requestedAccount, source === 'json' ? 'html' : source, sourceUrl);
+  }
+  throw new AppError('UPSTREAM_CHANGED', 'company page is neither mobile ssrData nor desktop showroom', {
+    reason: 'COMPANY_PAGE_UNRECOGNIZED',
+    bytes: html.length,
+  });
 }
 
 /** 从 URL 提取 account：m 站 `/company-<account>/...`、`/company/<digits>`、`<account>.en.made-in-china.com`。 */
@@ -534,7 +687,7 @@ export class CompanyDetailApi {
       if (opts.browserHtml) {
         this.logger.info('company: HTTP path challenged; using verified browser-rendered HTML', { url });
         const html = await opts.browserHtml(url);
-        const payload = parseCompanyDetailHtml(html, account, 'browser');
+        const payload = parseAnyCompanyHtml(html, account, 'browser', url);
         this.logger.debug('company: parsed info.html via browser fallback', {
           account: payload.account,
           bytes: html.length,
@@ -570,7 +723,7 @@ export class CompanyDetailApi {
         status: res.status,
       });
     }
-    const payload = parseCompanyDetailHtml(res.body, account);
+    const payload = parseAnyCompanyHtml(res.body, account, 'json', res.finalUrl);
     this.logger.debug('company: parsed info.html', {
       account: payload.account,
       bytes: res.body.length,

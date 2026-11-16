@@ -706,17 +706,159 @@ export async function ensureVerifiedSession(
 }
 
 /**
+ * Read `page.content()` robustly: CAPTCHA success/navigation frequently triggers a
+ * redirect at the same moment we try to read the DOM, which throws
+ * "Unable to retrieve content because the page is navigating". Wait/retry instead of
+ * surfacing an INTERNAL_ERROR.
+ */
+async function readStableHtml(page: Page, logger?: Logger, attempts = 8): Promise<string | null> {
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    try {
+      await page.waitForLoadState('domcontentloaded', { timeout: 5000 }).catch(() => undefined);
+      const html = await page.content();
+      if (html.length > 2000) return html;
+    } catch (e) {
+      const msg = String((e as Error)?.message ?? e);
+      if (!/navigat|changing the content|Execution context|Target closed|detached/i.test(msg)) throw e;
+      logger?.debug('browser: page still navigating, retrying HTML read', { attempt, error: msg.slice(0, 120) });
+    }
+    await sleep(800);
+  }
+  return null;
+}
+
+const blockedContexts = new WeakSet<BrowserContext>();
+
+/** Block non-essential resources for company-detail crawling (captcha assets allowed). */
+async function installDetailResourceBlocking(ctx: BrowserContext, logger?: Logger): Promise<void> {
+  if (blockedContexts.has(ctx)) return;
+  blockedContexts.add(ctx);
+  await ctx.route('**/*', (route) => {
+    const req = route.request();
+    const type = req.resourceType();
+    const u = req.url();
+    const captchaHost = /captcha\.(?:made-in-china|vemic)\.com/.test(u);
+    if (!captchaHost && ['image', 'media', 'font', 'stylesheet'].includes(type)) return route.abort();
+    if (/google|analytics|doubleclick|facebook|sentry|hotjar|clarity|hm\.baidu|micstatic\.com\/common\/js\/libs\/sensors/i.test(u)) {
+      return route.abort();
+    }
+    return route.continue();
+  });
+  logger?.debug?.('browser: detail resource blocking installed');
+}
+
+export interface BatchPageResult {
+  url: string;
+  ok: boolean;
+  html?: string;
+  finalUrl?: string;
+  error?: string;
+  ms: number;
+  captcha_attempts: number;
+}
+
+export interface BatchFetchOptions {
+  tabs?: number;
+  timeoutPerUrlMs?: number;
+}
+
+/**
+ * Fetch many company pages in a verified browser session: one page per worker tab,
+ * resource blocking, CAPTCHA auto-solve and a per-URL deadline. Returns raw HTML for
+ * `CompanyService.get({ prefetched_html })` (mobile ssrData or desktop showroom).
+ */
+export async function fetchCompanyHtmlBatch(
+  urls: string[],
+  cfg: Config,
+  logger: Logger,
+  opts: BatchFetchOptions = {},
+): Promise<BatchPageResult[]> {
+  const tabs = Math.max(1, Math.min(4, opts.tabs ?? 1));
+  const perUrlTimeoutMs = Math.max(8000, opts.timeoutPerUrlMs ?? 30000);
+  const ctx = await getBrowserContext(cfg, logger);
+  await installDetailResourceBlocking(ctx, logger);
+  return withBrowserSession(async () => {
+    const results: BatchPageResult[] = [];
+    const queue = urls.map((url, i) => ({ url, i }));
+    const worker = async (): Promise<void> => {
+      const page = await ctx.newPage();
+      page.setDefaultTimeout(20000);
+      try {
+        for (;;) {
+          const task = queue.shift();
+          if (!task) break;
+          const started = Date.now();
+          let captchas = 0;
+          try {
+            await page.goto(task.url, { waitUntil: 'commit', timeout: 8000 }).catch(() => undefined);
+            let html = '';
+            while (Date.now() - started < perUrlTimeoutMs) {
+              await sleep(350);
+              if (await isCaptchaPage(page).catch(() => false)) {
+                captchas++;
+                if (captchas <= 2) {
+                  await solveFocusCaptcha(page, cfg, logger).catch(() => undefined);
+                  await sleep(1200);
+                }
+                continue;
+              }
+              html = (await readStableHtml(page, logger, 2)) ?? '';
+              if (html.length > 2000 && (html.includes('ssrData') || /Main Products\s*:|showroom\//i.test(html))) break;
+              await sleep(350);
+            }
+            if (html.length > 2000) {
+              results[task.i] = {
+                url: task.url,
+                ok: true,
+                html,
+                finalUrl: page.url(),
+                ms: Date.now() - started,
+                captcha_attempts: captchas,
+              };
+            } else {
+              results[task.i] = {
+                url: task.url,
+                ok: false,
+                error: 'BROWSER_FETCH_TIMEOUT',
+                finalUrl: page.url(),
+                ms: Date.now() - started,
+                captcha_attempts: captchas,
+              };
+            }
+          } catch (e) {
+            results[task.i] = {
+              url: task.url,
+              ok: false,
+              error: e instanceof AppError ? e.code : String((e as Error)?.message ?? e).slice(0, 120),
+              ms: Date.now() - started,
+              captcha_attempts: captchas,
+            };
+          }
+        }
+      } finally {
+        await page.close().catch(() => undefined);
+      }
+    };
+    const workers = Array.from({ length: Math.min(tabs, urls.length) }, () => worker());
+    await Promise.all(workers);
+    await exportSession(ctx, cfg).catch(() => undefined);
+    return results;
+  });
+}
+
+/**
  * Fetch a fully-rendered HTML page through the verified browser session.
  * Used as the last-resort fallback when the HTTP path is still challenged after
  * captcha auto-solve (cookies alone may not satisfy the edge risk engine).
  */
 export async function fetchHtmlViaBrowser(url: string, cfg: Config, logger: Logger): Promise<string> {
   const ctx = await getBrowserContext(cfg, logger);
+  await installDetailResourceBlocking(ctx, logger);
   return withBrowserSession(async () => {
     const page = await ctx.newPage();
     page.setDefaultTimeout(60000);
     try {
-      await page.goto(url, { waitUntil: 'load', timeout: 90000 }).catch((e: unknown) => {
+      await page.goto(url, { waitUntil: 'commit', timeout: 20000 }).catch((e: unknown) => {
         logger.warn('browser: fetch goto failed', { error: String((e as Error).message ?? e) });
       });
       for (let round = 0; round < 4; round++) {
@@ -727,8 +869,8 @@ export async function fetchHtmlViaBrowser(url: string, cfg: Config, logger: Logg
           await waitForCaptchaRedirect(page, 20000);
           continue;
         }
-        const html = await page.content();
-        if (html.length > 2000) {
+        const html = await readStableHtml(page, logger);
+        if (html && html.length > 2000) {
           await exportSession(ctx, cfg);
           logger.info('browser: rendered HTML captured', { url: url.slice(0, 160), bytes: html.length });
           return html;

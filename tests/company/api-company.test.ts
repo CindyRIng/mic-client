@@ -167,6 +167,8 @@ describe('body field helpers', () => {
       employee_text: null,
       establishment: null,
       system_certifications: [],
+      main_products: [],
+      business_types: [],
     });
   });
 

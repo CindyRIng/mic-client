@@ -34,6 +34,7 @@
 
 - **只用匿名公开数据**：主链路为 m 站匿名 JSON（`POST /search/supplier`、`GET /company-<account>/info.html` 页内 `ssrData`）与 5 个匿名增强 JSON（SGS 章节/响应率/TM 联系人/评价；TM 在线首期不额外请求），见 [research/upstream-api.md](research/upstream-api.md)。
 - **HTML/浏览器是兜底**：桌面 `companysearch.do`、公司站 `contact-info.html`、SEO `company-search` 页仅作字段补充/交叉校验；原始快照策略见 §7.8。
+- **免费会员桌面 showroom 兜底（ADR-0009）**：约 60% 免费会员的 `info.html` 会 301 到桌面 showroom（无 `ssrData`）；解析 h1/Address/Account Registered in/Business Type/Main Products/认证体系/会员与 AS 徽章/encodeComId，员工数与成立日期桌面页不公开 → `null` + `availability.not_provided_by_supplier`。批量详情路径见 07 §4.2。
 - **电话/邮箱/WhatsApp 等平台不公开**（不是登录墙）：不建模为字段，见 §3.14 与 [research/anonymous-completeness.md](research/anonymous-completeness.md)。
 - **未实测不编造**：本文每个字段都对应 `recon/artifacts/api/` 真实样例或 research 的选择器；标注「待验证」的项见 §9.4。
 
@@ -249,7 +250,7 @@ flowchart LR
 
 | 字段（REST） | 内部列 | 类型 | 必填 | 来源 | 匿名可得性 | null 语义 | 示例 |
 |---|---|---|---|---|---|---|---|
-| `address` | `address` | string\|null | 是 | 详情 HTML `Address:` | ✅匿名（HTML） | null=未填 | `100 meters north of …` |
+| `address` | `address` | string\|null | 是 | 详情 HTML `Address:`（移动正文/桌面 showroom） | ✅匿名（HTML） | null=未填 | `100 meters north of …` |
 | `established_at` | `established_at` | string(YYYY-MM-DD)\|null | 是 | 上游 `ssrData.companyInfo.content.establishment` | ✅匿名 | null=未填（空串归一） | `2015-10-30` |
 | `main_products` | `main_products_json` | string[] | 是 | 详情 `mainProducts`（详情优先于列表） | ✅匿名 | `[]` | `["Glass Cup",…]` |
 | `business_types` | `business_types_json` | string[] | 是 | 详情 `businessTypes`（优先）→ 列表 | ✅匿名 | `[]` | `["Manufacturer/Factory & Trading Company"]` |

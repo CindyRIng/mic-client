@@ -1347,7 +1347,7 @@ flowchart TD
 
 | 用途 | 上游接口 | 关键参数/头 | 产出字段 | 默认 TTL | 风控 |
 |---|---|---|---|---|---|
-| 基础详情 | `GET m.made-in-china.com/company-<account>/info.html` | 移动 UA | `ssrData`：`memberLevel`/`memberSince`/`sgsMember`/`auditReportLogo`/`mainProducts`/`businessTypes`/`establishment`/`reviewStatistics`/`companySymbol`/`rd`；正文：员工数/地址/认证文本 | 24h | 中（~13% Focus Captcha） |
+| 基础详情 | `GET m.made-in-china.com/company-<account>/info.html` | 移动 UA | `ssrData`：`memberLevel`/`memberSince`/`sgsMember`/`auditReportLogo`/`mainProducts`/`businessTypes`/`establishment`/`reviewStatistics`/`companySymbol`/`rd`；正文：员工数/地址/认证文本。**免费会员会 301 到桌面 showroom（无 ssrData）→ 桌面解析兜底**（ADR-0009） | 24h | 中（~13% Focus Captcha；桌面页 EdgeOne 常挑战） |
 | 审核章节 | `GET www.made-in-china.com/multi-search/sgs/report?comId=<encodeComId>` | `comId` 必须 encodeComId（数字→500） | `audit.sections[]`（9 章节 `{name,audited}`） | 7d | 低 |
 | 响应率 | `GET data.made-in-china.com/extend/busiMerge/replyRate?date=YYYYMMDD&comId=<encodeComId>&operatorNo=all` | `date`=今天-2 天（Asia/Shanghai） | `response.*`（30 天窗口指标） | 6h | 低 |
 | 联系人 | `GET www.made-in-china.com/im.do?xcase=getSubAccount&comIdStr=<encodeComId>` | 单个 encodeComId | `contacts.persons[]`（TM 子账号名） | 24h | 低 |
@@ -1357,6 +1357,14 @@ flowchart TD
 - **审核机构/报告编号/核验链接**（`audit.agency`/`report_no`/`verify_url`/`verified_items_count`）：来源于 PC 公司站 About Us（HTML 兜底通道，匿名可见，research/anonymous-completeness.md §3.2），**首期不默认抓取**（`enrich.about_us=false`），字段恒 `null`（标「待验证」；启用后需额外 1 次 HTML 请求，02 定义）。`audit.sections` 来自 JSON，与 About 文本是两套来源，不互相替代。
 - **联系人姓名/部门/职位**：`getSubAccount` 只给名字与 TM id；部门/职位只在公司站 contact/About HTML 中出现（匿名可见，选择器待验证）→ 首期 `persons[].title/department` 恒 `null`，`availability` 可标注；不设计「登录解锁」。
 - **电话/邮箱/WhatsApp/Skype/微信**：平台不公开（20 页 × 多通道 0 命中，非登录墙）→ `channels` 恒 `null` + `reason="not_public_by_platform"`（research/anonymous-completeness.md §2.2、§6.1）。**禁止**在文档/实现中写成「登录后可见」。
+
+**免费会员桌面 showroom 兜底（ADR-0009，2026-11-16）**
+
+- 约 60% 的免费/未知会员没有移动站详情：`info.html` 301 到 `www.made-in-china.com/showroom/<account>`（或 `<account>.en.made-in-china.com`），页面**无 `ssrData`**；
+- 解析回退桌面 showroom：公司名（h1）、`Address`、`Account Registered in` → `since_year`、`Business Type`、`Main Products`、`Management System Certification`、会员/AS 徽章、`encodeComId`；`detail_source` 为 `browser`（浏览器渲染兜底）或 `html`（HTTP 桌面页）；
+- 桌面页**不公开**员工数、成立日期：字段 `null` + `availability.reason="not_provided_by_supplier"`（不伪造、不混用）；
+- 部分移动页 `ssrData.companyInfo.content.comName/mainProducts` 为空（实测 transoceanmetal）：回退 `<title>` 与正文标签后继续解析，不整条失败；
+- 批量详情（`scripts/e2e/fetch-company-details.mjs`）为**内部批量路径**：浏览器直取 + 资源拦截 + 页面复用 + `prefetched_html`，不改变 REST 公开契约；算法/取舍见 07 §4.2。
 
 ### 8.5 响应示例（`include=all`，基础+四项增强）
 
@@ -1501,10 +1509,10 @@ flowchart TD
 | 字段 | 类型 | 可空 | 来源 | 说明 |
 |---|---|---|---|---|
 | `address` | string | 是 | `info.html` 正文 `Address`（或列表缓存） | 完整地址（英文，匿名可见） |
-| `established_at` | string（`YYYY-MM-DD`） | 是 | `ssrData.companyInfo.content.establishment` | 成立日期；缺失 `null` + `not_provided_by_supplier` |
-| `business_types` | string[] | 否 | `ssrData.businessTypes`（详情优先）→ 列表 `businessTypeList` | 详情值可能为 `Manufacturer/Factory & Trading Company`（合并式） |
-| `system_certifications` | string[] | 否 | 详情 HTML `Management System Certification` → 列表 `systemCertificationList` | 合并去重；两者格式不同（`ISO9001:2015` vs `ISO 9001`），以详情优先并保留原始字符串 |
-| `employees` | integer\|null | 是 | `info.html` 正文 `Number of Employees`（正则解析） | 列表侧通常 `null`；解析不到 → `null` + `not_provided_by_supplier` |
+| `established_at` | string（`YYYY-MM-DD`） | 是 | `ssrData.companyInfo.content.establishment` / 正文 `Year of Establishment` | 成立日期；桌面 showroom 不公开 → `null` + `not_provided_by_supplier` |
+| `business_types` | string[] | 否 | `ssrData.businessTypes`（详情优先）→ 正文/桌面 showroom → 列表 `businessTypeList` | 详情值可能为 `Manufacturer/Factory & Trading Company`（合并式） |
+| `system_certifications` | string[] | 否 | 详情 HTML `Management System Certification`（移动正文/桌面 showroom）→ 列表 `systemCertificationList` | 合并去重；两者格式不同（`ISO9001:2015` vs `ISO 9001`），以详情优先并保留原始字符串 |
+| `employees` | integer\|null | 是 | `info.html` 正文 `Number of Employees`（正则解析） | 列表侧通常 `null`；桌面 showroom 不公开；解析不到 → `null` + `not_provided_by_supplier` |
 | `membership` | object | 否 | `csLevel` + `memberLevel` + 徽章 | `tier`/`raw_*`/`since_year`/`evidence`/`confidence`（§11.4） |
 | `include` | string[] | 否 | 回显请求的增强集合（排序固定 `audit,response,contacts,reviews`） | `none` 时为 `[]` |
 | `enrichment` | object | 否 | 四类增强；未请求/失败为对应 key 的 `null` | `{audit,response,contacts,reviews}` 全部为 `null` 或对象 |

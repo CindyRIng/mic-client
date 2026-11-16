@@ -13,7 +13,12 @@ import type {
   ResponseInfo,
   ReviewSummary,
 } from '../models.js';
-import { CompanyDetailApi, type CompanyDetailPayload, type DetailRequestOptions } from '../api/company.js';
+import {
+  CompanyDetailApi,
+  parseAnyCompanyHtml,
+  type CompanyDetailPayload,
+  type DetailRequestOptions,
+} from '../api/company.js';
 import { CompanyEnricher, parseRatingDisplay, type EnrichRequestOptions } from '../api/enrich.js';
 import { auditedFromDetail, listMembership, mergeAudited, mergeMembership } from '../membership/tiers.js';
 import { allProvinces } from '../regions/dict.js';
@@ -41,6 +46,8 @@ export interface CompanyInput {
   onCaptcha?: (srcUrl: string) => Promise<void>;
   /** 浏览器兜底取 HTML（会话层注入）。 */
   onBrowserFetch?: (url: string) => Promise<string>;
+  /** 批量抓取：已由会话层渲染好的 HTML（浏览器），直接解析并落缓存，省一次 HTTP 挑战。 */
+  prefetched_html?: string;
 }
 
 export interface CompanyResponse {
@@ -427,7 +434,7 @@ export class CompanyService {
     let audited: boolean | null;
     let cached = false;
     let stale = false;
-    let source: 'json' | 'cache' | 'browser' = 'json';
+    let source: 'json' | 'cache' | 'browser' | 'html' = 'json';
     let detailFetchedAt = now;
     const cachedDetailRow = canCache ? this.readDetailRow(account) : null;
     const cachedMembershipRow = canCache ? this.readMembershipRow(account) : null;
@@ -442,9 +449,12 @@ export class CompanyService {
       audited = this.auditedFromCache(companyBefore, cachedDetailRow);
     } else {
       try {
-        const payload = await this.fetchBase(account, input.onCaptcha, input.onBrowserFetch);
+        const payload = input.prefetched_html
+          ? parseAnyCompanyHtml(input.prefetched_html, account, 'browser', null)
+          : await this.fetchBase(account, input.onCaptcha, input.onBrowserFetch);
         if (payload.source === 'browser') source = 'browser';
-        else if (payload.source === 'html') source = 'json';
+        else if (payload.source === 'html') source = 'html';
+        else source = 'json';
         detailFetchedAt = nowSeconds();
         detail = snapshotFromPayload(payload);
         const merged = this.mergeFreshMembership(companyBefore, payload, warnings);
@@ -1126,7 +1136,7 @@ export class CompanyService {
         )
         .run(
           canonicalAccount,
-          Number.isFinite(Number(payload.company_id)) ? Number(payload.company_id) : null,
+          payload.company_id && Number.isFinite(Number(payload.company_id)) ? Number(payload.company_id) : null,
           payload.encode_com_id,
           detail.company_name,
           region.province,
@@ -1303,7 +1313,7 @@ export function parseAddressRegion(address: string | null | undefined): { provin
 function rowFromPayload(payload: CompanyDetailPayload): CompanyRow {
   return {
     account: payload.account,
-    company_id: Number.isFinite(Number(payload.company_id)) ? Number(payload.company_id) : null,
+    company_id: payload.company_id && Number.isFinite(Number(payload.company_id)) ? Number(payload.company_id) : null,
     encode_com_id: payload.encode_com_id,
     company_name: payload.company_name,
     province: null,

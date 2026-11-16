@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and [Semantic Versioning](https://semver.org/).
 
+## [1.0.7] - 2026-11-16
+
+### Added
+- **Company-detail coverage for free members**: `parseAnyCompanyHtml()` falls back to desktop
+  showroom pages (66% of Hebei suppliers have no mobile `ssrData`), extracting company name,
+  address, `Account Registered in` → `since_year`, business type, main products, certifications,
+  membership / Audited Supplier badges and `encodeComId`; employees/established date are not
+  published there → `null` + `availability=not_provided_by_supplier` (ADR-0009).
+- Mobile `ssrData` robustness: missing `comName`/`mainProducts`/`businessTypes` now fall back to
+  `<title>` and body labels (real account `transoceanmetal` used to fail with `UPSTREAM_CHANGED`).
+- `scripts/e2e/fetch-company-details.mjs`: resumable bulk detail fetcher — browser-direct with
+  resource blocking, page reuse/tabs, `prefetched_html` service path, cache skip, one retry.
+- `fetchCompanyHtmlBatch()` session helper + detail resource interception; `CompanyService.get`
+  accepts internal `prefetched_html`; tests `tests/company/desktop-fallback.test.ts`.
+- Docs: ADR-0009, REST/data/operations detail fallbacks and bulk numbers.
+
+### Fixed
+- `page.content()` navigation race after CAPTCHA redirect → `INTERNAL_ERROR` (now waits/retries).
+- Desktop/free pages previously failed with `UPSTREAM_CHANGED` (no `ssrData`).
+- `company_id=''` was written as `0`, causing `companies.company_id` UNIQUE conflicts and child-table
+  FOREIGN KEY failures; empty ids now stay `NULL`.
+- Batch navigation used `domcontentloaded`, hanging ~15–20s on desktop pages; switched to
+  `commit` + content polling (desktop 2–3s, mobile ~1s).
+
+### Measured (2026-11-16, real upstream)
+- 40-company sample: `tabs=1` 1.82s/company, `tabs=2` 0.99s, `tabs=3` 0.83s; 100% success.
+- 200-company random sample (`tabs=2`): **200/200 success**, 238s, **1.19s/company**,
+  5008-company ETA ≈ **99 minutes**; cache replay 0s.
+- Sample mix: mobile ssrData 68/200 (34%), desktop showroom 132/200 (66%).
+  Availability: main_products 197/200, established_at 45/200, employees 40/200.
+- Membership: diamond 82, gold 11, unknown 107.
+
 ## [1.0.6] - 2026-11-16
 
 ### Added
